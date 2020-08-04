@@ -48,6 +48,22 @@ struct DoubleLinkedListNode<Element>: LinkedListNode {
         self.previous = .allocate(capacity: 1)
         self.previous.unsafelyUnwrapped.initialize(to: previous)
     }
+    
+    @usableFromInline
+    func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>) {
+        let head = UnsafeMutablePointer<Self>.allocate(capacity: 1)
+        head.initialize(to: .init(element: self.element))
+        var tail = head
+
+        var current = next
+        while current != nil {
+            defer { current = current.unsafelyUnwrapped.pointee.next }
+            tail.initializeNext(to: .init(element: current.unsafelyUnwrapped.pointee.element))
+            tail = tail.pointee.next.unsafelyUnwrapped
+        }
+
+        return (head, tail)
+    }
 }
 
 // MARK: - Extensions

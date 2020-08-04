@@ -27,4 +27,21 @@ struct SingleLinkedListNode<Element>: LinkedListNode {
         self.element = element
         self.next = next
     }
+
+    @usableFromInline
+    func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>) {
+        let head = UnsafeMutablePointer<Self>.allocate(capacity: 1)
+        head.initialize(to: .init(element: self.element))
+        var tail = head
+
+        var current = next
+        while current != nil {
+            defer { current = current.unsafelyUnwrapped.pointee.next }
+            tail.pointee.next = .allocate(capacity: 1)
+            tail.pointee.next.unsafelyUnwrapped.initialize(to: current.unsafelyUnwrapped.pointee)
+            tail = tail.pointee.next.unsafelyUnwrapped
+        }
+
+        return (head, tail)
+    }
 }

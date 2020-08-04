@@ -42,12 +42,6 @@ public struct SingleLinkedList<Element>: _LinkedListProtocol {
             buffer.tail = newHead
         }
     }
-    
-    @inlinable
-    public mutating func popLast() -> Element? {
-        createCopyIfNeeded()
-        return buffer.popLast()
-    }
 }
 
 extension SingleLinkedList: Collection {
@@ -73,7 +67,6 @@ extension SingleLinkedList: Collection {
     @inlinable
     public var count: Int {
         get { buffer.count }
-        set { buffer.count = newValue }
         _modify { yield &buffer.count }
     }
     
@@ -86,18 +79,21 @@ extension SingleLinkedList: Collection {
     public subscript(position: Index) -> Element {
         buffer[position.value]
     }
-    
-//    @inlinable
-//    public subscript(bounds: Range<Index>) -> Slice<Self> {
-//        print(bounds)
-////        var lowerBound: Index = startIndex
-////        while lowerBound != bounds.lowerBound {
-////            formIndex(after: &lowerBound)
-////        }
-////        var upperBound = lowerBound
-////        while upperBound != bounds.upperBound {
-////            formIndex(after: &upperBound)
-////        }
-//        return Slice(base: self, bounds: bounds)
-//    }
+}
+
+extension SingleLinkedList: Equatable where Element: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        if lhs.buffer === rhs.buffer {
+            return true
+        }
+        guard lhs.count == rhs.count else {
+            return false
+        }
+        for (lhsValue, rhsValue) in zip(lhs, rhs) {
+            if lhsValue != rhsValue {
+                return false
+            }
+        }
+        return true
+    }
 }

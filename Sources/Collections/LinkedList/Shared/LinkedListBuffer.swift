@@ -40,7 +40,7 @@ extension LinkedListBuffer {
     @usableFromInline
     func createCopy() -> LinkedListBuffer<Element, Node> {
         guard let copy = head?.pointee.createCopy() else {
-            return self
+            return .init()
         }
         return .init(head: copy.head, tail: copy.tail, count: count)
     }
@@ -51,7 +51,7 @@ extension LinkedListBuffer: Collection {
     typealias Element = Element
     
     @usableFromInline
-    struct Index: Comparable, ExpressibleByIntegerLiteral {
+    struct Index: Comparable {
         @usableFromInline
         let node: UnsafeMutablePointer<Node>?
         
@@ -67,11 +67,6 @@ extension LinkedListBuffer: Collection {
         @usableFromInline
         init(offset: Int) {
             self.init(node: nil, offset: offset)
-        }
-        
-        @usableFromInline
-        init(integerLiteral value: Int) {
-            self.init(node: nil, offset: value)
         }
         
         @usableFromInline
@@ -93,6 +88,9 @@ extension LinkedListBuffer: Collection {
     var endIndex: Index { .init(offset: count) }
     
     @usableFromInline
+    var first: Element? { head?.pointee.element }
+    
+    @usableFromInline
     var last: Element? { tail?.pointee.element }
 
     @usableFromInline
@@ -100,34 +98,42 @@ extension LinkedListBuffer: Collection {
 
     @usableFromInline
     subscript(position: Index) -> Element {
-        guard 0..<count ~= position.offset else {
-            fatalError("Invalid Index when accessing LinkedList")
-        }
+        preconditionValidate(indexOffset: position.offset)
 
         if let node = position.node {
             return node.pointee.element
         } else {
             var node = head
             for _ in 0..<position.offset {
-                node = node?.pointee.next
+                node = node.unsafelyUnwrapped.pointee.next
             }
-            return node!.pointee.element
+            return node.unsafelyUnwrapped.pointee.element
         }
     }
 
     @usableFromInline
     func index(after i: Index) -> Index {
         let offsetPlus1 = i.offset &+ 1
-        guard 0..<count ~= offsetPlus1 else { return endIndex }
+        guard isValid(indexOffset: offsetPlus1) else { return endIndex }
 
         let next: UnsafeMutablePointer<Node>? = i.node?.pointee.next ?? {
             var node = startIndex.node
             for _ in 0..<offsetPlus1 {
-                node = node?.pointee.next
+                node = node.unsafelyUnwrapped.pointee.next
             }
             return node
         }()
         return Index(node: next, offset: offsetPlus1)
+    }
+    
+    @usableFromInline
+    func isValid(indexOffset: Int) -> Bool {
+        0..<count ~= indexOffset
+    }
+
+    @usableFromInline
+    func preconditionValidate(indexOffset: Int) {
+        precondition(isValid(indexOffset: indexOffset), "Invalid Index when accessing LinkedList")
     }
 }
 
@@ -135,7 +141,7 @@ extension LinkedListBuffer {
     @usableFromInline
     @discardableResult
     func removeFirst() -> Element {
-        fatalError()
+        popFirst()!
     }
     
     @usableFromInline
@@ -149,12 +155,6 @@ extension LinkedListBuffer {
         }
         head = first.pointee.next
         return first.pointee.element
-    }
-    
-    @usableFromInline
-    @discardableResult
-    func removeLast() -> Element {
-        fatalError()
     }
 }
 
@@ -172,12 +172,18 @@ extension LinkedListBuffer where Node == SingleLinkedListNode<Element> {
     }
 }
 
-//extension LinkedListBuffer: BidirectionalCollection where Node == DoubleLinkedListNode<Element> {
-//    @usableFromInline
-//    func index(before i: Index) -> Index {
-//        guard i != endIndex else {
-//            return Index(node: tail, offset: count - 1)
-//        }
-//        return Index(node: i.node?.pointee.previous, offset: i.offset - 1)
-//    }
-//}
+extension LinkedListBuffer: BidirectionalCollection where Node == DoubleLinkedListNode<Element> {
+    @usableFromInline
+    @discardableResult
+    func removeLast() -> Element {
+        fatalError()
+    }
+
+    @usableFromInline
+    func index(before i: Index) -> Index {
+        guard i != endIndex else {
+            return Index(node: tail, offset: count - 1)
+        }
+        return Index(node: i.node?.pointee.previous, offset: i.offset - 1)
+    }
+}

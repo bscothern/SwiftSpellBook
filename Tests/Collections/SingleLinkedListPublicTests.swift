@@ -147,4 +147,25 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         let index: List<Int>.Index = 3
         XCTAssertEqual(list[index], 3)
     }
+    
+    func testEqual() {
+        let list1: List<Int> = [1, 2, 3]
+        let list2: List<Int> = [1, 2, 3]
+        
+        XCTAssertEqual(list1, list2)
+    }
+    
+    func testNotEqual() {
+        let list1: List<Int> = [1, 2, 3]
+        let list2: List<Int> = [1, 3, 1]
+        
+        XCTAssertNotEqual(list1, list2)
+    }
+    
+    func testIdentityEqual() {
+        let list1: List<Int> = [1, 2, 3]
+        let list2 = list1
+        
+        XCTAssertEqual(list1, list2)
+    }
 }

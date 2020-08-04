@@ -18,6 +18,9 @@ protocol LinkedListNode {
 
     /// A pointer to the next node in the list.
     var next: UnsafeMutablePointer<Self>? { get set }
+    
+    /// Creates a copy of the node which is the new `head` and the `tail` is the last node in the new copy.
+    func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>)
 }
 
 extension LinkedListNode {
@@ -48,11 +51,3 @@ extension LinkedListNode {
         }
     }
 }
-
-extension LinkedListNode {
-    @usableFromInline
-    func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>) {
-        fatalError()
-    }
-}
-
