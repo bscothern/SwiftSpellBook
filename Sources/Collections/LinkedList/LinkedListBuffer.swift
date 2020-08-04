@@ -49,120 +49,70 @@ extension LinkedListBuffer {
 extension LinkedListBuffer: Collection {
     @usableFromInline
     typealias Element = Element
-
+    
     @usableFromInline
     struct Index: Comparable, ExpressibleByIntegerLiteral {
-        @usableFromInline
-        enum Offset: Comparable {
-            case value(Int)
-            case end
-            
-            @usableFromInline
-            var unwrapValue: Int {
-                guard case let .value(value) = self else {
-                    fatalError("\(#function) requires that \(Self.self) to be a .value")
-                }
-                return value
-            }
-
-            @usableFromInline
-            static func == (lhs: Self, rhs: Self) -> Bool {
-                switch (lhs, rhs) {
-                case let (.value(lhs), .value(rhs)):
-                    return lhs == rhs
-                case (.end, .end):
-                    return true
-                default:
-                    return false
-                }
-            }
-            
-            @usableFromInline
-            static func < (lhs: Self, rhs: Self) -> Bool {
-                switch (lhs, rhs) {
-                case let (.value(lhs), .value(rhs)):
-                    return lhs < rhs
-                case (.end, .end):
-                    return false
-                case (.value, .end):
-                    return true
-                case (.end, .value):
-                    return false
-                }
-            }
-        }
-
         @usableFromInline
         let node: UnsafeMutablePointer<Node>?
         
         @usableFromInline
-        let offset: Offset
-
+        let offset: Int
+        
         @usableFromInline
-        init(node: UnsafeMutablePointer<Node>?, offset: Offset) {
+        init(node: UnsafeMutablePointer<Node>?, offset: Int) {
             self.node = node
             self.offset = offset
         }
         
         @usableFromInline
+        init(offset: Int) {
+            self.init(node: nil, offset: offset)
+        }
+        
+        @usableFromInline
         init(integerLiteral value: Int) {
-            self.node = nil
-            self.offset = .value(value)
+            self.init(node: nil, offset: value)
         }
 
         @usableFromInline
         static func < (lhs: Self, rhs: Self) -> Bool {
-            print("< --\n\t\(lhs)\n\t\(rhs)\n")
-            let endIndex = Self(node: nil, offset: .end)
-            if lhs == endIndex {
-                print("false")
-                return false
-            } else if rhs == endIndex {
-                print("true")
-                return true
-            } else {
-                print("false")
-                return lhs.offset < rhs.offset
-            }
+            print("lhs: \(lhs) < rhs: \(rhs)")
+            return lhs.offset < rhs.offset
         }
     }
 
     @usableFromInline
-    var startIndex: Index { Index(node: head, offset: isEmpty ? .end : .value(0)) }
+    var startIndex: Index { .init(node: head, offset: 0) }
 
     @usableFromInline
-    var endIndex: Index { Index(node: nil, offset: .end) }
+    var endIndex: Index { .init(offset: count) }
     
     @usableFromInline
     var last: Element? { tail?.pointee.element }
-    
+
     @usableFromInline
     var isEmpty: Bool { count == 0 }
 
     @usableFromInline
     subscript(position: Index) -> Element {
-        guard position.offset != .end else {
+        guard 0..<count ~= position.offset else {
             fatalError("Invalid Index when accessing LinkedList")
         }
-        let offsetValue = position.offset.unwrapValue
         if let node = position.node {
             return node.pointee.element
-        } else if offsetValue >= 0 && offsetValue < count {
+        } else {
             var node = head
-            for _ in 0 ..< offsetValue {
+            for _ in 0 ..< position.offset {
                 node = node?.pointee.next
             }
             return node!.pointee.element
-        } else {
-            fatalError("Invalid Index when accessing LinkedList")
         }
     }
 
     @usableFromInline
     func index(after i: Index) -> Index {
-        guard i.offset != .end else { return endIndex }
-        let offsetPlus1 = i.offset.unwrapValue + 1
-        guard offsetPlus1 < count else { return endIndex }
+        let offsetPlus1 = i.offset &+ 1
+        guard 0..<count ~= offsetPlus1 else { return endIndex }
 
         let next: UnsafeMutablePointer<Node>? = i.node?.pointee.next ?? {
             var node = startIndex.node
@@ -171,7 +121,7 @@ extension LinkedListBuffer: Collection {
             }
             return node
         }()
-        return Index(node: next, offset: .value(offsetPlus1))
+        return Index(node: next, offset: offsetPlus1)
     }
 }
 

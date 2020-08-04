@@ -7,12 +7,12 @@
 //
 
 @usableFromInline
-protocol LinkedListIndex: Comparable, ExpressibleByIntegerLiteral, ExpressibleByNilLiteral {
+protocol LinkedListIndex: Comparable, ExpressibleByIntegerLiteral {
     associatedtype Base: _LinkedListProtocol
     typealias Value = Base.Buffer.Index
-    
+
     var value: Value { get }
-    
+
     init(_ value: Value)
 }
 
@@ -26,13 +26,6 @@ extension LinkedListIndex {
 extension LinkedListIndex {
     @inlinable
     public init(integerLiteral value: Int) {
-        self.init(.init(node: nil, offset: .value(value)))
-    }
-}
-
-extension LinkedListIndex {
-    @inlinable
-    public init(nilLiteral: ()) {
-        self.init(.init(node: nil, offset: .end))
+        self.init(.init(node: nil, offset: value))
     }
 }

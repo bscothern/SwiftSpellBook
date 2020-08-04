@@ -45,7 +45,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             XCTAssertEqual($0, $1)
         }
     }
-    
+
     func testPrependMany() {
         var list = List<Int>()
         let count = 100_000
@@ -99,7 +99,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             list.append(i)
         }
 
-        zip(list[1..<4], 1...).forEach {
+        zip(list[1..<3], 1...).forEach {
             print("-------------")
             XCTAssertEqual($0, $1)
         }
@@ -145,7 +145,6 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             list.append(i)
         }
         let index: List<Int>.Index = 3
-        print(index)
         XCTAssertEqual(list[index], 3)
     }
 }

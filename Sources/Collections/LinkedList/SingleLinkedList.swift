@@ -63,7 +63,7 @@ extension SingleLinkedList: Collection {
             self.value = value
         }
     }
-    
+
     @inlinable
     public var startIndex: Index { .init(buffer.startIndex) }
     
@@ -89,6 +89,15 @@ extension SingleLinkedList: Collection {
     
 //    @inlinable
 //    public subscript(bounds: Range<Index>) -> Slice<Self> {
-//        Slice(base: self, bounds: bounds)
+//        print(bounds)
+////        var lowerBound: Index = startIndex
+////        while lowerBound != bounds.lowerBound {
+////            formIndex(after: &lowerBound)
+////        }
+////        var upperBound = lowerBound
+////        while upperBound != bounds.upperBound {
+////            formIndex(after: &upperBound)
+////        }
+//        return Slice(base: self, bounds: bounds)
 //    }
 }
