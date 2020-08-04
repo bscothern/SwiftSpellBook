@@ -73,6 +73,11 @@ extension LinkedListBuffer: Collection {
         init(integerLiteral value: Int) {
             self.init(node: nil, offset: value)
         }
+        
+        @usableFromInline
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            lhs.offset == rhs.offset
+        }
 
         @usableFromInline
         static func < (lhs: Self, rhs: Self) -> Bool {
@@ -98,11 +103,12 @@ extension LinkedListBuffer: Collection {
         guard 0..<count ~= position.offset else {
             fatalError("Invalid Index when accessing LinkedList")
         }
+
         if let node = position.node {
             return node.pointee.element
         } else {
             var node = head
-            for _ in 0 ..< position.offset {
+            for _ in 0..<position.offset {
                 node = node?.pointee.next
             }
             return node!.pointee.element

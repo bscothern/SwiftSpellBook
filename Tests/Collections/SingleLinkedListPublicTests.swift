@@ -99,7 +99,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             list.append(i)
         }
 
-        zip(list[1..<3], 1...).forEach {
+        zip(list[1..<4], 1...).forEach {
             print("-------------")
             XCTAssertEqual($0, $1)
         }
@@ -117,14 +117,14 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
     }
 
     func testSlice4() {
-//        var list = List<Int>()
-//        let count = 10
-//        for i in 0..<count {
-//            list.append(i)
-//        }
-//        zip(list[..<8], 0...).forEach {
-//            XCTAssertEqual($0, $1)
-//        }
+        var list = List<Int>()
+        let count = 10
+        for i in 0..<count {
+            list.append(i)
+        }
+        zip(list[..<8], 0...).forEach {
+            XCTAssertEqual($0, $1)
+        }
     }
     
     func testSlice5() {
