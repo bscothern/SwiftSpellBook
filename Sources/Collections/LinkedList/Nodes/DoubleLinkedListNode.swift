@@ -55,6 +55,7 @@ extension UnsafeMutablePointer {
     /// Access through the pointer's `pointee` to set the `next` value and then have the `next.previous` point back at `self`
     ///
     /// - Precondition: `next.previous` must be `nil`
+    /// - Precondition: `pointee.next` must be `nil`
     ///
     /// - Parameter next: The value of the `next` node that should be pointed to.
     @usableFromInline
@@ -67,11 +68,13 @@ extension UnsafeMutablePointer {
     /// Access through the pointer's `pointee` to set the `next` value and then have the `next.previous` point back at `self`
     ///
     /// - Precondition: `next.pointee.previous` must be `nil`
+    /// - Precondition: `pointee.next` must be `nil`
     ///
     /// - Parameter next: A pointer to the `next` node that should be pointed to.
     @usableFromInline
     func initializeNext<Element>(to next: Self) where Pointee == DoubleLinkedListNode<Element> {
         precondition(next.pointee.previous == nil)
+        precondition(pointee.next == nil)
         next.pointee.previous = self
         pointee.next = next
     }
@@ -79,10 +82,12 @@ extension UnsafeMutablePointer {
     /// Access through the pointer's `pointee` to set the `previous` value and then have the `previous.next` point back at `self`
     ///
     /// - Precondition: `previous.next` must be `nil`
+    /// - Precondition: `pointee.previous` must be `nil`
     ///
     /// - Parameter previous: The value of the `previous` node that should be pointed to.
     @usableFromInline
     func initializePrevious<Element>(to previous: DoubleLinkedListNode<Element>) where Pointee == DoubleLinkedListNode<Element> {
+        precondition(previous.next == nil)
         pointee.initializePrevious(to: previous)
         pointee.previous.unsafelyUnwrapped.pointee.next = self
     }
@@ -90,11 +95,13 @@ extension UnsafeMutablePointer {
     /// Access through the pointer's `pointee` to set the `previous` value and then have the `previous.next` point back at `self`
     ///
     /// - Precondition: `previous.pointee.next` must be `nil`
+    /// - Precondition `pointee.previous` must be `nil`
     ///
     /// - Parameter previous: A pointer to the `previous` node that should be pointed to.
     @usableFromInline
     func initializePrevious<Element>(to previous: Self) where Pointee == DoubleLinkedListNode<Element> {
         precondition(previous.pointee.next == nil)
+        precondition(pointee.previous == nil)
         previous.pointee.next = self
         pointee.previous = previous
     }

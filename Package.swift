@@ -16,6 +16,7 @@ let package = Package(
         )
     ],
     dependencies: [
+        .package(url: "https://github.com/bscothern/ProtocolTests.git", .upToNextMinor(from: "0.2.0"))
     ],
     targets: [
         .target(
@@ -31,8 +32,12 @@ let package = Package(
             path: "Sources/Collections"
         ),
         .testTarget(
-            name: "ThingsMissingFromSwiftTests",
-            dependencies: ["ThingsMissingFromSwift"]
+            name: "ThingsMissingFromSwiftCollectionsTests",
+            dependencies: [
+                .target(name: "ThingsMissingFromSwiftCollections"),
+                .product(name: "ProtocolTests", package: "ProtocolTests"),
+            ],
+            path: "Tests/Collections"
         )
     ]
 )

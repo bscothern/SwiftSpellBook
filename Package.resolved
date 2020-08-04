@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ProtocolTests",
+        "repositoryURL": "https://github.com/bscothern/ProtocolTests.git",
+        "state": {
+          "branch": null,
+          "revision": "34e20714156ea56a05f1ae94e0c8924658324876",
+          "version": "0.2.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

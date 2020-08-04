@@ -48,3 +48,11 @@ extension LinkedListNode {
         }
     }
 }
+
+extension LinkedListNode {
+    @usableFromInline
+    func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>) {
+        fatalError()
+    }
+}
+
