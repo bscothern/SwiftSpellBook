@@ -1,3 +1,3 @@
-# ThingsMissingFromSwiftCollections
+# SwiftSpellBook
 
-A description of this package.
+A collection of common types and extensions to the Swift Standard Library.

@@ -1,13 +1,13 @@
 //
 //  SingleLinkedListPublicTests.swift
-//  ThingsMissingFromSwiftTests
+//  SwiftSpellBookTests
 //
 //  Created by Braden Scothern on 7/15/20.
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
 import ProtocolTests
-import ThingsMissingFromSwiftCollections
+import SwiftSpellBookCollections
 import XCTest
 
 

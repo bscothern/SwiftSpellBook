@@ -1,6 +1,6 @@
 //
 //  LinkedListProtocol.swift
-//  ThingsMissingFromSwift
+//  SwiftSpellBook
 //
 //  Created by Braden Scothern on 7/15/20.
 //  Copyright © 2020 Braden Scothern. All rights reserved.
@@ -89,15 +89,10 @@ extension LinkedListProtocol {
             append(element)
         }
     }
-    
-    @inlinable
-    public mutating func removeAll() {
-        self = .init()
-    }
 }
 
 @usableFromInline
-protocol _LinkedListProtocol: LinkedListProtocol {
+protocol _LinkedListProtocol: LinkedListProtocol where Index: LinkedListIndex, Index.Base == Self {
     associatedtype Node: LinkedListNode where Node.Element == Element
     typealias  Buffer = LinkedListBuffer<Element, Node>
     
@@ -114,8 +109,32 @@ extension _LinkedListProtocol {
 
 extension _LinkedListProtocol {
     @inlinable
-    public var isEmpty: Bool { buffer.isEmpty }
+    public var startIndex: Index { .init(buffer.startIndex) }
+    
+    @inlinable
+    public var endIndex: Index { .init(buffer.endIndex) }
 
+    @inlinable
+    public var isEmpty: Bool { buffer.isEmpty }
+    
+    @inlinable
+    public var count: Int {
+        get { buffer.count }
+        _modify { yield &buffer.count }
+    }
+    
+    @inlinable
+    public func index(after i: Index) -> Index {
+        .init(buffer.index(after: i.value))
+    }
+    
+    @inlinable
+    public subscript(position: Index) -> Element {
+        buffer[position.value]
+    }
+}
+
+extension _LinkedListProtocol {
     @inlinable
     public mutating func insert(_ element: Element, at i: Index) {
         createCopyIfNeeded()
@@ -142,6 +161,7 @@ extension _LinkedListProtocol {
         createCopyIfNeeded()
         return buffer.popFirst()
     }
+
 //    @inlinable
 //    public mutating func removeLast() -> Element {
 //        createCopyIfNeeded()
@@ -156,4 +176,9 @@ extension _LinkedListProtocol {
 //            buffer.removeLast()
 //        }
 //    }
+    
+    @inlinable
+    public mutating func removeAll() {
+        self = .init()
+    }
 }

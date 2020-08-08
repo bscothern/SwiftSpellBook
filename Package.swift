@@ -4,15 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "ThingsMissingFromSwift",
+    name: "SwiftSpellBook",
     products: [
         .library(
-            name: "ThingsMissingFromSwift",
-            targets: ["ThingsMissingFromSwift"]
+            name: "SwiftSpellBook",
+            targets: ["SwiftSpellBook"]
         ),
         .library(
-            name: "ThingsMissingFromSwiftCollections",
-            targets: ["ThingsMissingFromSwiftCollections"]
+            name: "SwiftCollectionsSpellBook",
+            targets: ["SwiftCollectionsSpellBook"]
         )
     ],
     dependencies: [
@@ -20,21 +20,21 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ThingsMissingFromSwift",
+            name: "SwiftSpellBook",
             dependencies: [
-                "ThingsMissingFromSwiftCollections"
+                "SwiftCollectionsSpellBook"
             ],
             path: "Sources/Umbrella"
         ),
         .target(
-            name: "ThingsMissingFromSwiftCollections",
+            name: "SwiftCollectionsSpellBook",
             dependencies: [],
             path: "Sources/Collections"
         ),
         .testTarget(
-            name: "ThingsMissingFromSwiftCollectionsTests",
+            name: "SwiftCollectionsSpellBookTests",
             dependencies: [
-                .target(name: "ThingsMissingFromSwiftCollections"),
+                .target(name: "SwiftCollectionsSpellBook"),
                 .product(name: "ProtocolTests", package: "ProtocolTests"),
             ],
             path: "Tests/Collections"

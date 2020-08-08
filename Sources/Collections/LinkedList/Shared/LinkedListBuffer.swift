@@ -1,6 +1,6 @@
 //
 //  LinkedListBuffer.swift
-//  ThingsMissingFromSwift
+//  SwiftSpellBook
 //
 //  Created by Braden Scothern on 7/15/20.
 //  Copyright © 2020 Braden Scothern. All rights reserved.
@@ -176,7 +176,15 @@ extension LinkedListBuffer: BidirectionalCollection where Node == DoubleLinkedLi
     @usableFromInline
     @discardableResult
     func removeLast() -> Element {
-        fatalError()
+        guard let last = tail else {
+            fatalError("Cannot remove last from an empty linked list")
+        }
+        tail = last.pointee.previous
+        defer {
+            last.deinitialize(count: 1)
+            last.deallocate()
+        }
+        return last.pointee.element
     }
 
     @usableFromInline
