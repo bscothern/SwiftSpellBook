@@ -14,6 +14,11 @@ struct SingleLinkedListNode<Element>: LinkedListNode {
 
     @usableFromInline
     var next: UnsafeMutablePointer<Self>?
+    
+    @usableFromInline
+    init(element: Element) {
+        self.init(element: element, next: nil)
+    }
 
     /// Creates a `SingleLinkedListNode`.
     ///
@@ -23,7 +28,7 @@ struct SingleLinkedListNode<Element>: LinkedListNode {
     ///   - element: The value contained in this node.
     ///   - next: A pointer to the next node.
     @usableFromInline
-    init(element: Element, next: UnsafeMutablePointer<Self>? = nil) {
+    init(element: Element, next: UnsafeMutablePointer<Self>?) {
         self.element = element
         self.next = next
     }

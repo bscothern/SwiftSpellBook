@@ -158,7 +158,7 @@ extension LinkedListBuffer {
     }
 }
 
-extension LinkedListBuffer where Node == SingleLinkedListNode<Element> {
+extension LinkedListBuffer: BidirectionalCollection where Node == DoubleLinkedListNode<Element> {
     @usableFromInline
     func popLast() -> Element? {
         guard let last = tail else {
@@ -170,9 +170,7 @@ extension LinkedListBuffer where Node == SingleLinkedListNode<Element> {
         }
         return last.pointee.element
     }
-}
 
-extension LinkedListBuffer: BidirectionalCollection where Node == DoubleLinkedListNode<Element> {
     @usableFromInline
     @discardableResult
     func removeLast() -> Element {
@@ -193,5 +191,62 @@ extension LinkedListBuffer: BidirectionalCollection where Node == DoubleLinkedLi
             return Index(node: tail, offset: count - 1)
         }
         return Index(node: i.node?.pointee.previous, offset: i.offset - 1)
+    }
+}
+
+extension LinkedListBuffer: Equatable where Element: Equatable {
+    @usableFromInline
+    static func == (lhs: LinkedListBuffer<Element, Node>, rhs: LinkedListBuffer<Element, Node>) -> Bool {
+        guard lhs !== rhs else { return true }
+        guard lhs.count == rhs.count else { return false }
+        for (lhsValue, rhsValue) in zip(lhs, rhs) {
+            if lhsValue != rhsValue {
+                return false
+            }
+        }
+        return true
+    }
+}
+
+extension LinkedListBuffer: Hashable where Element: Hashable {
+    @usableFromInline
+    func hash(into hasher: inout Hasher) {
+        forEach { element in
+            hasher.combine(element)
+        }
+    }
+}
+
+extension LinkedListBuffer: Encodable where Element: Encodable {
+    @usableFromInline
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        try forEach { element in
+            try container.encode(element)
+        }
+    }
+}
+
+extension LinkedListBuffer: Decodable where Element: Decodable {
+    @usableFromInline
+    convenience init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        self.init()
+        var previous: UnsafeMutablePointer<Node>!
+        while !container.isAtEnd {
+            let element = try container.decode(Element.self)
+            defer { count += 1 }
+            let node = Node(element: element)
+            guard head != nil else {
+                head = .allocate(capacity: 1)
+                head.unsafelyUnwrapped.initialize(to: node)
+                previous = head
+                continue
+            }
+            previous.pointee.initializeNext(to: node)
+            tail = previous
+            previous = previous.pointee.next
+        }
+        
     }
 }

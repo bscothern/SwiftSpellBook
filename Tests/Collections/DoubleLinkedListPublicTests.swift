@@ -1,8 +1,8 @@
 //
-//  SingleLinkedListPublicTests.swift
+//  DoubleLinkedListPublicTests.swift
 //  SwiftSpellBookTests
 //
-//  Created by Braden Scothern on 7/15/20.
+//  Created by Braden Scothern on 10/30/20.
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
@@ -11,8 +11,8 @@ import SwiftCollectionsSpellBook
 import XCTest
 
 
-final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
-    typealias List<T> = SingleLinkedList<T>
+final class DoubleLinkedListPublicTests: XCTestCase, CollectionTests {
+    typealias List<T> = DoubleLinkedList<T>
     typealias CollectionType = List<Int>
     typealias Element = Int
 

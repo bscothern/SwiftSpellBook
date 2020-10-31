@@ -26,9 +26,17 @@ public protocol LinkedListProtocol: Collection, ExpressibleByArrayLiteral {
     ///
     /// - Parameters:
     ///   - element: The new element to insert into the linked list.
-    ///   - i: The position at which `element` should be inserted.
+    ///   - index: The position at which `element` should be inserted.
     ///     This must be a valid index or `endIndex`.
-    mutating func insert(_ element: Element, at i: Index)
+    mutating func insert(_ element: Element, at index: Index)
+    
+    /// Removes the element at the specified postion.
+    ///
+    /// All elements following the specified index are moved up in the list.
+    ///
+    /// - Parameter index: The position of the elmenet to remove from the list.
+    ///     This must be a valid index of the list.
+    mutating func remove(at index: Index)
 
     /// Removes and returns the first element of the linked list.
     ///
@@ -136,12 +144,6 @@ extension _LinkedListProtocol {
 
 extension _LinkedListProtocol {
     @inlinable
-    public mutating func insert(_ element: Element, at i: Index) {
-        createCopyIfNeeded()
-        #warning("TODO")
-    }
-    
-    @inlinable
     public mutating func removeFirst() -> Element {
         createCopyIfNeeded()
         return buffer.removeFirst()
@@ -155,7 +157,7 @@ extension _LinkedListProtocol {
             buffer.removeFirst()
         }
     }
-    
+
     @inlinable
     public mutating func popFirst() -> Element? {
         createCopyIfNeeded()

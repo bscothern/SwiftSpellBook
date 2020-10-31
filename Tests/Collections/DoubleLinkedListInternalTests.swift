@@ -1,16 +1,16 @@
 //
-//  SingleLinkedListInternalTests.swift
+//  DoubleLinkedListInternalTests.swift
 //  SwiftSpellBookTests
 //
-//  Created by Braden Scothern on 7/15/20.
+//  Created by Braden Scothern on 10/30/20.
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
 import XCTest
 @testable import SwiftCollectionsSpellBook
 
-final class SingleLinkedListInternalTests: XCTestCase {
-    typealias List<T> = SingleLinkedList<T>
+final class DoubleLinkedListInternalTests: XCTestCase {
+    typealias List<T> = DoubleLinkedList<T>
     
     func testCopy() {
         let list1: List<Int> = [1, 2, 3]

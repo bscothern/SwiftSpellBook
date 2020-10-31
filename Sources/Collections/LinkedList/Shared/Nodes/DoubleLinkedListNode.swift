@@ -18,6 +18,11 @@ struct DoubleLinkedListNode<Element>: LinkedListNode {
     /// A pointer to the previous node in the list.
     @usableFromInline
     var previous: UnsafeMutablePointer<Self>?
+    
+    @usableFromInline
+    init(element: Element) {
+        self.init(element: element, next: nil, previous: nil)
+    }
 
     /// Creates a `SingleLinkedListNode`.
     ///
@@ -31,7 +36,7 @@ struct DoubleLinkedListNode<Element>: LinkedListNode {
     ///   - next: A pointer to the next node.
     ///   - previous: A pointer to the previous node.
     @usableFromInline
-    init(element: Element, next: UnsafeMutablePointer<Self>? = nil, previous: UnsafeMutablePointer<Self>? = nil) {
+    init(element: Element, next: UnsafeMutablePointer<Self>?, previous: UnsafeMutablePointer<Self>?) {
         self.element = element
         self.next = next
         self.previous = previous

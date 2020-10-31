@@ -19,6 +19,12 @@ protocol LinkedListNode {
     /// A pointer to the next node in the list.
     var next: UnsafeMutablePointer<Self>? { get set }
     
+    /// Creates a `LinkedListNode`.
+    ///
+    /// - Parameters:
+    ///   - element: The value contained in this node.
+    init(element: Element)
+    
     /// Creates a copy of the node which is the new `head` and the `tail` is the last node in the new copy.
     func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>)
 }

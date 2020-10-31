@@ -18,6 +18,7 @@ public struct SingleLinkedList<Element>: _LinkedListProtocol {
         buffer = .init()
     }
     
+    @inlinable
     public mutating func append(_ element: Element) {
         createCopyIfNeeded()
         defer { count += 1 }
@@ -31,6 +32,7 @@ public struct SingleLinkedList<Element>: _LinkedListProtocol {
         buffer.tail = tail.pointee.next
     }
     
+    @inlinable
     public mutating func prepend(_ element: Element) {
         createCopyIfNeeded()
         defer { count += 1 }
@@ -42,6 +44,48 @@ public struct SingleLinkedList<Element>: _LinkedListProtocol {
             buffer.tail = newHead
         }
     }
+
+    @inlinable
+    public mutating func insert(_ element: Element, at index: Index) {
+        precondition(startIndex...endIndex ~= index, "Invalid index used to try and insert an element into list.")
+        guard startIndex != index else {
+            prepend(element)
+            return
+        }
+        guard endIndex != index else {
+            append(element)
+            return
+        }
+        createCopyIfNeeded()
+        defer { count += 1 }
+        let (indexBefore, thisIndex) = findIndex(before: index)
+        let newNode = UnsafeMutablePointer<Node>.allocate(capacity: 1)
+        newNode.initialize(to: .init(element: element, next: thisIndex.value.node))
+        indexBefore.value.node?.pointee.next = newNode
+    }
+
+    @inlinable
+    public mutating func remove(at index: Index) {
+        precondition(startIndex..<endIndex ~= index, "Invalid index used to try and remove from list.")
+        createCopyIfNeeded()
+        defer { count -= 1 }
+        let (indexBefore, thisIndex) = findIndex(before: index)
+        indexBefore.value.node.unsafelyUnwrapped.pointee.next = thisIndex.value.node
+        thisIndex.value.node.unsafelyUnwrapped.deinitialize(count: 1)
+        thisIndex.value.node.unsafelyUnwrapped.deallocate()
+    }
+
+    @usableFromInline
+    func findIndex(before index: Index) -> (before: Index, index: Index) {
+        var currentIndex = startIndex
+        var nextIndex = self.index(after: currentIndex)
+        while nextIndex != index {
+            currentIndex = nextIndex
+            nextIndex = self.index(after: currentIndex)
+        }
+        return (currentIndex, nextIndex)
+    }
+
 }
 
 extension SingleLinkedList: Collection {
@@ -59,19 +103,5 @@ extension SingleLinkedList: Collection {
     }
 }
 
-extension SingleLinkedList: Equatable where Element: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        if lhs.buffer === rhs.buffer {
-            return true
-        }
-        guard lhs.count == rhs.count else {
-            return false
-        }
-        for (lhsValue, rhsValue) in zip(lhs, rhs) {
-            if lhsValue != rhsValue {
-                return false
-            }
-        }
-        return true
-    }
-}
+extension SingleLinkedList: Equatable where Element: Equatable {}
+extension SingleLinkedList: Hashable where Element: Hashable {}
