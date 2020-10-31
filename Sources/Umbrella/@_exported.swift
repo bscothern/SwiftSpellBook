@@ -7,5 +7,6 @@
 //
 
 @_exported import SwiftCollectionsSpellBook
+@_exported import SwiftMemoryManagementSpellBook
 @_exported import SwiftPropertyWrappersSpellBook
 @_exported import SwiftResultBuildersSpellBook
