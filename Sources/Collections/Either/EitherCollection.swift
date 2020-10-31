@@ -6,7 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-public typealias EitherCollection<Left, Right> = Either<Left, Right> where Left: Collection, Right: Collection, Left.Element == Right.Element
+public typealias EitherCollection<Left, Right> = EitherSequence<Left, Right> where Left: Collection, Right: Collection, Left.Element == Right.Element
 
 extension EitherCollection: Collection {
     public typealias Index = Either<Left.Index, Right.Index>

@@ -15,9 +15,17 @@ let package = Package(
             targets: ["SwiftCollectionsSpellBook"]
         ),
         .library(
+            name: "SwiftMemoryManagementSpellBook",
+            targets: ["SwiftMemoryManagementSpellBook"]
+        ),
+        .library(
             name: "SwiftPropertyWrappersSpellBook",
             targets: ["SwiftPropertyWrappersSpellBook"]
-        )
+        ),
+        .library(
+            name: "SwiftResultBuildersSpellBook",
+            targets: ["SwiftResultBuildersSpellBook"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/bscothern/ProtocolTests.git", .upToNextMinor(from: "0.2.0"))
@@ -47,18 +55,6 @@ let package = Package(
             path: "Tests/Collections"
         ),
         .target(
-            name: "SwiftPropertyWrappersSpellBook",
-            dependencies: [],
-            path: "Sources/PropertyWrappers"
-        ),
-        .testTarget(
-            name: "SwiftPropertyWrappersSpellBookTests",
-            dependencies: [
-                .target(name: "SwiftPropertyWrappersSpellBook")
-            ],
-            path: "Tests/PropertyWrappers"
-        ),
-        .target(
             name: "SwiftMemoryManagementSpellBook",
             dependencies: [],
             path: "Sources/MemoryManagement"
@@ -69,6 +65,18 @@ let package = Package(
                 .target(name: "SwiftMemoryManagementSpellBook")
             ],
             path: "Tests/MemoryManagement"
+        ),
+        .target(
+            name: "SwiftPropertyWrappersSpellBook",
+            dependencies: [],
+            path: "Sources/PropertyWrappers"
+        ),
+        .testTarget(
+            name: "SwiftPropertyWrappersSpellBookTests",
+            dependencies: [
+                .target(name: "SwiftPropertyWrappersSpellBook")
+            ],
+            path: "Tests/PropertyWrappers"
         ),
         .target(
             name: "SwiftResultBuildersSpellBook",

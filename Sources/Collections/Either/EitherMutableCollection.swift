@@ -6,7 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-public typealias EitherMutableCollection<Left, Right> = Either<Left, Right> where Left: MutableCollection, Right: MutableCollection, Left.Element == Right.Element
+public typealias EitherMutableCollection<Left, Right> = EitherCollection<Left, Right> where Left: MutableCollection, Right: MutableCollection, Left.Element == Right.Element
 
 extension EitherMutableCollection: MutableCollection {
     @inlinable

@@ -114,14 +114,14 @@ protocol _SafeManagedBuffer where Header.HeaderValue == HeaderValue {
 
 extension _SafeManagedBuffer {
     @inlinable
-    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(), makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue) {
+    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0), makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue) {
         self = Self.create(minimumCapacity: minimumCapacity, makingHeaderWith: { buffer in
             return .init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, value: makingHeaderWith(buffer))
         }) as! Self
     }
 
     @inlinable
-    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count()) where HeaderValue == Void {
+    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0)) where HeaderValue == Void {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, makingHeaderWith: { _ in })
     }
 }

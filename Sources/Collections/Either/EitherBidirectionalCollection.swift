@@ -6,7 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-public typealias EitherBidirectionalCollection<Left, Right> = Either<Left, Right> where Left: BidirectionalCollection, Right: BidirectionalCollection, Left.Element == Right.Element
+public typealias EitherBidirectionalCollection<Left, Right> = EitherCollection<Left, Right> where Left: BidirectionalCollection, Right: BidirectionalCollection, Left.Element == Right.Element
 
 extension EitherBidirectionalCollection: BidirectionalCollection {
     @inlinable
