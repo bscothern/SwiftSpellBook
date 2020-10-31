@@ -26,7 +26,9 @@ let package = Package(
         .target(
             name: "SwiftSpellBook",
             dependencies: [
-                "SwiftCollectionsSpellBook"
+                .target(name: "SwiftCollectionsSpellBook"),
+                .target(name: "SwiftPropertyWrappersSpellBook"),
+                .target(name: "SwiftResultBuildersSpellBook")
             ],
             path: "Sources/Umbrella"
         ),
@@ -39,7 +41,7 @@ let package = Package(
             name: "SwiftCollectionsSpellBookTests",
             dependencies: [
                 .target(name: "SwiftCollectionsSpellBook"),
-                .product(name: "ProtocolTests", package: "ProtocolTests"),
+                .product(name: "ProtocolTests", package: "ProtocolTests")
             ],
             path: "Tests/Collections"
         ),
@@ -51,7 +53,7 @@ let package = Package(
         .testTarget(
             name: "SwiftPropertyWrappersSpellBookTests",
             dependencies: [
-                .target(name: "SwiftPropertyWrappersSpellBook"),
+                .target(name: "SwiftPropertyWrappersSpellBook")
             ],
             path: "Tests/PropertyWrappers"
         ),
@@ -63,9 +65,9 @@ let package = Package(
         .testTarget(
             name: "SwiftResultBuildersSpellBookTests",
             dependencies: [
-                .target(name: "SwiftResultBuildersSpellBook"),
+                .target(name: "SwiftResultBuildersSpellBook")
             ],
             path: "Tests/ResultBuilders"
-        ),
+        )
     ]
 )

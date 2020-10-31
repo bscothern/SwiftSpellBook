@@ -10,23 +10,23 @@
 final class LinkedListBuffer<Element, Node> where Node: LinkedListNode, Node.Element == Element {
     @usableFromInline
     var head: UnsafeMutablePointer<Node>?
-    
+
     @usableFromInline
     var tail: UnsafeMutablePointer<Node>?
-    
+
     @usableFromInline
     var count: Int = 0
-    
+
     @usableFromInline
     init() {}
-    
+
     @usableFromInline
     init(head: UnsafeMutablePointer<Node>, tail: UnsafeMutablePointer<Node>, count: Int) {
         self.head = head
         self.tail = tail
         self.count = count
     }
-    
+
     @usableFromInline
     deinit {
         guard let head = head else { return }
@@ -49,26 +49,26 @@ extension LinkedListBuffer {
 extension LinkedListBuffer: Collection {
     @usableFromInline
     typealias Element = Element
-    
+
     @usableFromInline
     struct Index: Comparable {
         @usableFromInline
         let node: UnsafeMutablePointer<Node>?
-        
+
         @usableFromInline
         let offset: Int
-        
+
         @usableFromInline
         init(node: UnsafeMutablePointer<Node>?, offset: Int) {
             self.node = node
             self.offset = offset
         }
-        
+
         @usableFromInline
         init(offset: Int) {
             self.init(node: nil, offset: offset)
         }
-        
+
         @usableFromInline
         static func == (lhs: Self, rhs: Self) -> Bool {
             lhs.offset == rhs.offset
@@ -86,15 +86,19 @@ extension LinkedListBuffer: Collection {
 
     @usableFromInline
     var endIndex: Index { .init(offset: count) }
-    
+
     @usableFromInline
     var first: Element? { head?.pointee.element }
-    
+
     @usableFromInline
     var last: Element? { tail?.pointee.element }
 
     @usableFromInline
-    var isEmpty: Bool { count == 0 }
+    var isEmpty: Bool {
+        // This is the implimentation of isEmpty
+        // swiftlint:disable:next empty_count
+        count == 0
+    }
 
     @usableFromInline
     subscript(position: Index) -> Element {
@@ -125,7 +129,7 @@ extension LinkedListBuffer: Collection {
         }()
         return Index(node: next, offset: offsetPlus1)
     }
-    
+
     @usableFromInline
     func isValid(indexOffset: Int) -> Bool {
         0..<count ~= indexOffset
@@ -143,7 +147,7 @@ extension LinkedListBuffer {
     func removeFirst() -> Element {
         popFirst()!
     }
-    
+
     @usableFromInline
     func popFirst() -> Element? {
         guard let first = head else {
@@ -199,10 +203,8 @@ extension LinkedListBuffer: Equatable where Element: Equatable {
     static func == (lhs: LinkedListBuffer<Element, Node>, rhs: LinkedListBuffer<Element, Node>) -> Bool {
         guard lhs !== rhs else { return true }
         guard lhs.count == rhs.count else { return false }
-        for (lhsValue, rhsValue) in zip(lhs, rhs) {
-            if lhsValue != rhsValue {
-                return false
-            }
+        for (lhsValue, rhsValue) in zip(lhs, rhs) where lhsValue != rhsValue {
+            return false
         }
         return true
     }
@@ -247,6 +249,5 @@ extension LinkedListBuffer: Decodable where Element: Decodable {
             tail = previous
             previous = previous.pointee.next
         }
-        
     }
 }

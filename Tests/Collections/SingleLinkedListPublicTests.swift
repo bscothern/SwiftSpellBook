@@ -10,7 +10,6 @@ import ProtocolTests
 import SwiftCollectionsSpellBook
 import XCTest
 
-
 final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
     typealias List<T> = SingleLinkedList<T>
     typealias CollectionType = List<Int>
@@ -19,7 +18,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
     func testRunCollectionTests() throws {
         try runCollectionTests()
     }
-    
+
     func protocolTestSuiteEmptyCollection() -> CollectionType? {
         CollectionType()
     }
@@ -33,7 +32,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         XCTAssert(list.isEmpty)
         XCTAssertEqual(list.startIndex, list.endIndex)
     }
-    
+
     func testAppendMany() {
         var list = List<Int>()
         let count = 100_000
@@ -57,19 +56,19 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             XCTAssertEqual($0, $1)
         }
     }
-    
+
     func testListReversed() {
         var list = List<Int>()
         let count = 10
         for i in 0..<count {
             list.prepend(i)
         }
-        
+
         zip(list.reversed(), 0..<count).forEach {
             XCTAssertEqual($0, $1)
         }
     }
-    
+
     func testFullSlice() {
         var list = List<Int>()
         let count = 10
@@ -126,7 +125,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             XCTAssertEqual($0, $1)
         }
     }
-    
+
     func testSlice5() {
         var list = List<Int>()
         let count = 10
@@ -137,7 +136,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             XCTAssertEqual($0, $1)
         }
     }
-    
+
     func testIndexStartingWithOffset() {
         var list = List<Int>()
         let count = 10
@@ -147,25 +146,25 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         let index: List<Int>.Index = 3
         XCTAssertEqual(list[index], 3)
     }
-    
+
     func testEqual() {
         let list1: List<Int> = [1, 2, 3]
         let list2: List<Int> = [1, 2, 3]
-        
+
         XCTAssertEqual(list1, list2)
     }
-    
+
     func testNotEqual() {
         let list1: List<Int> = [1, 2, 3]
         let list2: List<Int> = [1, 3, 1]
-        
+
         XCTAssertNotEqual(list1, list2)
     }
-    
+
     func testIdentityEqual() {
         let list1: List<Int> = [1, 2, 3]
         let list2 = list1
-        
+
         XCTAssertEqual(list1, list2)
     }
 }

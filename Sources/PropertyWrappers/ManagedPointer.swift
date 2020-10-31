@@ -6,38 +6,66 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+/// A property wrapper where the `WrappedValue` is stored in a pointer that is cleaned up when it goes out of scope.
+///
+/// The underlying pointer is deinitalized when the final copy of this struct goes out of scope.
 @propertyWrapper
 public struct ManagedPointer<WrappedValue> {
     @inlinable
     public var wrappedValue: WrappedValue {
-        get { _wrappedValue.pointee }
-        set { _wrappedValue.pointee = newValue }
-        _modify { yield &_wrappedValue.pointee }
+        get { pointer.pointee }
+        set { pointer.pointee = newValue }
+        _modify { yield &pointer.pointee }
     }
 
     @inlinable
-    public var projectedValue: UnsafeMutablePointer<WrappedValue> {
-        get { _wrappedValue }
-        set { _wrappedValue = newValue }
-        _modify { yield &_wrappedValue }
-    }
+    public var projectedValue: Self { self }
 
-    @usableFromInline
     @OnDeinit(do: { pointer in
         pointer.deinitialize(count: 1)
         pointer.deallocate()
     })
-    var _wrappedValue: UnsafeMutablePointer<WrappedValue> = .allocate(capacity: 1)
-    
+    public var pointer: UnsafeMutablePointer<WrappedValue> = .allocate(capacity: 1)
+
+    /// Creates a `@ManagedPointer`.
+    ///
+    /// - Parameter wrappedValue: The value used initialize the underlying pointer which has its `pointee` as the `WrappedValue`.
     @inlinable
     public init(wrappedValue: WrappedValue) {
-        _wrappedValue.initialize(to: wrappedValue)
+        pointer.initialize(to: wrappedValue)
+    }
+
+    /// Creates a copy of a `@ManagedPointer` instance using a closure to copy the value.
+    ///
+    /// - Parameters:
+    ///   - original: The original `@ManagedPointer` to create a copy of.
+    ///   - valueCopyFunction: The function that creates a copy of `WrappedValue`.
+    ///     If `WrappedValue` is a class type then it **must** create a new instance such that a `!==` will return `true` between `originalValuePointer.pointee` and the returned value.
+    ///   - originalValuePointer: A pointer to the value contained in `original`.
+    ///     This instance should not be mutated as a copy is created of it.
+    @inlinable
+    public init(copy original: Self, with valueCopyFunction: (_ originalValuePointer: UnsafePointer<WrappedValue>) -> WrappedValue) {
+        let copy = valueCopyFunction(.init(original.pointer))
+        let copyObject = copy as AnyObject
+        let pointerObject = original.pointer.pointee as AnyObject
+        precondition(copyObject !== pointerObject, "\(#function)'s valueCopyFunction did not return a different instance of WrappedValue (\(WrappedValue.self) which is required when creating a copy.")
+        self = .init(wrappedValue: copy)
     }
 }
 
-@propertyWrapper
-public final class ManagedPointer2<WrappedValue>: ManagedBuffer<Void, WrappedValue> {
-    public var wrappedValue: WrappedValue {
-        fatalError()
+extension ManagedPointer where WrappedValue: Encodable {
+    @inlinable
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(wrappedValue)
+    }
+}
+
+extension ManagedPointer where WrappedValue: Decodable {
+    @inlinable
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode(WrappedValue.self)
+        self = .init(wrappedValue: value)
     }
 }

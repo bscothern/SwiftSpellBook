@@ -14,7 +14,7 @@ struct SingleLinkedListNode<Element>: LinkedListNode {
 
     @usableFromInline
     var next: UnsafeMutablePointer<Self>?
-    
+
     @usableFromInline
     init(element: Element) {
         self.init(element: element, next: nil)

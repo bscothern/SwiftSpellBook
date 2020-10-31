@@ -7,3 +7,5 @@
 //
 
 @_exported import SwiftCollectionsSpellBook
+@_exported import SwiftPropertyWrappersSpellBook
+@_exported import SwiftResultBuildersSpellBook

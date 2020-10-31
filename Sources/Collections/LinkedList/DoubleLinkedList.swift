@@ -9,15 +9,15 @@
 public struct DoubleLinkedList<Element>: _LinkedListProtocol {
     @usableFromInline
     typealias Node = DoubleLinkedListNode<Element>
-    
+
     @usableFromInline
     var buffer: Buffer
-    
+
     @inlinable
     public init() {
         buffer = .init()
     }
-    
+
     @inlinable
     public mutating func append(_ element: Element) {
         createCopyIfNeeded()
@@ -31,7 +31,7 @@ public struct DoubleLinkedList<Element>: _LinkedListProtocol {
         tail.pointee.initializeNext(to: .init(element: element))
         buffer.tail = tail.pointee.next
     }
-    
+
     @inlinable
     public mutating func prepend(_ element: Element) {
         createCopyIfNeeded()
@@ -86,7 +86,6 @@ public struct DoubleLinkedList<Element>: _LinkedListProtocol {
         }
         return (currentIndex, nextIndex)
     }
-
 }
 
 extension DoubleLinkedList: Collection {

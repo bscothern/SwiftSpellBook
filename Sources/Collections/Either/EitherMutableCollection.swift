@@ -11,6 +11,8 @@ public typealias EitherMutableCollection<Left, Right> = Either<Left, Right> wher
 extension EitherMutableCollection: MutableCollection {
     @inlinable
     public subscript(position: Index) -> Element {
+        // swiftlint doesn't recognize _modify as an accessor
+        //swiftlint:disable:next implicit_getter
         get {
             switch (value, position.value) {
             case let (.left(value), .left(position)):
@@ -25,11 +27,11 @@ extension EitherMutableCollection: MutableCollection {
             // This accessor does some extra explicit memory management to help avoid COW overhead.
             // If you track the reference counts they should go to +1 then back down to +0 right away.
             // Of course the compiler can choose to place the memory management wherever it wants to so there still might be COW overhead in some cases...
-            
+
             var left: Left?
             var right: Right?
 
-            switch (value) {
+            switch value {
             case let .left(value):
                 left = value
             case let .right(value):

@@ -9,15 +9,15 @@
 public struct SingleLinkedList<Element>: _LinkedListProtocol {
     @usableFromInline
     typealias Node = SingleLinkedListNode<Element>
-    
+
     @usableFromInline
     var buffer: Buffer
-    
+
     @inlinable
     public init() {
         buffer = .init()
     }
-    
+
     @inlinable
     public mutating func append(_ element: Element) {
         createCopyIfNeeded()
@@ -31,7 +31,7 @@ public struct SingleLinkedList<Element>: _LinkedListProtocol {
         tail.pointee.initializeNext(to: .init(element: element))
         buffer.tail = tail.pointee.next
     }
-    
+
     @inlinable
     public mutating func prepend(_ element: Element) {
         createCopyIfNeeded()
@@ -85,7 +85,6 @@ public struct SingleLinkedList<Element>: _LinkedListProtocol {
         }
         return (currentIndex, nextIndex)
     }
-
 }
 
 extension SingleLinkedList: Collection {

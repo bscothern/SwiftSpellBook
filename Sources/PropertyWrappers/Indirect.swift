@@ -6,6 +6,9 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+/// A property wrapper that adds a layer of indirection to its WrappedValue when needed.
+///
+/// This is particularly useful when you have a struct type that wants to nest another value of itself.
 @propertyWrapper
 public struct Indirect<WrappedValue> {
     @usableFromInline
@@ -15,7 +18,7 @@ public struct Indirect<WrappedValue> {
 
     @usableFromInline
     var value: _Indirect
-    
+
     @inlinable
     public var wrappedValue: WrappedValue {
         switch value {
@@ -23,7 +26,13 @@ public struct Indirect<WrappedValue> {
             return value
         }
     }
-    
+
+    @inlinable
+    public var projectedValue: Self { self }
+
+    /// Creates an `@Indirect`.
+    ///
+    /// - Parameter wrappedValue: The initail value of `wrappedValue`.
     @inlinable
     public init(wrappedValue: WrappedValue) {
         self.value = .value(wrappedValue)

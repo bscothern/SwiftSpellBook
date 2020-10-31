@@ -6,7 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-public final class SafeManagedBuffer<HeaderValue, Element>:  ManagedBuffer<SafeManagedBuffer<HeaderValue, Element>.Header, Element>, _SafeManagedBuffer {
+public final class SafeManagedBuffer<HeaderValue, Element>: ManagedBuffer<SafeManagedBuffer<HeaderValue, Element>.Header, Element>, _SafeManagedBuffer {
     @dynamicMemberLookup
     public struct Header: ManagedBufferHeader {
         public let minimumCapacity: Int
@@ -25,7 +25,7 @@ public final class SafeManagedBuffer<HeaderValue, Element>:  ManagedBuffer<SafeM
         public subscript<T>(dynamicMember dynamicMember: KeyPath<HeaderValue, T>) -> T {
             value[keyPath: dynamicMember]
         }
-        
+
         @inlinable
         public subscript<T>(dynamicMember dynamicMember: WritableKeyPath<HeaderValue, T>) -> T {
             get { value[keyPath: dynamicMember] }
@@ -47,22 +47,21 @@ public final class SafeManagedBuffer<HeaderValue, Element>:  ManagedBuffer<SafeM
             case .fullCapacity:
                 elements
                     .deinitialize(count: capacity)
-            case let .offsets(offsets):
+            case let .chunks(chunks):
                 var previousOffsetDistance: Int = 0
-                for offset in offsets.values {
-                    switch offset.offsetType {
+                for chunk in chunks.values {
+                    switch chunk.offset {
                     case let .fromStart(offsetDistance):
                         elements
                             .advanced(by: offsetDistance)
-                            .deinitialize(count: offset.count)
-                        previousOffsetDistance = offsetDistance + offset.count
+                            .deinitialize(count: chunk.count)
+                        previousOffsetDistance = offsetDistance + chunk.count
                     case let .fromLast(offsetDistance):
                         elements
                             .advanced(by: previousOffsetDistance)
                             .advanced(by: offsetDistance)
-                            .deinitialize(count: offset.count)
-                        previousOffsetDistance += offsetDistance + offset.count
-                        break
+                            .deinitialize(count: chunk.count)
+                        previousOffsetDistance += offsetDistance + chunk.count
                     }
                 }
             }
@@ -74,27 +73,27 @@ public enum SafeManagedBufferDeinitStrategy {
     case count(fromOffset: Int = 0)
     case minimumCapacity
     case fullCapacity
-    case offsets(DeinitOffsets = .init())
-    
-    public final class DeinitOffsets {
+    case chunks(DeinitChunks = .init())
+
+    public final class DeinitChunks {
         public struct Value {
-            public let offsetType: DeinitOffsetType
+            public let offset: Offset
             public let count: Int
-            
+
             @inlinable
-            public init(_ offsetType: DeinitOffsetType, count: Int) {
-                self.offsetType = offsetType
+            public init(offset: Offset, count: Int) {
+                self.offset = offset
                 self.count = count
             }
         }
-        
-        public enum DeinitOffsetType {
+
+        public enum Offset {
             case fromStart(offset: Int)
             case fromLast(offset: Int)
         }
-        
+
         public var values: [Value] = []
-        
+
         @inlinable
         public init() {}
     }
@@ -113,14 +112,14 @@ protocol _SafeManagedBuffer where Header.HeaderValue == HeaderValue {
     static func create(minimumCapacity: Int, makingHeaderWith factory: (ManagedBuffer<Header, Element>) throws -> Header) rethrows -> ManagedBuffer<Header, Element>
 }
 
-extension _SafeManagedBuffer  {
+extension _SafeManagedBuffer {
     @inlinable
     public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(), makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue) {
         self = Self.create(minimumCapacity: minimumCapacity, makingHeaderWith: { buffer in
             return .init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, value: makingHeaderWith(buffer))
         }) as! Self
     }
-    
+
     @inlinable
     public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count()) where HeaderValue == Void {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, makingHeaderWith: { _ in })

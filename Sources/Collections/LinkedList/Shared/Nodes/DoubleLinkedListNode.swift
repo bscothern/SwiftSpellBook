@@ -33,7 +33,7 @@ struct DoubleLinkedListNode<Element>: _DoubleLinkedListNode {
     /// A pointer to the previous node in the list.
     @usableFromInline
     var previous: UnsafeMutablePointer<Self>?
-    
+
     @usableFromInline
     init(element: Element) {
         self.init(element: element, next: nil, previous: nil)
@@ -68,7 +68,7 @@ struct DoubleLinkedListNode<Element>: _DoubleLinkedListNode {
         self.previous = .allocate(capacity: 1)
         self.previous.unsafelyUnwrapped.initialize(to: previous)
     }
-    
+
     @usableFromInline
     func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>) {
         let head = UnsafeMutablePointer<Self>.allocate(capacity: 1)

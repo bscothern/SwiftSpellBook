@@ -6,17 +6,17 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-import XCTest
 @testable import SwiftCollectionsSpellBook
+import XCTest
 
 final class SingleLinkedListInternalTests: XCTestCase {
     typealias List<T> = SingleLinkedList<T>
-    
+
     func testCopy() {
         let list1: List<Int> = [1, 2, 3]
         var list2 = list1
         list2.append(4)
-        
+
         zip(list1, list2).forEach {
             XCTAssertEqual($0, $1)
         }
@@ -28,7 +28,7 @@ final class SingleLinkedListInternalTests: XCTestCase {
     func testCopyEmpty() {
         let list1 = List<Int>()
         var list2 = list1
-        
+
         list2.append(1)
         XCTAssertNotEqual(list1, list2)
         XCTAssert(list1.isEmpty)

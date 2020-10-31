@@ -6,9 +6,14 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+/// A result builder that collects instances into an array.
 @_functionBuilder
 public enum ArrayBuilder<Element> {
-    public static func buildBlock(_ elements: Element...) -> [Element] {
-        elements
+    public static func buildBlock(_ components: Element) -> [Element] {
+        [components]
+    }
+
+    public static func buildBlock(_ components: Element...) -> [Element] {
+        components
     }
 }

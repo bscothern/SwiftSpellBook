@@ -10,7 +10,7 @@ public typealias EitherCollection<Left, Right> = Either<Left, Right> where Left:
 
 extension EitherCollection: Collection {
     public typealias Index = Either<Left.Index, Right.Index>
-    
+
     @inlinable
     public var startIndex: Index {
         switch value {
@@ -30,7 +30,7 @@ extension EitherCollection: Collection {
             return .right(value.endIndex)
         }
     }
-    
+
     @inlinable
     public subscript(position: Either<Left.Index, Right.Index>) -> Element {
         switch (value, position.value) {
@@ -42,7 +42,7 @@ extension EitherCollection: Collection {
             fatalError("EitherCollection.\(#function) used with other index type")
         }
     }
-    
+
     @inlinable
     public func index(after i: Either<Left.Index, Right.Index>) -> Index {
         switch (value, i.value) {
@@ -54,7 +54,7 @@ extension EitherCollection: Collection {
             fatalError("EitherCollection:\(#function) used with other index type")
         }
     }
-    
+
     @inlinable
     public func index(_ i: Index, offsetBy distance: Int) -> Index {
         switch (value, i.value) {
@@ -66,7 +66,7 @@ extension EitherCollection: Collection {
             fatalError("EitherCollection:\(#function) used with other index type")
         }
     }
-    
+
     @inlinable
     public func index(_ i: Index, offsetBy distance: Int, limitedBy limit: Index) -> Index? {
         switch (value, i.value, limit.value) {
@@ -78,7 +78,7 @@ extension EitherCollection: Collection {
             fatalError("EitherCollection:\(#function) used with other index type")
         }
     }
-    
+
     @inlinable
     public func distance(from start: Index, to end: Index) -> Int {
         switch (value, start.value, end.value) {
