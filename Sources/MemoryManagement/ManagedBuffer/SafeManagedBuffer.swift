@@ -8,14 +8,14 @@
 
 public final class SafeManagedBuffer<HeaderValue, Element>: ManagedBuffer<SafeManagedBuffer<HeaderValue, Element>.Header, Element>, _SafeManagedBuffer {
     @dynamicMemberLookup
-    public struct Header: ManagedBufferHeader {
+    public struct Header: _ManagedBufferHeader {
         public let minimumCapacity: Int
         public let deinitStrategy: SafeManagedBufferDeinitStrategy
         public var count: Int = 0
         public var value: HeaderValue
 
-        @usableFromInline
-        init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy, value: HeaderValue) {
+        @inlinable
+        public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy, value: HeaderValue) {
             self.minimumCapacity = minimumCapacity
             self.deinitStrategy = deinitStrategy
             self.value = value
@@ -99,13 +99,13 @@ public enum SafeManagedBufferDeinitStrategy {
     }
 }
 
-protocol ManagedBufferHeader {
+public protocol _ManagedBufferHeader {
     associatedtype HeaderValue
     init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy, value: HeaderValue)
 }
 
-protocol _SafeManagedBuffer where Header.HeaderValue == HeaderValue {
-    associatedtype Header: ManagedBufferHeader
+public protocol _SafeManagedBuffer where Header.HeaderValue == HeaderValue {
+    associatedtype Header: _ManagedBufferHeader
     associatedtype HeaderValue
     associatedtype Element
     init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy, makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue)

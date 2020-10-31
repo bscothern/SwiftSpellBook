@@ -43,7 +43,9 @@ let package = Package(
         ),
         .target(
             name: "SwiftCollectionsSpellBook",
-            dependencies: [],
+            dependencies: [
+                .target(name: "SwiftMemoryManagementSpellBook"),
+            ],
             path: "Sources/Collections"
         ),
         .testTarget(
