@@ -6,9 +6,24 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+/// This is a hack around a compiler warning regression introduced in 5.3.
+///
+/// The compiler warning this works around is this:
+/// ```
+/// Redundant conformance constraint 'Node': 'LinkedListNode'
+/// ```
+/// which occurs when using any form of this:
+/// ```
+/// extension LinkedListBuffer where Node == DoubleLinkedListNode<Element>
+/// ```
+@usableFromInline
+protocol _DoubleLinkedListNode: LinkedListNode {
+    var previous: UnsafeMutablePointer<Self>? { get }
+}
+
 /// The `LinkedListNode` type used by `DoubleLinkedList`
 @usableFromInline
-struct DoubleLinkedListNode<Element>: LinkedListNode {
+struct DoubleLinkedListNode<Element>: _DoubleLinkedListNode {
     @usableFromInline
     var element: Element
 

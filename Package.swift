@@ -13,6 +13,10 @@ let package = Package(
         .library(
             name: "SwiftCollectionsSpellBook",
             targets: ["SwiftCollectionsSpellBook"]
+        ),
+        .library(
+            name: "SwiftPropertyWrappersSpellBook",
+            targets: ["SwiftPropertyWrappersSpellBook"]
         )
     ],
     dependencies: [
@@ -38,6 +42,30 @@ let package = Package(
                 .product(name: "ProtocolTests", package: "ProtocolTests"),
             ],
             path: "Tests/Collections"
-        )
+        ),
+        .target(
+            name: "SwiftPropertyWrappersSpellBook",
+            dependencies: [],
+            path: "Sources/PropertyWrappers"
+        ),
+        .testTarget(
+            name: "SwiftPropertyWrappersSpellBookTests",
+            dependencies: [
+                .target(name: "SwiftPropertyWrappersSpellBook"),
+            ],
+            path: "Tests/PropertyWrappers"
+        ),
+        .target(
+            name: "SwiftResultBuildersSpellBook",
+            dependencies: [],
+            path: "Sources/ResultBuilders"
+        ),
+        .testTarget(
+            name: "SwiftResultBuildersSpellBookTests",
+            dependencies: [
+                .target(name: "SwiftResultBuildersSpellBook"),
+            ],
+            path: "Tests/ResultBuilders"
+        ),
     ]
 )

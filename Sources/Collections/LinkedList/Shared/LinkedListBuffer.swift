@@ -158,7 +158,7 @@ extension LinkedListBuffer {
     }
 }
 
-extension LinkedListBuffer: BidirectionalCollection where Node == DoubleLinkedListNode<Element> {
+extension LinkedListBuffer: BidirectionalCollection where Node: _DoubleLinkedListNode {
     @usableFromInline
     func popLast() -> Element? {
         guard let last = tail else {
