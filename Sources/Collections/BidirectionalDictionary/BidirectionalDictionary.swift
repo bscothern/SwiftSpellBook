@@ -183,6 +183,22 @@ public struct BidirectionalDictionary<T, U>: Collection where T: Hashable, U: Ha
             element.pointee.uToT.removeAll(keepingCapacity: keepCapacity)
         }
     }
+    
+//    @inlinable
+//    public mutating func merge(_ dictionary: [T: U], uniquingValuesWith: (_ current: (t: T, u: U), _ other: (t: T, u: U)) -> (t: T, u: U)) {
+//        makeBufferUniqueIfNeeded()
+//        buffer.withUnsafeMutablePointerToElements { element in
+//            dictionary.forEach { pair in]
+//                var toInsert = (t: pair.key, u: pair.value)
+//                if element.pointee.tToU[pair.key] != nil {
+//                    
+//                }
+//                if element.pointee.uToT[pair.value] != nil {
+//                    
+//                }
+//            }
+//        }
+//    }
 
     @usableFromInline
     mutating func makeBufferUniqueIfNeeded() {
