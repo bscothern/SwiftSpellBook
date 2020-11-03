@@ -28,19 +28,5 @@ public struct AlwaysEqual<WrappedValue>: Equatable {
     }
 }
 
-extension AlwaysEqual where WrappedValue: Encodable {
-    @inlinable
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(wrappedValue)
-    }
-}
-
-extension AlwaysEqual where WrappedValue: Decodable {
-    @inlinable
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let value = try container.decode(WrappedValue.self)
-        self = .init(wrappedValue: value)
-    }
-}
+extension AlwaysEqual: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
+extension AlwaysEqual: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}

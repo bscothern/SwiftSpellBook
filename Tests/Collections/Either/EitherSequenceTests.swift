@@ -2,7 +2,7 @@
 //  EitherSequenceTests.swift
 //  SwiftSpellBookTests
 //
-//  Created by Braden Scothern on 10/30/20.
+//  Created by Braden Scothern on 11/2/20.
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 

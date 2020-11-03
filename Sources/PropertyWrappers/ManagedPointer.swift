@@ -53,19 +53,5 @@ public struct ManagedPointer<WrappedValue> {
     }
 }
 
-extension ManagedPointer where WrappedValue: Encodable {
-    @inlinable
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(wrappedValue)
-    }
-}
-
-extension ManagedPointer where WrappedValue: Decodable {
-    @inlinable
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let value = try container.decode(WrappedValue.self)
-        self = .init(wrappedValue: value)
-    }
-}
+extension ManagedPointer: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
+extension ManagedPointer: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}
