@@ -13,7 +13,7 @@
 public struct Indirect<WrappedValue> {
     @usableFromInline
     indirect enum _Indirect {
-        case value(WrappedValue, Self? = nil)
+        case value(WrappedValue)
     }
 
     @usableFromInline
