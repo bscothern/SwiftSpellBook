@@ -33,3 +33,7 @@ public final class OnDeinit<WrappedValue> {
         deinitFunction(wrappedValue)
     }
 }
+
+extension OnDeinit: PassThroughEquatablePropetyWrapper where WrappedValue: Equatable {}
+extension OnDeinit: PassThroughHashablePropetyWrapper where WrappedValue: Hashable {}
+extension OnDeinit: PassThroughComparablePropetyWrapper where WrappedValue: Comparable {}

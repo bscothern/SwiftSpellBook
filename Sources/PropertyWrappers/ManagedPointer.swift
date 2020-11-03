@@ -53,5 +53,8 @@ public struct ManagedPointer<WrappedValue> {
     }
 }
 
+extension ManagedPointer: PassThroughEquatablePropetyWrapper where WrappedValue: Equatable {}
+extension ManagedPointer: PassThroughHashablePropetyWrapper where WrappedValue: Hashable {}
+extension ManagedPointer: PassThroughComparablePropetyWrapper where WrappedValue: Comparable {}
 extension ManagedPointer: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
 extension ManagedPointer: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}

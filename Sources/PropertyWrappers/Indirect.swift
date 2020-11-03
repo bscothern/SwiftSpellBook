@@ -39,10 +39,8 @@ public struct Indirect<WrappedValue> {
     }
 }
 
-extension Indirect: Equatable where WrappedValue: Equatable {}
-extension Indirect._Indirect: Equatable where WrappedValue: Equatable {}
-extension Indirect: Hashable where WrappedValue: Hashable {}
-extension Indirect._Indirect: Hashable where WrappedValue: Hashable {}
-
+extension Indirect: PassThroughEquatablePropetyWrapper where WrappedValue: Equatable {}
+extension Indirect: PassThroughHashablePropetyWrapper where WrappedValue: Hashable {}
+extension Indirect: PassThroughComparablePropetyWrapper where WrappedValue: Comparable {}
 extension Indirect: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
 extension Indirect: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}
