@@ -70,7 +70,9 @@ let package = Package(
         ),
         .target(
             name: "SwiftPropertyWrappersSpellBook",
-            dependencies: [],
+            dependencies: [
+                .target(name: "SwiftMemoryManagementSpellBook"),
+            ],
             path: "Sources/PropertyWrappers"
         ),
         .testTarget(
