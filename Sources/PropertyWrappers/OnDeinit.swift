@@ -22,7 +22,7 @@ public struct OnDeinit<WrappedValue> {
     ///
     /// - Parameter wrappedValue: The final value contained in `wrappedValue` when `deinit` is triggered.
     public typealias DeinitAction = (_ wrappedValue: WrappedValue) -> Void
-    
+
     /// The box type that enables `OnDeinit` to trigger its deinit action.
     ///
     /// It acts as the storage for all of the instance.
@@ -30,7 +30,7 @@ public struct OnDeinit<WrappedValue> {
     final class Box {
         @usableFromInline
         var wrappedValue: WrappedValue
-        
+
         @usableFromInline
         var deinitAction: DeinitAction
 
@@ -39,7 +39,7 @@ public struct OnDeinit<WrappedValue> {
             self.wrappedValue = wrappedValue
             self.deinitAction = deinitAction
         }
-        
+
         @usableFromInline
         deinit {
             deinitAction(wrappedValue)
@@ -73,7 +73,7 @@ public struct OnDeinit<WrappedValue> {
     public func copy() -> Self {
         .init(wrappedValue: box.wrappedValue, do: box.deinitAction)
     }
-    
+
     /// If the backing memory is referenced by another instance than this instance then it copies its `wrappedValue` and `DeinitAction` into new backing storage.
     @inlinable
     public mutating func makeUnique() {

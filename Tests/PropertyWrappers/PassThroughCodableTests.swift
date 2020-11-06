@@ -17,7 +17,7 @@ final class PassThroughCodableTests: XCTestCase {
         let string = String(data: data, encoding: .utf8)
         XCTAssertEqual(string, "42")
     }
-    
+
     func testDecodable() throws {
         let data = "42".data(using: .utf8)!
         let value = try JSONDecoder().decode(AlwaysEqual<Int>.self, from: data)

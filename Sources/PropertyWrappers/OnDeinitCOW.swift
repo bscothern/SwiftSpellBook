@@ -19,7 +19,7 @@ public struct OnDeinitCOW<WrappedValue> {
     ///
     /// - Parameter wrappedValue: The final value contained in `wrappedValue` when `deinit` is triggered.
     public typealias DeinitAction = OnDeinit<WrappedValue>.DeinitAction
-    
+
     @inlinable
     @_transparent
     public var wrappedValue: WrappedValue {

@@ -124,13 +124,13 @@ extension _SafeManagedBuffer {
     public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0)) where HeaderValue == Void {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, makingHeaderWith: { _ in })
     }
-    
+
     @inlinable
     public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0), makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue, thenFinishInit finishInit: (Self) -> Void) {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, makingHeaderWith: makingHeaderWith)
         finishInit(self)
     }
-    
+
     @inlinable
     public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0), thenFinishInit finishInit: (Self) -> Void)  where HeaderValue == Void {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, makingHeaderWith: { _ in }, thenFinishInit: finishInit)

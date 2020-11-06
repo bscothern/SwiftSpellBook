@@ -16,7 +16,7 @@ final class OnDeinitTests: XCTestCase {
         measure(metrics: [XCTStorageMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
             total = 0
             for i in 0..<10_000 {
-                var value = OnDeinit<Int>(wrappedValue: i) { value in
+                var value = OnDeinit<Int>(wrappedValue: i) { _ in
                     total += 1
                 }
                 XCTAssertEqual(value.wrappedValue, i)
