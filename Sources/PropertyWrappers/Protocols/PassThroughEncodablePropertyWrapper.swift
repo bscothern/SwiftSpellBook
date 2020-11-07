@@ -10,7 +10,7 @@
 ///
 /// When used it will be as if the property wrapper doesn't exist when a value is encoded.
 ///
-/// This type exists for convienece in conforming to both the requirements of the synthesis and `Encodable` all at once.
+/// This type exists for convenience in conforming to both the requirements of the synthesis and `Encodable` all at once.
 /// All requirements are defined on `_PassThroughEncodablePropertyWrapper`.
 public typealias PassThroughEncodablePropertyWrapper = _PassThroughEncodablePropertyWrapper & Encodable
 

@@ -6,7 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-/// A property wrapper that always treats the underlyting value as never equal.
+/// A property wrapper that always treats the underlying value as never equal.
 @propertyWrapper
 public struct NeverEqual<WrappedValue>: Equatable {
     public var wrappedValue: WrappedValue
@@ -16,7 +16,7 @@ public struct NeverEqual<WrappedValue>: Equatable {
 
     /// Creates a `NeverEqual`.
     ///
-    /// - Parameter wrappedValue: The initail value of `wrappedValue`.
+    /// - Parameter wrappedValue: The initial value of `wrappedValue`.
     @inlinable
     public init(wrappedValue: WrappedValue) {
         self.wrappedValue = wrappedValue

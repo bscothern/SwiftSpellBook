@@ -1,5 +1,5 @@
 //
-//  PassThroughComparablePropetyWrapper.swift
+//  PassThroughComparablePropertyWrapper.swift
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 11/2/20.
@@ -8,19 +8,19 @@
 
 /// A protocol that will have pass through wrappedValue for comparison.
 ///
-/// This type exists for convienece in conforming to both the requirements of the synthesis and `Comparable` all at once.
-/// All requirements are defined on `_PassThroughComparablePropetyWrapper`.
-public typealias PassThroughComparablePropetyWrapper = _PassThroughComparablePropetyWrapper & Comparable
+/// This type exists for convenience in conforming to both the requirements of the synthesis and `Comparable` all at once.
+/// All requirements are defined on `_PassThroughComparablePropertyWrapper`.
+public typealias PassThroughComparablePropertyWrapper = _PassThroughComparablePropertyWrapper & Comparable
 
-/// The protocol that backs `PassThroughComparablePropetyWrapper` behavior.
+/// The protocol that backs `PassThroughComparablePropertyWrapper` behavior.
 ///
-/// You shouldn't normally conform to this protocol directly but use `PassThroughComparablePropetyWrapper`.
-public protocol _PassThroughComparablePropetyWrapper {
+/// You shouldn't normally conform to this protocol directly but use `PassThroughComparablePropertyWrapper`.
+public protocol _PassThroughComparablePropertyWrapper {
     associatedtype WrappedValue: Comparable
     var wrappedValue: WrappedValue { get }
 }
 
-extension _PassThroughComparablePropetyWrapper where Self: Comparable {
+extension _PassThroughComparablePropertyWrapper where Self: Comparable {
     @inlinable
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.wrappedValue < rhs.wrappedValue

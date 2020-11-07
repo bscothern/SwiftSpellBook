@@ -10,7 +10,7 @@
 ///
 /// When used it will be as if the property wrapper doesn't exist when a value is decoded.
 ///
-/// This type exists for convienece in conforming to both the requirements of the synthesis and `Decodable` all at once.
+/// This type exists for convenience in conforming to both the requirements of the synthesis and `Decodable` all at once.
 /// All requirements are defined on `_PassThroughDecodablePropertyWrapper`.
 public typealias PassThroughDecodablePropertyWrapper = _PassThroughDecodablePropertyWrapper & Decodable
 

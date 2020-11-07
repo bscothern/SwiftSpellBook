@@ -6,7 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-/// A property wrapper that always treats the underlyting value as equal.
+/// A property wrapper that always treats the underlying value as equal.
 @propertyWrapper
 public struct AlwaysEqual<WrappedValue>: Equatable {
     public var wrappedValue: WrappedValue
@@ -16,7 +16,7 @@ public struct AlwaysEqual<WrappedValue>: Equatable {
 
     /// Creates a `@AlwaysEqual`.
     ///
-    /// - Parameter wrappedValue: The initail value of `wrappedValue`.
+    /// - Parameter wrappedValue: The initial value of `wrappedValue`.
     @inlinable
     public init(wrappedValue: WrappedValue) {
         self.wrappedValue = wrappedValue

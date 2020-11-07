@@ -32,15 +32,15 @@ public struct Indirect<WrappedValue> {
 
     /// Creates an `@Indirect`.
     ///
-    /// - Parameter wrappedValue: The initail value of `wrappedValue`.
+    /// - Parameter wrappedValue: The initial value of `wrappedValue`.
     @inlinable
     public init(wrappedValue: WrappedValue) {
         self.value = .value(wrappedValue)
     }
 }
 
-extension Indirect: PassThroughEquatablePropetyWrapper where WrappedValue: Equatable {}
-extension Indirect: PassThroughHashablePropetyWrapper where WrappedValue: Hashable {}
-extension Indirect: PassThroughComparablePropetyWrapper where WrappedValue: Comparable {}
+extension Indirect: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
+extension Indirect: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
+extension Indirect: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
 extension Indirect: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
 extension Indirect: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}

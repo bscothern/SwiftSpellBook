@@ -12,7 +12,7 @@
 ///
 /// - Important: This is backed by a class in order to trigger the `DeinitAction`.
 ///     This means that if you pass an instance around you will be pointing to the same backing instance.
-///     This is adventagous because this type is generally most helpful when managing memory.
+///     This is advantageous because this type is generally most helpful when managing memory.
 ///     If you need to ensure a copy is unique you can call `makeUnique()` or if you want to create a copy you can use `copy()`.
 ///     See those functions for more information.
 ///     You can also use `@OnDeinitCOW` if you want copy on write behavior.
@@ -61,7 +61,7 @@ public struct OnDeinit<WrappedValue> {
     ///
     /// - Parameters:
     ///   - wrappedValue: The initial value of the `wrappedValue` property.
-    ///   - deinitAction: The function that should be called when this property wrapper goes out of scope.
+    ///   - deinitAction: The underlying function that should be called when this property wrapper goes out of scope.
     @inlinable
     @_transparent
     public init(wrappedValue: WrappedValue, do deinitAction: @escaping DeinitAction) {
@@ -75,6 +75,8 @@ public struct OnDeinit<WrappedValue> {
     }
 
     /// If the backing memory is referenced by another instance than this instance then it copies its `wrappedValue` and `DeinitAction` into new backing storage.
+    ///
+    /// This is a no-op if the backing class instance is already uniquely owned by this `OnDeinit` instance.
     @inlinable
     public mutating func makeUnique() {
         guard !isKnownUniquelyReferenced(&box) else { return }
@@ -82,9 +84,9 @@ public struct OnDeinit<WrappedValue> {
     }
 }
 
-extension OnDeinit: PassThroughEquatablePropetyWrapper where WrappedValue: Equatable {}
-extension OnDeinit: PassThroughHashablePropetyWrapper where WrappedValue: Hashable {}
-extension OnDeinit: PassThroughComparablePropetyWrapper where WrappedValue: Comparable {}
+extension OnDeinit: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
+extension OnDeinit: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
+extension OnDeinit: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
 
 // This is all experimental stuff to learn more about how to work with ManagedBuffer and SafeManagedBuffer
 // It does not currently work as all accessed to wrappedValue crash...
@@ -138,7 +140,7 @@ extension _OnDeinit {
     }
 }
 
-extension OnDeinit_Buffered: PassThroughEquatablePropetyWrapper where WrappedValue: Equatable {}
-extension OnDeinit_Buffered: PassThroughHashablePropetyWrapper where WrappedValue: Hashable {}
-extension OnDeinit_Buffered: PassThroughComparablePropetyWrapper where WrappedValue: Comparable {}
+extension OnDeinit_Buffered: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
+extension OnDeinit_Buffered: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
+extension OnDeinit_Buffered: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
 #endif

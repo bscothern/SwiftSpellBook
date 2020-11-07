@@ -8,7 +8,7 @@
 
 /// A property wrapper where the `WrappedValue` is stored in a pointer that is cleaned up when it goes out of scope.
 ///
-/// The underlying pointer is deinitalized when the final copy of this struct goes out of scope.
+/// The underlying pointer is deinitialized when the final copy of this struct goes out of scope.
 @propertyWrapper
 public struct ManagedPointer<WrappedValue> {
     @inlinable
@@ -53,8 +53,8 @@ public struct ManagedPointer<WrappedValue> {
     }
 }
 
-extension ManagedPointer: PassThroughEquatablePropetyWrapper where WrappedValue: Equatable {}
-extension ManagedPointer: PassThroughHashablePropetyWrapper where WrappedValue: Hashable {}
-extension ManagedPointer: PassThroughComparablePropetyWrapper where WrappedValue: Comparable {}
+extension ManagedPointer: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
+extension ManagedPointer: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
+extension ManagedPointer: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
 extension ManagedPointer: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
 extension ManagedPointer: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}
