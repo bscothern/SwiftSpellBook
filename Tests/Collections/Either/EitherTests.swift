@@ -6,6 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+#if !os(watchOS)
 import SwiftCollectionsSpellBook
 import XCTest
 
@@ -46,18 +47,18 @@ final class EitherTests: XCTestCase {
     }
 
     func testEquatable2() {
-        var values1: [Either<Int, String>] = []
-        var values2: [Either<Int, String>] = []
+        var valuesequence2: [Either<Int, String>] = []
+        var valuesequence3: [Either<Int, String>] = []
         for i in 0..<100 {
-            values1.append(i.isMultiple(of: 2) ? .left(i) : .right("\(i)"))
-            values2.append(i.isMultiple(of: 2) ? .right("\(i)") : .left(i))
+            valuesequence2.append(i.isMultiple(of: 2) ? .left(i) : .right("\(i)"))
+            valuesequence3.append(i.isMultiple(of: 2) ? .right("\(i)") : .left(i))
         }
 
-        let set1 = Set(values1)
-        let set2 = Set(values2)
+        let set1 = Set(valuesequence2)
+        let set2 = Set(valuesequence3)
 
         XCTAssertNotEqual(set1, set2)
-        XCTAssertTrue(set1.intersection(set2).isEmpty)
+        XCTAssertTrue(set1.isDisjoint(with: set2))
         XCTAssertEqual(set1.union(set2).count, 200)
     }
 
@@ -97,3 +98,4 @@ final class EitherTests: XCTestCase {
         XCTAssertNotEqual(l, r)
     }
 }
+#endif

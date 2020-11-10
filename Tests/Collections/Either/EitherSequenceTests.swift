@@ -6,11 +6,12 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+#if !os(watchOS)
 import SwiftCollectionsSpellBook
 import XCTest
 
 final class EitherSequenceTests: XCTestCase {
-    func testEitherSequence1() {
+    func testEitherSequence2() {
         let e = Either<[Int], Set<Int>>.left([1, 2, 3, 4, 5])
 
         for values in zip(e, [1, 2, 3, 4, 5]) {
@@ -18,8 +19,9 @@ final class EitherSequenceTests: XCTestCase {
         }
     }
 
-    func testEitherSequence2() {
+    func testEitherSequence3() {
         let e = Either<[Int], Set<Int>>.right([1, 2, 3, 4, 5])
         XCTAssertEqual(Set(e), Set([1, 2, 3, 4, 5]))
     }
 }
+#endif

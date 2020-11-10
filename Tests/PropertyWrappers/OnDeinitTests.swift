@@ -6,11 +6,13 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+#if !os(watchOS)
 import Foundation
 import SwiftPropertyWrappersSpellBook
 import XCTest
 
 final class OnDeinitTests: XCTestCase {
+    @available(iOS 13.0, tvOS 13.0, *)
     func testPerformance1() {
         var total = 0
         measure(metrics: [XCTStorageMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
@@ -27,3 +29,4 @@ final class OnDeinitTests: XCTestCase {
         }
     }
 }
+#endif

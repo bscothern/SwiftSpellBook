@@ -53,18 +53,22 @@ public struct Either<Left, Right> {
         _value = .right(right)
     }
 
+    @inlinable
     public static func left(_ left: Left) -> Self {
         Self.left(left, or: Right.self)
     }
 
+    @inlinable
     public static func right(_ right: Right) -> Self {
         Self.right(right, or: Left.self)
     }
 
+    @inlinable
     public static func left(_ left: Left, or _: Right.Type) -> Self {
         Self(left, or: Right.self)
     }
 
+    @inlinable
     public static func right(_ right: Right, or _: Left.Type) -> Self {
         Self(Left.self, or: right)
     }

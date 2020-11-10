@@ -6,6 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+#if !os(watchOS)
 import ProtocolTests
 import SwiftCollectionsSpellBook
 import XCTest
@@ -168,3 +169,4 @@ final class DoubleLinkedListPublicTests: XCTestCase, CollectionTests {
         XCTAssertEqual(list1, list2)
     }
 }
+#endif

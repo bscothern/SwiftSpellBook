@@ -6,6 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+#if !os(watchOS)
 import Foundation
 import SwiftPropertyWrappersSpellBook
 import XCTest
@@ -24,3 +25,4 @@ final class PassThroughCodableTests: XCTestCase {
         XCTAssertEqual(value.wrappedValue, 42)
     }
 }
+#endif

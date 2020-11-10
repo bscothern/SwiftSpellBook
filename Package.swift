@@ -15,6 +15,10 @@ let package = Package(
             targets: ["SwiftCollectionsSpellBook"]
         ),
         .library(
+            name: "SwiftConcurrencySpellBook",
+            targets: ["SwiftConcurrencySpellBook"]
+        ),
+        .library(
             name: "SwiftMemoryManagementSpellBook",
             targets: ["SwiftMemoryManagementSpellBook"]
         ),
@@ -55,6 +59,18 @@ let package = Package(
                 .product(name: "ProtocolTests", package: "ProtocolTests")
             ],
             path: "Tests/Collections"
+        ),
+        .target(
+            name: "SwiftConcurrencySpellBook",
+            dependencies: [],
+            path: "Sources/Concurrency"
+        ),
+        .testTarget(
+            name: "SwiftConcurrencySpellBookTests",
+            dependencies: [
+                .target(name: "SwiftConcurrencySpellBook"),
+            ],
+            path: "Tests/Concurrency"
         ),
         .target(
             name: "SwiftMemoryManagementSpellBook",

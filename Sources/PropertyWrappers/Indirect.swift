@@ -11,17 +11,18 @@
 /// This is particularly useful when you have a struct type that wants to nest another value of itself.
 @propertyWrapper
 public struct Indirect<WrappedValue> {
+    /// The box type that enables `Indirect` to work.
     @usableFromInline
-    indirect enum _Indirect {
+    indirect enum Box {
         case value(WrappedValue)
     }
 
     @usableFromInline
-    var value: _Indirect
+    var box: Box
 
     @inlinable
     public var wrappedValue: WrappedValue {
-        switch value {
+        switch box {
         case let .value(value):
             return value
         }
@@ -35,7 +36,7 @@ public struct Indirect<WrappedValue> {
     /// - Parameter wrappedValue: The initial value of `wrappedValue`.
     @inlinable
     public init(wrappedValue: WrappedValue) {
-        self.value = .value(wrappedValue)
+        self.box = .value(wrappedValue)
     }
 }
 

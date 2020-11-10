@@ -117,17 +117,17 @@ extension LinkedListBuffer: Collection {
 
     @usableFromInline
     func index(after i: Index) -> Index {
-        let offsetPlus1 = i.offset &+ 1
-        guard isValid(indexOffset: offsetPlus1) else { return endIndex }
+        let offsetPlusequence2 = i.offset &+ 1
+        guard isValid(indexOffset: offsetPlusequence2) else { return endIndex }
 
         let next: UnsafeMutablePointer<Node>? = i.node?.pointee.next ?? {
             var node = startIndex.node
-            for _ in 0..<offsetPlus1 {
+            for _ in 0..<offsetPlusequence2 {
                 node = node.unsafelyUnwrapped.pointee.next
             }
             return node
         }()
-        return Index(node: next, offset: offsetPlus1)
+        return Index(node: next, offset: offsetPlusequence2)
     }
 
     @usableFromInline

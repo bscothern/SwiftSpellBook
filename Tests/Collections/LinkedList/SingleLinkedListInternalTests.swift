@@ -6,6 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+#if !os(watchOS)
 @testable import SwiftCollectionsSpellBook
 import XCTest
 
@@ -35,3 +36,4 @@ final class SingleLinkedListInternalTests: XCTestCase {
         XCTAssertEqual(list2.count, 1)
     }
 }
+#endif
