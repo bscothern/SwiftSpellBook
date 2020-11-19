@@ -23,10 +23,11 @@ extension EitherMutableCollection: MutableCollection {
                 fatalError("EitherMutableCollection.\(#function) used with other index type")
             }
         }
-        mutating _modify {
+        _modify {
             // This accessor does some extra explicit memory management to help avoid COW overhead.
             // If you track the reference counts they should go to +1 then back down to +0 right away.
             // Of course the compiler can choose to place the memory management wherever it wants to so there still might be COW overhead in some cases...
+            defer { _fixLifetime(self) }
 
             var left: Left?
             var right: Right?

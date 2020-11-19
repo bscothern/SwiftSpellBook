@@ -51,7 +51,10 @@ public struct OnDeinit<WrappedValue> {
     public var wrappedValue: WrappedValue {
         get { box.wrappedValue }
         set { box.wrappedValue = newValue }
-        _modify { yield &box.wrappedValue }
+        _modify {
+            defer { _fixLifetime(self) }
+            yield &box.wrappedValue
+        }
     }
 
     @usableFromInline
@@ -105,6 +108,7 @@ public final class OnDeinit_Buffered<WrappedValue>: SafeManagedBuffer<(WrappedVa
         }
         set { withUnsafeMutablePointerToElements { $0.pointee = newValue } }
         _modify {
+            defer { _fixLifetime(self) }
             var wrappedValue: WrappedValue!
             withUnsafeMutablePointerToElements { wrappedValue = $0.move() }
             defer { withUnsafeMutablePointerToElements { $0.initialize(to: wrappedValue) } }

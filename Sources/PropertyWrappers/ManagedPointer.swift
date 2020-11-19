@@ -15,7 +15,10 @@ public struct ManagedPointer<WrappedValue> {
     public var wrappedValue: WrappedValue {
         get { pointer.pointee }
         set { pointer.pointee = newValue }
-        _modify { yield &pointer.pointee }
+        _modify {
+            defer { _fixLifetime(self) }
+            yield &pointer.pointee
+        }
     }
 
     @inlinable

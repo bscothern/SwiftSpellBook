@@ -29,6 +29,7 @@ public struct OnDeinitCOW<WrappedValue> {
             onDeinit.wrappedValue = newValue
         }
         _modify {
+            defer { _fixLifetime(self) }
             onDeinit.makeUnique()
             yield &onDeinit.wrappedValue
         }

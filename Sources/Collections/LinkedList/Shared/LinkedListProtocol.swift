@@ -130,7 +130,10 @@ extension _LinkedListProtocol {
         // swiftlint doesn't recognize _modify as an accessor
         // swiftlint:disable:next implicit_getter
         get { buffer.count }
-        mutating _modify { yield &buffer.count }
+        _modify {
+            defer { _fixLifetime(self) }
+            yield &buffer.count
+        }
     }
 
     @inlinable

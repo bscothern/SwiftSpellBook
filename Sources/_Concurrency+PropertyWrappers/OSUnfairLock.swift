@@ -6,7 +6,7 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-#if canImport(os) && (os(iOS) || os(macOS) || os(watchOS) || os(tvOS))
+#if canImport(os) && canImport(Foundation) && (os(iOS) || os(macOS) || os(watchOS) || os(tvOS))
 import Foundation
 import os
 
@@ -51,5 +51,4 @@ public final class OSUnfairLock: NSLocking {
         os_unfair_lock_assert_not_owner(unfairLock)
     }
 }
-
 #endif
