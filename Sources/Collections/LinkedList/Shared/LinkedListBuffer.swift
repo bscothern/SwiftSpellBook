@@ -76,7 +76,7 @@ extension LinkedListBuffer: Collection {
 
         @usableFromInline
         static func < (lhs: Self, rhs: Self) -> Bool {
-            print("lhs: \(lhs) < rhs: \(rhs)")
+//            print("lhs: \(lhs) < rhs: \(rhs)")
             return lhs.offset < rhs.offset
         }
     }

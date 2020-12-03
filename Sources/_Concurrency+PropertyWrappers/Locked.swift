@@ -61,6 +61,7 @@ public struct Locked<WrappedValue> {
 
 extension Locked {
     public enum LockType {
+        //swiftlint:disable duplicate_enum_cases
         case nsLock
         case nsRecursiveLock
 
@@ -71,6 +72,8 @@ extension Locked {
         @available(*, unavailable, message: "OSUnfairLock is only available on Apple platforms.")
         case osUnfairLock
         #endif
+
+        //swiftlint:enable duplicate_enum_cases
 
         @inlinable
         public static var platformDefault: Self {
@@ -101,3 +104,23 @@ extension Locked {
         #endif
     }
 }
+
+extension Locked {
+    @inlinable
+    public func use<Result>(_ criticalBlock: (WrappedValue) -> Result) -> Result {
+        lock.lock()
+        defer { lock.unlock() }
+        return criticalBlock(value)
+    }
+
+    @inlinable
+    public mutating func modify<Result>(_ criticalBlock: (inout WrappedValue) -> Result) -> Result {
+        lock.lock()
+        defer { lock.unlock() }
+        return criticalBlock(&value)
+    }
+}
+
+extension Locked: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
+extension Locked: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
+extension Locked: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}

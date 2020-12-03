@@ -13,9 +13,11 @@
 /// - Important: This is backed by a class in order to trigger the `DeinitAction`.
 ///     This means that if you pass an instance around you will be pointing to the same backing instance.
 ///     This is advantageous because this type is generally most helpful when managing memory.
-///     If you need to ensure a copy is unique you can call `makeUnique()` or if you want to create a copy you can use `copy()`.
-///     See those functions for more information.
-///     You can also use `@OnDeinitCOW` if you want copy on write behavior.
+///
+/// - Important: This does not have copy-on-write (COW) behavior but has reference semantics.
+///     This is because it is designed to help with memory managemet and COW behavior will cause memory corruption or crashes in most cases with this type.
+///     If you want this behavior and know it to be correct use the `@OnDeinitCOW` property wrapper instead.
+///     For more information see the `unsafeCopy()` and `unsafeMakeUnique()` functions of this type.
 @propertyWrapper
 public struct OnDeinit<WrappedValue> {
     /// The function that is called when this property wrapper goes out of scope.
@@ -72,18 +74,24 @@ public struct OnDeinit<WrappedValue> {
     }
 
     /// Creates a copy of the `OnDeinit` that has the current `wrappedValue` and the `DeinitAction` the original instance was created with.
+    ///
+    /// - Warning: If you are using `OnDeinit` to trigger memory clean up you almost certainly do not want to call this function.
+    ///     This is because the original deinitAction will be called for each instance of `OnDeinit` that has its `deinit` triggered.
+    ///     If your `deinitAction` cleans up the same memory twice this will result in a crash or memory corruption.
     @inlinable
-    public func copy() -> Self {
+    public func unsafeCopy() -> Self {
         .init(wrappedValue: box.wrappedValue, do: box.deinitAction)
     }
 
     /// If the backing memory is referenced by another instance than this instance then it copies its `wrappedValue` and `DeinitAction` into new backing storage.
     ///
     /// This is a no-op if the backing class instance is already uniquely owned by this `OnDeinit` instance.
+    ///
+    /// - Warning: This results in a copy being made so all warnings applicable to `OnDeinit.unsafeCopy()` are applicable to this function as well.
     @inlinable
-    public mutating func makeUnique() {
+    public mutating func unsafeMakeUnique() {
         guard !isKnownUniquelyReferenced(&box) else { return }
-        self = copy()
+        self = unsafeCopy()
     }
 }
 

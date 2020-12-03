@@ -16,6 +16,15 @@ extension MutableCollection where Self: RandomAccessCollection {
     public mutating func sort<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) {
         sort(by: { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) })
     }
+
+    @inlinable
+    public mutating func assign<Value>(_ keyPath: WritableKeyPath<Element, Value>, to newValue: Value) {
+        var index = startIndex
+        while index != endIndex {
+            defer { formIndex(after: &index) }
+            self[index][keyPath: keyPath] = newValue
+        }
+    }
 }
 
 #if swift(<5.2)

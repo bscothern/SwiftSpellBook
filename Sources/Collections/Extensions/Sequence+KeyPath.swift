@@ -8,6 +8,29 @@
 
 extension Sequence {
     @inlinable
+    public func assign<Value>(_ keyPath: ReferenceWritableKeyPath<Element, Value>, to newValue: Value) {
+        forEach {
+            $0[keyPath: keyPath] = newValue
+        }
+    }
+
+    @inlinable
+    public func reduce<Result, Value>(keyPath: KeyPath<Element, Value>, initialValue: Result, _ nextPartialResult: (Result, Value) -> Result) -> Result {
+        reduce(initialValue) { result, element in
+            nextPartialResult(result, element[keyPath: keyPath])
+        }
+    }
+
+    @inlinable
+    public func reduce<Result, Value>(keyPath: KeyPath<Element, Value>, into initialValue: Result, _ nextPartialResult: (inout Result, Value) -> Void) -> Result {
+        reduce(into: initialValue) { result, element in
+            nextPartialResult(&result, element[keyPath: keyPath])
+        }
+    }
+}
+
+extension Sequence {
+    @inlinable
     public func min<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) -> Element? where ComparableValue: Comparable {
         min(keyPath: keyPath, by: <)
     }
@@ -35,6 +58,21 @@ extension Sequence {
     @inlinable
     public func sorted<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) -> [Element] {
         sorted(by: { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) })
+    }
+
+    @inlinable
+    public func filter<EquatableValue>(_ keyPath: KeyPath<Element, EquatableValue>, equalTo value: EquatableValue) -> [Element] where EquatableValue: Equatable {
+        filter { $0[keyPath: keyPath] == value }
+    }
+
+    @inlinable
+    public func filter<EquatableValue>(_ keyPath: KeyPath<Element, EquatableValue>, notEqualto value: EquatableValue) -> [Element] where EquatableValue: Equatable {
+        filter { $0[keyPath: keyPath] != value }
+    }
+
+    @inlinable
+    public func filter<Value>(_ keyPath: KeyPath<Element, Value>, satisifies predicate: (Value) -> Bool) -> [Element] {
+        filter { predicate($0[keyPath: keyPath]) }
     }
 }
 

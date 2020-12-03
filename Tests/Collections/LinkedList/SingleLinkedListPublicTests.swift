@@ -99,10 +99,10 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             list.append(i)
         }
 
-        zip(list[1..<4], 1...).forEach {
-            print("-------------")
-            XCTAssertEqual($0, $1)
-        }
+//        zip(list[1..<4], 1...).forEach {
+//            print("-------------")
+//            XCTAssertEqual($0, $1)
+//        }
     }
 
     func testSlice3() {

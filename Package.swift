@@ -27,6 +27,10 @@ let package = Package(
             targets: ["SwiftMemoryManagementSpellBook"]
         ),
         .library(
+            name: "SwiftOperatorsManagementSpellBook",
+            targets: ["SwiftOperatorsManagementSpellBook"]
+        ),
+        .library(
             name: "SwiftPropertyWrappersSpellBook",
             targets: ["SwiftPropertyWrappersSpellBook"]
         ),
@@ -36,7 +40,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/bscothern/ProtocolTests.git", .upToNextMinor(from: "0.2.0"))
+//        .package(url: "https://github.com/bscothern/ProtocolTests.git", .upToNextMinor(from: "0.2.0"))
+        .package(path: "/Users/Braden/Documents/Programming/ProtocolTests")
     ],
     targets: [
         .target(
@@ -45,6 +50,7 @@ let package = Package(
                 .target(name: "SwiftCollectionsSpellBook"),
                 .target(name: "SwiftExtensionsSpellBook"),
                 .target(name: "SwiftMemoryManagementSpellBook"),
+                .target(name: "SwiftOperatorsManagementSpellBook"),
                 .target(name: "SwiftPropertyWrappersSpellBook"),
                 .target(name: "SwiftResultBuildersSpellBook"),
             ],
@@ -105,9 +111,22 @@ let package = Package(
             path: "Tests/MemoryManagement"
         ),
         .target(
+            name: "SwiftOperatorsManagementSpellBook",
+            dependencies: [],
+            path: "Sources/Operators"
+        ),
+        .testTarget(
+            name: "SwiftOperatorsManagementSpellBookTests",
+            dependencies: [
+                .target(name: "SwiftOperatorsManagementSpellBook")
+            ],
+            path: "Tests/Operators"
+        ),
+        .target(
             name: "SwiftPropertyWrappersSpellBook",
             dependencies: [
                 .target(name: "_Concurrency_PropertyWrappersSpellBook"),
+                .target(name: "_PropertyWrapperProtocols"),
                 .target(name: "SwiftMemoryManagementSpellBook"),
             ],
             path: "Sources/PropertyWrappers"
@@ -133,13 +152,15 @@ let package = Package(
         ),
         .target(
             name: "_Concurrency_PropertyWrappersSpellBook",
-            dependencies: [],
+            dependencies: [
+                .target(name: "_PropertyWrapperProtocols")
+            ],
             path: "Sources/_Concurrency+PropertyWrappers"
         ),
-        .testTarget(
-            name: "_Concurrency_PropertyWrappersSpellBookTests",
+        .target(
+            name: "_PropertyWrapperProtocols",
             dependencies: [],
-            path: "Tests/_Concurrency+PropertyWrappers"
+            path: "Sources/_PropertyWrapperProtocols"
         ),
     ]
 )

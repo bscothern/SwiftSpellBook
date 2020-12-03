@@ -6,6 +6,23 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+extension LazySequenceProtocol {
+    @inlinable
+    public func filter<EquatableValue>(_ keyPath: KeyPath<Element, EquatableValue>, equalTo value: EquatableValue) -> LazyFilterSequence<Self.Elements> where EquatableValue: Equatable {
+        filter { $0[keyPath: keyPath] == value }
+    }
+
+    @inlinable
+    public func filter<EquatableValue>(_ keyPath: KeyPath<Element, EquatableValue>, notEqualto value: EquatableValue) -> LazyFilterSequence<Self.Elements> where EquatableValue: Equatable {
+        filter { $0[keyPath: keyPath] != value }
+    }
+
+    @inlinable
+    public func filter<Value>(_ keyPath: KeyPath<Element, Value>, satisifies predicate: @escaping (Value) -> Bool) -> LazyFilterSequence<Self.Elements> {
+        filter { predicate($0[keyPath: keyPath]) }
+    }
+}
+
 #if swift(<5.2)
 extension LazySequenceProtocol {
     @inlinable

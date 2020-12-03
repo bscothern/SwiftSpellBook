@@ -9,5 +9,6 @@
 @_exported import SwiftCollectionsSpellBook
 @_exported import SwiftExtensionsSpellBook
 @_exported import SwiftMemoryManagementSpellBook
+@_exported import SwiftOperatorsManagementSpellBook
 @_exported import SwiftPropertyWrappersSpellBook
 @_exported import SwiftResultBuildersSpellBook

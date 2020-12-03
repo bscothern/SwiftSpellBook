@@ -25,12 +25,12 @@ public struct OnDeinitCOW<WrappedValue> {
     public var wrappedValue: WrappedValue {
         get { onDeinit.wrappedValue }
         set {
-            onDeinit.makeUnique()
+            onDeinit.unsafeMakeUnique()
             onDeinit.wrappedValue = newValue
         }
         _modify {
             defer { _fixLifetime(self) }
-            onDeinit.makeUnique()
+            onDeinit.unsafeMakeUnique()
             yield &onDeinit.wrappedValue
         }
     }
