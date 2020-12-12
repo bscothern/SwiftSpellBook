@@ -12,15 +12,12 @@
 ///
 /// This type exists for convenience in conforming to both the requirements of the synthesis and `Encodable` all at once.
 /// All requirements are defined on `_PassThroughEncodablePropertyWrapper`.
-public typealias PassThroughEncodablePropertyWrapper = _PassThroughEncodablePropertyWrapper & Encodable
+public typealias PassThroughEncodablePropertyWrapper = _PassThroughEncodablePropertyWrapper & PropertyWrapper & Encodable
 
 /// The protocol that backs `PassThroughEncodablePropertyWrapper` behavior.
 ///
 /// You shouldn't normally conform to this protocol directly but use `PassThroughEncodablePropertyWrapper`.
-public protocol _PassThroughEncodablePropertyWrapper {
-    associatedtype WrappedValue: Encodable
-    var wrappedValue: WrappedValue { get }
-}
+public protocol _PassThroughEncodablePropertyWrapper: PropertyWrapper where WrappedValue: Encodable {}
 
 extension _PassThroughEncodablePropertyWrapper where Self: Encodable {
     @inlinable

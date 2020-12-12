@@ -6,9 +6,10 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+@_exported import SwiftBoxesSpellBook
 @_exported import SwiftCollectionsSpellBook
 @_exported import SwiftExtensionsSpellBook
 @_exported import SwiftMemoryManagementSpellBook
-@_exported import SwiftOperatorsManagementSpellBook
+@_exported import SwiftOperatorsSpellBook
 @_exported import SwiftPropertyWrappersSpellBook
 @_exported import SwiftResultBuildersSpellBook

@@ -6,21 +6,22 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+import SwiftBoxesSpellBook
+
 @propertyWrapper
-public struct CustomEquatable<WrappedValue>: Equatable {
-    public var wrappedValue: WrappedValue
-    
+public struct CustomEquatable<WrappedValue>: MutablePropertyWrapper, Equatable {
+    @inlinable
+    public var wrappedValue: WrappedValue {
+        get { box.boxedValue }
+        set { box.boxedValue = newValue }
+        _modify { yield &box.boxedValue }
+    }
+
     @usableFromInline
-    let equalsFunction: (WrappedValue, WrappedValue) -> Bool
+    var box: EquatableBox<WrappedValue>
 
     @inlinable
-    public init(wrappedValue: WrappedValue, equals equalsFunction: @escaping (WrappedValue, WrappedValue) -> Bool) {
-        self.wrappedValue = wrappedValue
-        self.equalsFunction = equalsFunction
-    }
-    
-    @inlinable
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.equalsFunction(lhs.wrappedValue, rhs.wrappedValue)
+    public init(wrappedValue: WrappedValue, areEqualBy areEqual: @escaping (WrappedValue, WrappedValue) -> Bool) {
+        box = .init(wrappedValue, areEqualBy: areEqual)
     }
 }

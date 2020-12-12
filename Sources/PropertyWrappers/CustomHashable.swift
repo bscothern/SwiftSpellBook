@@ -6,35 +6,27 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+import SwiftBoxesSpellBook
+
 @propertyWrapper
-public struct CustomHashable<WrappedValue>: Hashable {
-    public var wrappedValue: WrappedValue
-    
+public struct CustomHashable<WrappedValue>: MutablePropertyWrapper, Hashable {
+    @inlinable
+    public var wrappedValue: WrappedValue {
+        get { box.boxedValue }
+        set { box.boxedValue = newValue }
+        _modify { yield &box.boxedValue }
+    }
+
     @usableFromInline
-    let equalsFunction: (WrappedValue, WrappedValue) -> Bool
-    
-    @usableFromInline
-    let hashFunction: (_ hasher: inout Hasher, _ value: WrappedValue) -> Void
-    
+    var box: HashableBox<WrappedValue>
+
     @inlinable
-    public init(wrappedValue: WrappedValue, equals equalsFunction: @escaping (WrappedValue, WrappedValue) -> Bool, hash hashFunction: @escaping (_ hasher: inout Hasher, _ value: WrappedValue) -> Void) {
-        self.wrappedValue = wrappedValue
-        self.equalsFunction = equalsFunction
-        self.hashFunction = hashFunction
+    public init(wrappedValue: WrappedValue, areEqualBy areEqual: @escaping (WrappedValue, WrappedValue) -> Bool, hashedBy hashFunction: @escaping (_ hasher: inout Hasher, _ value: WrappedValue) -> Void) {
+        self.box = .init(wrappedValue, areEqualBy: areEqual, hashedBy: hashFunction)
     }
-    
+
     @inlinable
-    public init(wrappedValue: WrappedValue, hash hashFunction: @escaping (_ hasher: inout Hasher, _ value: WrappedValue) -> Void) where WrappedValue: Equatable {
-        self.init(wrappedValue: wrappedValue, equals: ==, hash: hashFunction)
-    }
-    
-    @inlinable
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.equalsFunction(lhs.wrappedValue, rhs.wrappedValue)
-    }
-    
-    @inlinable
-    public func hash(into hasher: inout Hasher) {
-        hashFunction(&hasher, wrappedValue)
+    public init(wrappedValue: WrappedValue, hashedBy hashFunction: @escaping (_ hasher: inout Hasher, _ value: WrappedValue) -> Void) where WrappedValue: Equatable {
+        self.init(wrappedValue: wrappedValue, areEqualBy: ==, hashedBy: hashFunction)
     }
 }

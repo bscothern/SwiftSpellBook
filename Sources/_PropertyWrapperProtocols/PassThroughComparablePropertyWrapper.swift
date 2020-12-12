@@ -10,15 +10,12 @@
 ///
 /// This type exists for convenience in conforming to both the requirements of the synthesis and `Comparable` all at once.
 /// All requirements are defined on `_PassThroughComparablePropertyWrapper`.
-public typealias PassThroughComparablePropertyWrapper = _PassThroughComparablePropertyWrapper & Comparable
+public typealias PassThroughComparablePropertyWrapper = _PassThroughComparablePropertyWrapper & PropertyWrapper & Comparable
 
 /// The protocol that backs `PassThroughComparablePropertyWrapper` behavior.
 ///
 /// You shouldn't normally conform to this protocol directly but use `PassThroughComparablePropertyWrapper`.
-public protocol _PassThroughComparablePropertyWrapper {
-    associatedtype WrappedValue: Comparable
-    var wrappedValue: WrappedValue { get }
-}
+public protocol _PassThroughComparablePropertyWrapper: PropertyWrapper where WrappedValue: Comparable {}
 
 extension _PassThroughComparablePropertyWrapper where Self: Comparable {
     @inlinable

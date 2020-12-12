@@ -12,7 +12,7 @@
 ///
 /// - Note: This uses reference semantics, if you want value semantics see `@Indirect`.
 @propertyWrapper
-public final class IndirectReference<WrappedValue> {
+public final class IndirectReference<WrappedValue>: MutablePropertyWrapper, DefaultInitializablePropertyWrapper, ProjectedPropertyWrapper {
     public var wrappedValue: WrappedValue
 
     @inlinable

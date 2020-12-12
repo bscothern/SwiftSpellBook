@@ -36,7 +36,7 @@
 /// - Returns: A sequence of tuple values, where the elements of each set are
 ///   corresponding elements of `sequence1`, `sequence2`, `sequence3`, and `sequence4`.
 @inlinable
-public func zip<sequence1, S1, Sequence3, Sequence4>(_ sequence1: sequence1, _ sequence2: S1, _ sequence3: Sequence3, _ sequence4: Sequence4) -> AnySequence<(sequence1.Element, S1.Element, Sequence3.Element, Sequence4.Element)> where sequence1: Sequence, S1: Sequence, Sequence3: Sequence, Sequence4: Sequence {
+public func zip<Sequence1, Sequence2, Sequence3, Sequence4>(_ sequence1: Sequence1, _ sequence2: Sequence2, _ sequence3: Sequence3, _ sequence4: Sequence4) -> AnySequence<(Sequence1.Element, Sequence2.Element, Sequence3.Element, Sequence4.Element)> where Sequence1: Sequence, Sequence2: Sequence, Sequence3: Sequence, Sequence4: Sequence {
     var iterators = (sequence1.makeIterator(), sequence2.makeIterator(), sequence3.makeIterator(), sequence4.makeIterator())
     return AnySequence {
         AnyIterator {

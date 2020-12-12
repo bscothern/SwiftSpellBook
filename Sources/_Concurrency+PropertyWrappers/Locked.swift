@@ -11,7 +11,7 @@ import Foundation
 
 // Should this be a class instead of a struct so we share the value instead of copy it if you access the proeprty wrapper or pass it around?
 @propertyWrapper
-public struct Locked<WrappedValue> {
+public struct Locked<WrappedValue>: MutablePropertyWrapper {
     @usableFromInline
     var value: WrappedValue
 

@@ -10,15 +10,12 @@
 ///
 /// This type exists for convenience in conforming to both the requirements of the synthesis and `Hashable` all at once.
 /// All requirements are defined on `_PassThroughHashablePropertyWrapper`.
-public typealias PassThroughHashablePropertyWrapper = _PassThroughHashablePropertyWrapper & Hashable
+public typealias PassThroughHashablePropertyWrapper = _PassThroughHashablePropertyWrapper & PropertyWrapper & Hashable
 
 /// The protocol that backs `PassThroughHashablePropetyWrapper` behavior.
 ///
 /// You shouldn't normally conform to this protocol directly but use `PassThroughHashablePropetyWrapper`.
-public protocol _PassThroughHashablePropertyWrapper {
-    associatedtype WrappedValue: Hashable
-    var wrappedValue: WrappedValue { get }
-}
+public protocol _PassThroughHashablePropertyWrapper: PropertyWrapper where WrappedValue: Hashable {}
 
 extension _PassThroughHashablePropertyWrapper where Self: Hashable {
     @inlinable

@@ -6,8 +6,10 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+@_spi(EitherMutableCollection)
 public typealias EitherMutableCollection<Left, Right> = EitherCollection<Left, Right> where Left: MutableCollection, Right: MutableCollection, Left.Element == Right.Element, Left: IsUnique, Right: IsUnique
 
+@_spi(EitherMutableCollection)
 extension EitherMutableCollection: MutableCollection {
     @inlinable
     public subscript(position: Index) -> Element {
@@ -31,7 +33,7 @@ extension EitherMutableCollection: MutableCollection {
 
             var left: UnsafeMutablePointer<Left>?
             var right: UnsafeMutablePointer<Right>?
-            
+
             withUnsafeMutablePointer(to: &_value) { value in
                 switch value.pointee {
                 case let .left(value):
@@ -45,7 +47,7 @@ extension EitherMutableCollection: MutableCollection {
                 }
                 value.deinitialize(count: 1)
             }
-            
+
             guard !(left?.pointee.isUnique() ?? right?.pointee.isUnique() ?? true) else {
                 fatalError("1")
             }
@@ -56,7 +58,7 @@ extension EitherMutableCollection: MutableCollection {
 //            guard left?.isUnique() ?? right?.isUnique() ?? false else {
 //                fatalError("3")
 //            }
-            
+
             defer {
                 withUnsafeMutablePointer(to: &_value) { value in
                     if left != nil {
@@ -80,15 +82,15 @@ extension EitherMutableCollection: MutableCollection {
             case let (.some, .none, .left(position)):
                 var yieldableLeft = left.unsafelyUnwrapped.pointee
                 left.unsafelyUnwrapped.deinitialize(count: 1)
-                
+
                 guard yieldableLeft.isUnique() else {
                     fatalError("3")
                 }
-                
+
                 defer {
                     left.unsafelyUnwrapped.initialize(to: yieldableLeft)
                 }
-                
+
                 guard yieldableLeft.isUnique() else {
                     fatalError("4")
                 }
@@ -96,15 +98,15 @@ extension EitherMutableCollection: MutableCollection {
             case let (.none, .some, .right(position)):
                 var yieldableRight = right.unsafelyUnwrapped.pointee
                 right.unsafelyUnwrapped.deinitialize(count: 1)
-                
+
                 guard yieldableRight.isUnique() else {
                     fatalError("3")
                 }
-                
+
                 defer {
                     right.unsafelyUnwrapped.initialize(to: yieldableRight)
                 }
-                
+
                 guard yieldableRight.isUnique() else {
                     fatalError("4")
                 }
@@ -118,6 +120,7 @@ extension EitherMutableCollection: MutableCollection {
     }
 }
 
-public protocol IsUnique {
+@usableFromInline
+protocol IsUnique {
     mutating func isUnique() -> Bool
 }

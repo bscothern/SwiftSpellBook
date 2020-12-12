@@ -10,7 +10,7 @@
 ///
 /// The underlying pointer is deinitialized when the final copy of this struct goes out of scope.
 @propertyWrapper
-public struct ManagedPointer<WrappedValue> {
+public struct ManagedPointer<WrappedValue>: MutablePropertyWrapper, DefaultInitializablePropertyWrapper, ProjectedPropertyWrapper {
     @inlinable
     public var wrappedValue: WrappedValue {
         get { pointer.pointee }

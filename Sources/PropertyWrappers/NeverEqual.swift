@@ -8,7 +8,7 @@
 
 /// A property wrapper that always treats the underlying value as never equal.
 @propertyWrapper
-public struct NeverEqual<WrappedValue>: Equatable {
+public struct NeverEqual<WrappedValue>: MutablePropertyWrapper, DefaultInitializablePropertyWrapper, ProjectedPropertyWrapper, Equatable {
     public var wrappedValue: WrappedValue
 
     @inlinable

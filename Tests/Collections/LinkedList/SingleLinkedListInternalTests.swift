@@ -7,7 +7,8 @@
 //
 
 #if !os(watchOS)
-@testable import SwiftCollectionsSpellBook
+@testable
+import SwiftCollectionsSpellBook
 import XCTest
 
 final class SingleLinkedListInternalTests: XCTestCase {

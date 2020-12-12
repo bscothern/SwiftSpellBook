@@ -14,7 +14,7 @@
 ///     Like `@OnDeinit` it is backed by a class to trigger its `DeinitAction`.
 ///     Because this is copy on write that means that both the `wrappedValue` and `DeinitAction` will be copied into a new instance according to normal COW rules for mutations of `wrappedValue`.
 @propertyWrapper
-public struct OnDeinitCOW<WrappedValue> {
+public struct OnDeinitCOW<WrappedValue>: MutablePropertyWrapper {
     /// The function that is called when this property wrapper goes out of scope.
     ///
     /// - Parameter wrappedValue: The final value contained in `wrappedValue` when `deinit` is triggered.

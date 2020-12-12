@@ -6,9 +6,6 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-extension Collection {
-}
-
 #if swift(<5.2)
 extension Collection {
     @inlinable

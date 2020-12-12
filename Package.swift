@@ -11,6 +11,10 @@ let package = Package(
             targets: ["SwiftSpellBook"]
         ),
         .library(
+            name: "SwiftBoxesSpellBook",
+            targets: ["SwiftBoxesSpellBook"]
+        ),
+        .library(
             name: "SwiftCollectionsSpellBook",
             targets: ["SwiftCollectionsSpellBook"]
         ),
@@ -27,8 +31,8 @@ let package = Package(
             targets: ["SwiftMemoryManagementSpellBook"]
         ),
         .library(
-            name: "SwiftOperatorsManagementSpellBook",
-            targets: ["SwiftOperatorsManagementSpellBook"]
+            name: "SwiftOperatorsSpellBook",
+            targets: ["SwiftOperatorsSpellBook"]
         ),
         .library(
             name: "SwiftPropertyWrappersSpellBook",
@@ -47,14 +51,27 @@ let package = Package(
         .target(
             name: "SwiftSpellBook",
             dependencies: [
+                .target(name: "SwiftBoxesSpellBook"),
                 .target(name: "SwiftCollectionsSpellBook"),
                 .target(name: "SwiftExtensionsSpellBook"),
                 .target(name: "SwiftMemoryManagementSpellBook"),
-                .target(name: "SwiftOperatorsManagementSpellBook"),
+                .target(name: "SwiftOperatorsSpellBook"),
                 .target(name: "SwiftPropertyWrappersSpellBook"),
                 .target(name: "SwiftResultBuildersSpellBook"),
             ],
             path: "Sources/Umbrella"
+        ),
+        .target(
+            name: "SwiftBoxesSpellBook",
+            dependencies: [],
+            path: "Sources/Boxes"
+        ),
+        .testTarget(
+            name: "SwiftBoxesSpellBookTests",
+            dependencies: [
+                .target(name: "SwiftBoxesSpellBook"),
+            ],
+            path: "Tests/Boxes"
         ),
         .target(
             name: "SwiftCollectionsSpellBook",
@@ -111,14 +128,14 @@ let package = Package(
             path: "Tests/MemoryManagement"
         ),
         .target(
-            name: "SwiftOperatorsManagementSpellBook",
+            name: "SwiftOperatorsSpellBook",
             dependencies: [],
             path: "Sources/Operators"
         ),
         .testTarget(
-            name: "SwiftOperatorsManagementSpellBookTests",
+            name: "SwiftOperatorsSpellBookTests",
             dependencies: [
-                .target(name: "SwiftOperatorsManagementSpellBook")
+                .target(name: "SwiftOperatorsSpellBook")
             ],
             path: "Tests/Operators"
         ),
@@ -127,6 +144,7 @@ let package = Package(
             dependencies: [
                 .target(name: "_Concurrency_PropertyWrappersSpellBook"),
                 .target(name: "_PropertyWrapperProtocols"),
+                .target(name: "SwiftBoxesSpellBook"),
                 .target(name: "SwiftMemoryManagementSpellBook"),
             ],
             path: "Sources/PropertyWrappers"

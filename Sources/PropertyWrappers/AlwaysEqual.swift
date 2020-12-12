@@ -8,7 +8,7 @@
 
 /// A property wrapper that always treats the underlying value as equal.
 @propertyWrapper
-public struct AlwaysEqual<WrappedValue>: Equatable {
+public struct AlwaysEqual<WrappedValue>: MutablePropertyWrapper, DefaultInitializablePropertyWrapper, ProjectedPropertyWrapper, Equatable {
     public var wrappedValue: WrappedValue
 
     @inlinable

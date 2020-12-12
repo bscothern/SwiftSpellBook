@@ -12,7 +12,7 @@
 ///
 /// - Note: This uses value semantics, if you want reference semantics see `@IndirectReference`.
 @propertyWrapper
-public struct Indirect<WrappedValue> {
+public struct Indirect<WrappedValue>: MutablePropertyWrapper, DefaultInitializablePropertyWrapper, ProjectedPropertyWrapper {
     /// The box type that enables `Indirect` to work.
     @usableFromInline
     indirect enum Box {

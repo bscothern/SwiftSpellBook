@@ -10,15 +10,12 @@
 ///
 /// This type exists for convenience in conforming to both the requirements of the synthesis and `Equatable` all at once.
 /// All requirements are defined on `_PassThroughEquatablePropetyWrapper`.
-public typealias PassThroughEquatablePropertyWrapper = _PassThroughEquatablePropertyWrapper & Equatable
+public typealias PassThroughEquatablePropertyWrapper = _PassThroughEquatablePropertyWrapper & PropertyWrapper & Equatable
 
 /// The protocol that backs `PassThroughEquatablePropetyWrapper` behavior.
 ///
 /// You shouldn't normally conform to this protocol directly but use `PassThroughEquatablePropetyWrapper`.
-public protocol _PassThroughEquatablePropertyWrapper {
-    associatedtype WrappedValue: Equatable
-    var wrappedValue: WrappedValue { get }
-}
+public protocol _PassThroughEquatablePropertyWrapper: PropertyWrapper where WrappedValue: Equatable {}
 
 extension _PassThroughEquatablePropertyWrapper where Self: Equatable {
     @inlinable

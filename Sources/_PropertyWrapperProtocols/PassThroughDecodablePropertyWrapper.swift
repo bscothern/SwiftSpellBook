@@ -12,15 +12,12 @@
 ///
 /// This type exists for convenience in conforming to both the requirements of the synthesis and `Decodable` all at once.
 /// All requirements are defined on `_PassThroughDecodablePropertyWrapper`.
-public typealias PassThroughDecodablePropertyWrapper = _PassThroughDecodablePropertyWrapper & Decodable
+public typealias PassThroughDecodablePropertyWrapper = _PassThroughDecodablePropertyWrapper & DefaultInitializablePropertyWrapper & Decodable
 
 /// The protocol that backs `PassThroughDecodablePropertyWrapper` behavior.
 ///
 /// You shouldn't normally conform to this protocol directly but use `PassThroughDecodablePropertyWrapper`.
-public protocol _PassThroughDecodablePropertyWrapper {
-    associatedtype WrappedValue: Decodable
-    init(wrappedValue: WrappedValue)
-}
+public protocol _PassThroughDecodablePropertyWrapper: DefaultInitializablePropertyWrapper where WrappedValue: Decodable {}
 
 extension _PassThroughDecodablePropertyWrapper where Self: Decodable {
     @inlinable

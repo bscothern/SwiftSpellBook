@@ -19,7 +19,7 @@
 ///     If you want this behavior and know it to be correct use the `@OnDeinitCOW` property wrapper instead.
 ///     For more information see the `unsafeCopy()` and `unsafeMakeUnique()` functions of this type.
 @propertyWrapper
-public struct OnDeinit<WrappedValue> {
+public struct OnDeinit<WrappedValue>: MutablePropertyWrapper {
     /// The function that is called when this property wrapper goes out of scope.
     ///
     /// - Parameter wrappedValue: The final value contained in `wrappedValue` when `deinit` is triggered.
