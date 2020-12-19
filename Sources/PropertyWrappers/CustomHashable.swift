@@ -14,7 +14,10 @@ public struct CustomHashable<WrappedValue>: MutablePropertyWrapper, Hashable {
     public var wrappedValue: WrappedValue {
         get { box.boxedValue }
         set { box.boxedValue = newValue }
-        _modify { yield &box.boxedValue }
+        _modify {
+            defer { _fixLifetime(self) }
+            yield &box.boxedValue
+        }
     }
 
     @usableFromInline

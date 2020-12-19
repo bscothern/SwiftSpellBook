@@ -14,7 +14,10 @@ public struct HashableBox<Value>: MutableBox, Hashable {
     public var boxedValue: Value {
         get { equatableBox.boxedValue }
         set { equatableBox.boxedValue = newValue }
-        _modify { yield &equatableBox.boxedValue }
+        _modify {
+            defer { _fixLifetime(self) }
+            yield &equatableBox.boxedValue
+        }
     }
 
     @usableFromInline

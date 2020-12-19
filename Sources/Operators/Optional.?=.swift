@@ -6,8 +6,6 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-import Foundation
-
 infix operator ?= : AssignmentPrecedence
 
 /// Assigns to an optional value if it is currently `nil`

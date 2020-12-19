@@ -6,6 +6,8 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
+import SwiftBoxesSpellBook
+
 /// A property wrapper that ties a deinit function to the lifetime of its `WrappedValue`.
 ///
 /// This is extra helpful when you want to use a pointer in a struct type.
@@ -29,38 +31,37 @@ public struct OnDeinit<WrappedValue>: MutablePropertyWrapper {
     ///
     /// It acts as the storage for all of the instance.
     @usableFromInline
-    final class Box {
+    final class OnDeinitBox: Box {
         @usableFromInline
-        var wrappedValue: WrappedValue
+        var boxedValue: WrappedValue
 
         @usableFromInline
         var deinitAction: DeinitAction
 
         @usableFromInline
-        init(wrappedValue: WrappedValue, do deinitAction: @escaping DeinitAction) {
-            self.wrappedValue = wrappedValue
+        init(boxedValue: WrappedValue, do deinitAction: @escaping DeinitAction) {
+            self.boxedValue = boxedValue
             self.deinitAction = deinitAction
         }
 
         @usableFromInline
         deinit {
-            deinitAction(wrappedValue)
+            deinitAction(boxedValue)
         }
     }
 
     @inlinable
-    @_transparent
     public var wrappedValue: WrappedValue {
-        get { box.wrappedValue }
-        set { box.wrappedValue = newValue }
+        get { box.boxedValue }
+        set { box.boxedValue = newValue }
         _modify {
             defer { _fixLifetime(self) }
-            yield &box.wrappedValue
+            yield &box.boxedValue
         }
     }
 
     @usableFromInline
-    var box: Box
+    var box: OnDeinitBox
 
     /// Creates an `@OnDeinit`.
     ///
@@ -70,7 +71,7 @@ public struct OnDeinit<WrappedValue>: MutablePropertyWrapper {
     @inlinable
     @_transparent
     public init(wrappedValue: WrappedValue, do deinitAction: @escaping DeinitAction) {
-        self.box = .init(wrappedValue: wrappedValue, do: deinitAction)
+        self.box = .init(boxedValue: wrappedValue, do: deinitAction)
     }
 
     /// Creates a copy of the `OnDeinit` that has the current `wrappedValue` and the `DeinitAction` the original instance was created with.
@@ -80,7 +81,7 @@ public struct OnDeinit<WrappedValue>: MutablePropertyWrapper {
     ///     If your `deinitAction` cleans up the same memory twice this will result in a crash or memory corruption.
     @inlinable
     public func unsafeCopy() -> Self {
-        .init(wrappedValue: box.wrappedValue, do: box.deinitAction)
+        .init(wrappedValue: box.boxedValue, do: box.deinitAction)
     }
 
     /// If the backing memory is referenced by another instance than this instance then it copies its `wrappedValue` and `DeinitAction` into new backing storage.

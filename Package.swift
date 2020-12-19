@@ -27,6 +27,10 @@ let package = Package(
             targets: ["SwiftExtensionsSpellBook"]
         ),
         .library(
+            name: "SwiftFoundationSpellBook",
+            targets: ["SwiftFoundationSpellBook"]
+        ),
+        .library(
             name: "SwiftMemoryManagementSpellBook",
             targets: ["SwiftMemoryManagementSpellBook"]
         ),
@@ -54,6 +58,7 @@ let package = Package(
                 .target(name: "SwiftBoxesSpellBook"),
                 .target(name: "SwiftCollectionsSpellBook"),
                 .target(name: "SwiftExtensionsSpellBook"),
+                .target(name: "SwiftFoundationSpellBook"),
                 .target(name: "SwiftMemoryManagementSpellBook"),
                 .target(name: "SwiftOperatorsSpellBook"),
                 .target(name: "SwiftPropertyWrappersSpellBook"),
@@ -114,6 +119,19 @@ let package = Package(
                 .target(name: "SwiftExtensionsSpellBook"),
             ],
             path: "Tests/Extensions"
+        ),
+        .target(
+            name: "SwiftFoundationSpellBook",
+            dependencies: [
+            ],
+            path: "Sources/Foundation"
+        ),
+        .testTarget(
+            name: "SwiftFoundationSpellBookTests",
+            dependencies: [
+                .target(name: "SwiftFoundationSpellBook"),
+            ],
+            path: "Tests/Foundation"
         ),
         .target(
             name: "SwiftMemoryManagementSpellBook",

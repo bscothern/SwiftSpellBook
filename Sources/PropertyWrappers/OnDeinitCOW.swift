@@ -21,7 +21,6 @@ public struct OnDeinitCOW<WrappedValue>: MutablePropertyWrapper {
     public typealias DeinitAction = OnDeinit<WrappedValue>.DeinitAction
 
     @inlinable
-    @_transparent
     public var wrappedValue: WrappedValue {
         get { onDeinit.wrappedValue }
         set {

@@ -18,5 +18,15 @@ final class AlwaysEqualTests: XCTestCase {
         XCTAssertEqual(value0, value1)
         XCTAssertNotEqual(value0.wrappedValue, value1.wrappedValue)
     }
+    
+    func testProjectedValue() {
+        let value0 = AlwaysEqual(wrappedValue: 1)
+        var value1 = value0.projectedValue
+        
+        value1.wrappedValue = 2
+
+        XCTAssertEqual(value0, value1)
+        XCTAssertNotEqual(value0.wrappedValue, value1.wrappedValue)
+    }
 }
 #endif

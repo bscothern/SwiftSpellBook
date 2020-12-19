@@ -18,5 +18,13 @@ final class NeverEqualTests: XCTestCase {
         XCTAssertNotEqual(value0, value1)
         XCTAssertEqual(value0.wrappedValue, value1.wrappedValue)
     }
+    
+    func testProjectedValue() {
+        let value0 = NeverEqual(wrappedValue: 1)
+        let value1 = value0.projectedValue
+
+        XCTAssertNotEqual(value0, value1)
+        XCTAssertEqual(value0.wrappedValue, value1.wrappedValue)
+    }
 }
 #endif
