@@ -1,16 +1,16 @@
 //
-//  Optional.?=Tests.swift
+//  OptionalTests.swift
 //  SwiftSpellBookTests
 //
 //  Created by Braden Scothern on 12/11/20.
-//  Copyright © 2020 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
 #if !os(watchOS)
 import SwiftOperatorsSpellBook
 import XCTest
 
-final class OptionalAssignmentOperatorTests: XCTestCase {
+final class OptionalTests: XCTestCase {
     func testOptionalAssignmentOperator() {
         var value: Int?
         XCTAssertNil(value)

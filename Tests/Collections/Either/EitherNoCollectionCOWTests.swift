@@ -3,7 +3,7 @@
 //  SwiftSpellBookTests
 //
 //  Created by Braden Scothern on 12/2/20.
-//  Copyright © 2020 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
 // These tests are only run in release mode that is when the ARC optomizations will take place to attempt to bypass COW issues.
@@ -21,7 +21,7 @@ final class EitherNoCollectionCOWTests: XCTestCase {
     }
 }
 
-struct COWCollection<Element>: MutableCollection, RandomAccessCollection, ExpressibleByArrayLiteral, IsUnique {
+struct COWCollection<Element>: MutableCollection, RandomAccessCollection, ExpressibleByArrayLiteral {
     final class Buffer {
         var values: [Element]
 

@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 11/9/20.
-//  Copyright © 2020 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
 #if canImport(Foundation)
@@ -17,6 +17,9 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
 
     @usableFromInline
     let lock: NSLocking
+    
+    @usableFromInline
+    let projectedValueIsProtected: Bool
 
     @inlinable
     @_transparent
@@ -39,12 +42,43 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
     }
 
     @inlinable
-    public var projectedValue: Self { self }
+    public var projectedValue: Self {
+        get { self }
+        _modify {
+            defer { _fixLifetime(self) }
+            yield &self
+//            if projectedValueIsProtected {
+//                var copy = self
+//                defer { self = copy }
+////                withUnsafeMutablePointer(to: &value) { valuePointer in
+////                    _ = valuePointer.deinitialize(count: 1)
+////                }
+////                defer {
+////                    withUnsafeMutablePointer(to: &value) { valuePointer in
+////                        valuePointer.initialize(to: copy.value)
+////                    }
+////                }
+//                yield &copy
+//            } else {
+//                var copy = self
+//                defer {
+//                    self = .init(wrappedValue: copy.wrappedValue, lock: copy.lock, projectedValueIsProtected: projectedValueIsProtected)
+//                }
+//                yield &copy
+//            }
+        }
+    }
+    
+    @usableFromInline
+    init(wrappedValue: WrappedValue, lock: NSLocking, projectedValueIsProtected: Bool) {
+        self.value = wrappedValue
+        self.lock = lock
+        self.projectedValueIsProtected = projectedValueIsProtected
+    }
 
     @inlinable
-    public init(lockType: LockType = .platformDefault, wrappedValue: WrappedValue) {
-        self.lock = lockType.createLock()
-        self.value = wrappedValue
+    public init(wrappedValue: WrappedValue, lockType: LockType = .platformDefault, projectedValueIsProtected: Bool = true) {
+        self.init(wrappedValue: wrappedValue, lock: lockType.createLock(), projectedValueIsProtected: projectedValueIsProtected)
     }
 }
 #else
