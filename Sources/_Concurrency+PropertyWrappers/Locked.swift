@@ -43,7 +43,7 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
 
     @inlinable
     public var projectedValue: Self {
-        get { self }
+        get { self } //swiftlint:disable:this implicit_getter
         _modify {
             defer { _fixLifetime(self) }
             yield &self

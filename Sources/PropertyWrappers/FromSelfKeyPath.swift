@@ -10,7 +10,7 @@ public struct FromSelfKeyPath<OuterSelf, WrappedValue> {
     @available(*, unavailable, message: "You shouldn't directly access this property wrapper. It uses OuterSelf access so you need to directly access the property not this value.")
     public var wrappedValue: WrappedValue {
         get { fatalError("Unavailable") }
-        set { fatalError("Unavailable") }
+        set { fatalError("Unavailable") } //swiftlint:disable:this unused_setter_value
     }
 
     let writableKeyPath: ReferenceWritableKeyPath<OuterSelf, WrappedValue>!

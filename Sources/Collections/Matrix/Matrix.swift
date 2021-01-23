@@ -68,17 +68,20 @@ extension Matrix: Collection {
 
     @inlinable
     public func index(_ i: Index, offsetBy distance: Int) -> Index {
-        fatalError()
+        #warning("TODO")
+        fatalError("TODO")
     }
 
     @inlinable
     public func index(_ i: Index, offsetBy distance: Int, limitedBy limit: Index) -> Index? {
-        fatalError()
+        #warning("TODO")
+        fatalError("TODO")
     }
 
     @inlinable
     public func distance(from start: Index, to end: Index) -> Int {
-        fatalError()
+        #warning("TODO")
+        fatalError("TODO")
     }
 }
 
