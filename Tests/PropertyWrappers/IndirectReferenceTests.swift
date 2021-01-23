@@ -15,7 +15,7 @@ final class IndirectReferenceTests: XCTestCase {
         @IndirectReference
         var i: Int
     }
-    
+
     func testRecursiveStruct() {
         // Ensure we can define a recursive struct
         struct Recursive {
@@ -23,24 +23,24 @@ final class IndirectReferenceTests: XCTestCase {
             var recursive: Recursive
         }
     }
-    
+
     func testUseIndirect() {
         let value = Value(i: 1)
         XCTAssertEqual(value.i, 1)
-        
+
         value.i += 1
         XCTAssertEqual(value.i, 2)
-        
+
         value.i = 3
         XCTAssertEqual(value.i, 3)
     }
-    
+
     func testProjectedValue() {
         let value = Value(i: 42)
         let projected = value.$i
-        
+
         XCTAssertEqual(value.i, projected.wrappedValue)
-        
+
         projected.wrappedValue += 1
         XCTAssertEqual(value.i, projected.wrappedValue)
     }

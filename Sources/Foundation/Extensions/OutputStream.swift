@@ -16,12 +16,12 @@ extension OutputStream {
         case streamAtCapacity
         case streamError(Error?)
     }
-    
+
     @inlinable
     public func write(allOf buffer: UnsafePointer<UInt8>, length: Int) throws {
         try write(allOf: .init(start: buffer, count: length))
     }
-    
+
     @inlinable
     public func write(allOf buffer: UnsafeBufferPointer<UInt8>) throws {
         guard !buffer.isEmpty else {
@@ -30,7 +30,7 @@ extension OutputStream {
         guard streamStatus == .open else {
             throw WriteAllOfError.streamNotInOpenState
         }
-        
+
         var bytesWritten = 0
         repeat {
             let bytesJustWritten = write(buffer.baseAddress!, maxLength: buffer.count - bytesWritten)
@@ -47,7 +47,7 @@ extension OutputStream {
 
 extension OutputStream {
     public typealias WriteAllOfInputStreamOperation = (_ outputStream: OutputStream, _ inputStream: InputStream) throws -> Void
-    
+
     @inlinable
     public func write(allOf inputStream: InputStream, maxIntermediateBufferSize: Int, beforeEachWriteOperation: WriteAllOfInputStreamOperation? = nil, afterEachWriteOperation: WriteAllOfInputStreamOperation? = nil) throws {
         try inputStream.forEachChunk(upToSize: maxIntermediateBufferSize) { buffer in

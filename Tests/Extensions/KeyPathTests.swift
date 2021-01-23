@@ -17,13 +17,13 @@ final class KeyPathTests: XCTestCase {
             i.isMultiple(of: 2)
         }
     }
-    
+
     let values: [Value] = (0..<10).map(Value.init(i:))
-    
+
     func testPrefixOperatorBang() {
         XCTAssertEqual(values.filter(!\.isEven).map(\.i), [1, 3, 5, 7, 9])
     }
-    
+
     func testInfixOperatorEquals() {
         XCTAssertEqual(values.filter(\.i == 2).map(\.i), [2])
     }

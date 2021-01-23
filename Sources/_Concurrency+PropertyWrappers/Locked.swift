@@ -17,7 +17,7 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
 
     @usableFromInline
     let lock: NSLocking
-    
+
     @usableFromInline
     let projectedValueIsProtected: Bool
 
@@ -68,7 +68,7 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
 //            }
         }
     }
-    
+
     @usableFromInline
     init(wrappedValue: WrappedValue, lock: NSLocking, projectedValueIsProtected: Bool) {
         self.value = wrappedValue

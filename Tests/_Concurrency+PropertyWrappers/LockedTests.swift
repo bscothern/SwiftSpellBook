@@ -14,21 +14,21 @@ final class LockedTests: XCTestCase {
     struct S {
         @Locked
         var i: Int
-        
+
         init(_ i: Int) {
             self.init(.init(wrappedValue: i))
         }
-        
+
         init(_ i: Locked<Int>) {
             self._i = i
         }
     }
-    
+
     struct S2 {
         @Locked
         var c: COWCollection<Int> = []
     }
-    
+
     struct COWCollection<Element>: MutableCollection, RandomAccessCollection, ExpressibleByArrayLiteral {
         final class Buffer {
             var values: [Element]
@@ -84,10 +84,10 @@ final class LockedTests: XCTestCase {
             isKnownUniquelyReferenced(&buffer)
         }
     }
-    
+
     func runTest(lockType: Locked<Int>.LockType, file: StaticString = #file, line: UInt = #line) {
         var value = S(.init(wrappedValue: 0, lockType: lockType))
-        
+
         let iterations = 1000
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             value.i += 1
@@ -105,11 +105,11 @@ final class LockedTests: XCTestCase {
             value = 42
         }
         XCTAssertEqual(value.i, 42, file: file, line: line)
-        
+
         // Make sure the default is to protect the lock
         let originalLock = value.$i.lock
         let newLock = Locked<Int>(wrappedValue: 0)
-        
+
         value.$i = newLock
         XCTAssertEqual(value.i, 0)
         XCTAssert(value.$i.lock === originalLock)
@@ -119,21 +119,21 @@ final class LockedTests: XCTestCase {
         let s = S(0)
         XCTAssertEqual(ObjectIdentifier(type(of: s.$i.lock)), ObjectIdentifier(type(of: Locked<Int>.LockType.platformDefault.createLock())))
     }
-    
+
     func testNSLock() {
         runTest(lockType: .nsLock)
     }
-    
+
     func testNSRecursiveLock() {
         runTest(lockType: .nsRecursiveLock)
     }
-    
+
     func testOSUnfairLock() {
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
             runTest(lockType: .osUnfairLock)
         }
     }
-    
+
 //    func testNoProjectedValueProtectsLock() {
 //        var value = S(.init(wrappedValue: 0, projectedValueIsProtected: false))
 //
@@ -164,7 +164,7 @@ final class LockedTests: XCTestCase {
 //
 //        XCTAssertEqual(value.c, [2, 4, 6])
 //    }
-    
+
     func testLockTypePlatformDefault() {
         let platformDefault = Locked<Any>.LockType.platformDefault
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
@@ -173,18 +173,18 @@ final class LockedTests: XCTestCase {
             XCTAssertEqual(platformDefault, .nsLock)
         }
     }
-    
+
     func testLockTypeCreateLockType() {
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
             let lock = Locked<Any>.LockType.osUnfairLock.createLock()
             XCTAssertEqual(ObjectIdentifier(type(of: lock)), ObjectIdentifier(OSUnfairLock.self))
         }
-        
+
         do {
             let lock = Locked<Any>.LockType.nsLock.createLock()
             XCTAssertEqual(ObjectIdentifier(type(of: lock)), ObjectIdentifier(NSLock.self))
         }
-        
+
         do {
             let lock = Locked<Any>.LockType.nsRecursiveLock.createLock()
             XCTAssertEqual(ObjectIdentifier(type(of: lock)), ObjectIdentifier(NSRecursiveLock.self))

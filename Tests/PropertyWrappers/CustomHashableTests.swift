@@ -26,7 +26,7 @@ final class CustomHashableTests: XCTestCase {
         value1.wrappedValue *= -1
         XCTAssertNotEqual(value0, value1)
         XCTAssertEqual(value0.hashValue, value1.hashValue)
-        
+
         value1.wrappedValue = value0.wrappedValue
         XCTAssertEqual(value0, value1)
         XCTAssertEqual(value0.wrappedValue, value1.wrappedValue)

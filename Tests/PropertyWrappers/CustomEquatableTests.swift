@@ -18,17 +18,17 @@ final class CustomEquatableTests: XCTestCase {
         XCTAssertEqual(value0, value1)
         XCTAssertNotEqual(value1, value0)
         XCTAssertNotEqual(value0.wrappedValue, value1.wrappedValue)
-        
+
         value1.wrappedValue = value0.wrappedValue
         XCTAssertEqual(value0, value1)
         XCTAssertNotEqual(value1, value0)
         XCTAssertEqual(value0.wrappedValue, value1.wrappedValue)
-        
+
         value1.wrappedValue = 3
         XCTAssertEqual(value0, value1)
         XCTAssertNotEqual(value1, value0)
         XCTAssertNotEqual(value0.wrappedValue, value1.wrappedValue)
-        
+
         value1.wrappedValue += 3
         XCTAssertEqual(value0, value1)
         XCTAssertNotEqual(value1, value0)

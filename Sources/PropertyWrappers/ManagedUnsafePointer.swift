@@ -23,7 +23,7 @@ public struct ManagedUnsafePointer<WrappedValue>: MutablePropertyWrapper, Defaul
 
     @inlinable
     public var projectedValue: Self { self }
-    
+
     @inlinable
     public var unsafePointer: UnsafePointer<WrappedValue> { .init(unsafeMutablePointer) }
 
@@ -39,7 +39,7 @@ public struct ManagedUnsafePointer<WrappedValue>: MutablePropertyWrapper, Defaul
     public init(wrappedValue: WrappedValue) {
         unsafeMutablePointer.initialize(to: wrappedValue)
     }
-    
+
     /// Creates a copy of a `@ManagedUnsafePointer` instance using a closure to copy the value.
     ///
     /// - Parameters:
@@ -74,7 +74,7 @@ public struct ManagedUnsafePointer<WrappedValue>: MutablePropertyWrapper, Defaul
 //        precondition(copyObject !== pointerObject, "\(#function)'s valueCopyFunction did not return a different instance of WrappedValue (\(WrappedValue.self) which is required when creating a copy.")
         self = .init(wrappedValue: copy)
     }
-    
+
     /// Creates a copy of the `@ManagedUnsafePointer`
     ///
     /// - Parameters:

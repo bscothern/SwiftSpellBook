@@ -14,14 +14,14 @@ extension InputStream {
         case streamNotInOpenState
         case streamError(Error?)
     }
-    
+
     @inlinable
     public func forEachChunk(upToSize maxBufferSize: Int, _ body: (_ buffer: UnsafeBufferPointer<UInt8>) throws -> Void) throws {
         guard streamStatus == .open else { throw ForEachChunkError.streamNotInOpenState }
-        
+
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: maxBufferSize)
         defer { buffer.deallocate() }
-        
+
         repeat {
             let bytesRead = read(buffer, maxLength: maxBufferSize)
             if bytesRead == 0 {
