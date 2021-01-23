@@ -31,5 +31,4 @@ final class OptionalTests: XCTestCase {
         XCTAssertEqual(value, 3)
     }
 }
-//asdfasdf
 #endif
