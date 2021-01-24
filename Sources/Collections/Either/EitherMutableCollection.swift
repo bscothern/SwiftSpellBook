@@ -6,24 +6,15 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-@_spi(EitherMutableCollection)
-public typealias EitherMutableCollection<Left, Right> = EitherCollection<Left, Right> where Left: MutableCollection, Right: MutableCollection, Left.Element == Right.Element, Left: IsUnique, Right: IsUnique
+public typealias EitherMutableCollection<Left, Right> = EitherCollection<Left, Right> where Left: MutableCollection, Right: MutableCollection, Left.Element == Right.Element
 
-@_spi(EitherMutableCollection)
 extension EitherMutableCollection: MutableCollection {
     @inlinable
     public subscript(position: Index) -> Element {
         // swiftlint doesn't recognize _modify as an accessor
         //swiftlint:disable:next implicit_getter
         get {
-            switch (value, position.value) {
-            case let (.left(value), .left(position)):
-                return value[position]
-            case let (.right(value), .right(position)):
-                return value[position]
-            default:
-                fatalError("EitherMutableCollection.\(#function) used with other index type")
-            }
+            getElement(at: position)
         }
         _modify {
             // This accessor does some extra explicit memory management to help avoid COW overhead.
@@ -35,7 +26,7 @@ extension EitherMutableCollection: MutableCollection {
             var right: UnsafeMutablePointer<Right>?
 
             withUnsafeMutablePointer(to: &_value) { value in
-                switch value.pointee {
+                switch value.move() {
                 case let .left(value):
                     left = .allocate(capacity: 1)
                     left?.initialize(to: value)
@@ -45,19 +36,7 @@ extension EitherMutableCollection: MutableCollection {
                 case .none:
                     fatalError("EitherMutableCollection has memory corruption and cannot find a value")
                 }
-                value.deinitialize(count: 1)
             }
-
-            guard !(left?.pointee.isUnique() ?? right?.pointee.isUnique() ?? true) else {
-                fatalError("1")
-            }
-
-//            // Invalidate _value so it is not keeping a reference to the value we are going to yield in order to avoid COW
-//            _value = nil
-
-//            guard left?.isUnique() ?? right?.isUnique() ?? false else {
-//                fatalError("3")
-//            }
 
             defer {
                 withUnsafeMutablePointer(to: &_value) { value in
@@ -73,44 +52,22 @@ extension EitherMutableCollection: MutableCollection {
                 }
             }
 
-            guard left?.pointee.isUnique() ?? right?.pointee.isUnique() ?? false else {
-                fatalError("2")
-            }
-
             // Since unsafelyUnwrapped is read-only we need to determine what we have, bind it, yield, and unbind it to avoid COW
             switch (left, right, position.value) {
             case let (.some, .none, .left(position)):
-                var yieldableLeft = left.unsafelyUnwrapped.pointee
-                left.unsafelyUnwrapped.deinitialize(count: 1)
-
-                guard yieldableLeft.isUnique() else {
-                    fatalError("3")
-                }
-
+                var yieldableLeft = left.unsafelyUnwrapped.move()
                 defer {
                     left.unsafelyUnwrapped.initialize(to: yieldableLeft)
                 }
-
-                guard yieldableLeft.isUnique() else {
-                    fatalError("4")
-                }
                 yield &yieldableLeft[position]
+
             case let (.none, .some, .right(position)):
-                var yieldableRight = right.unsafelyUnwrapped.pointee
-                right.unsafelyUnwrapped.deinitialize(count: 1)
-
-                guard yieldableRight.isUnique() else {
-                    fatalError("3")
-                }
-
+                var yieldableRight = right.unsafelyUnwrapped.move()
                 defer {
                     right.unsafelyUnwrapped.initialize(to: yieldableRight)
                 }
-
-                guard yieldableRight.isUnique() else {
-                    fatalError("4")
-                }
                 yield &yieldableRight[position]
+
             case (.none, .none, _):
                 fatalError("EitherMutableCollection.\(#function) unable to find value to mutate")
             default:
@@ -118,9 +75,4 @@ extension EitherMutableCollection: MutableCollection {
             }
         }
     }
-}
-
-@usableFromInline
-protocol IsUnique {
-    mutating func isUnique() -> Bool
 }

@@ -16,7 +16,7 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
     var value: WrappedValue
 
     @usableFromInline
-    let lock: NSLocking
+    let lock: NSLocking & TryLocking
 
     @usableFromInline
     let projectedValueIsProtected: Bool
@@ -70,7 +70,7 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
     }
 
     @usableFromInline
-    init(wrappedValue: WrappedValue, lock: NSLocking, projectedValueIsProtected: Bool) {
+    init(wrappedValue: WrappedValue, lock: NSLocking & TryLocking, projectedValueIsProtected: Bool) {
         self.value = wrappedValue
         self.lock = lock
         self.projectedValueIsProtected = projectedValueIsProtected
@@ -121,7 +121,7 @@ extension Locked {
 
         #if canImport(Foundation)
         @usableFromInline
-        func createLock() -> NSLocking {
+        func createLock() -> NSLocking & TryLocking {
             switch self {
             case .osUnfairLock:
                 if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
@@ -150,6 +150,24 @@ extension Locked {
     @inlinable
     public mutating func modify<Result>(_ criticalBlock: (inout WrappedValue) -> Result) -> Result {
         lock.lock()
+        defer { lock.unlock() }
+        return criticalBlock(&value)
+    }
+    
+    @inlinable
+    public func tryUse<Result>(_ criticalBlock: (WrappedValue) -> Result) -> Result? {
+        guard lock.try() else {
+            return nil
+        }
+        defer { lock.unlock() }
+        return criticalBlock(value)
+    }
+
+    @inlinable
+    public mutating func tryModify<Result>(_ criticalBlock: (inout WrappedValue) -> Result) -> Result? {
+        guard lock.try() else {
+            return nil
+        }
         defer { lock.unlock() }
         return criticalBlock(&value)
     }

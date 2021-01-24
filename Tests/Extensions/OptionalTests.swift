@@ -7,7 +7,7 @@
 //
 
 #if !os(watchOS)
-import SwiftOperatorsSpellBook
+import SwiftExtensionsSpellBook
 import XCTest
 
 final class OptionalTests: XCTestCase {

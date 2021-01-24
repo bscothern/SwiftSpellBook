@@ -32,7 +32,30 @@ extension EitherCollection: Collection {
     }
 
     @inlinable
+    public var count: Int {
+        switch value {
+        case let .left(value):
+            return value.count
+        case let .right(value):
+            return value.count
+        }
+    }
+
+    @inlinable
     public subscript(position: Either<Left.Index, Right.Index>) -> Element {
+        getElement(at: position)
+    }
+
+    /// Shared implimentation of the `Collection` protocol's subscript requirement as a function that can be called from the mutable version.
+    ///
+    /// - Complexity: O(1)
+    ///
+    /// - Parameter position: The position of the element to access.
+    ///  `position` must be a valid index of the collection that is not equal to the `endIndex` property.
+    /// - Returns: The `Element` at `position`.
+    @usableFromInline
+    @_transparent
+    func getElement(at position: Either<Left.Index, Right.Index>) -> Element {
         switch (value, position.value) {
         case let (.left(value), .left(position)):
             return value[position]

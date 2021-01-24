@@ -6,18 +6,31 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-// These tests are only run in release mode that is when the ARC optomizations will take place to attempt to bypass COW issues.
-// These tests can be run with: swift test -c release -Xswiftc -enable-testing
-#if !os(watchOS) && !DEBUG
+#if !os(watchOS)
 import ProtocolTests
-@_spi(EitherMutableCollection)
 import SwiftCollectionsSpellBook
 import XCTest
 
 final class EitherNoCollectionCOWTests: XCTestCase {
-    func testNoCOW() throws {
+    override func setUp() {
+        super.setUp()
+        self.continueAfterFailure = false
+    }
+    
+    func testNoCOWLeft() throws {
         var either: Either<COWCollection<Int>, COWCollection<Int>> = .left([1, 3, 2])
-        either.sort()
+        either[.left(.init(value: 1))] = 4
+        
+        XCTAssertEqual(either[.left(.init(value: 1))], 4)
+        XCTAssertEqual(either.left.map(Array.init), [1, 4, 2])
+    }
+    
+    func testNoCOWRight() throws {
+        var either: Either<COWCollection<Int>, COWCollection<Int>> = .right([1, 3, 2])
+        either[.right(.init(value: 1))] = 4
+
+        XCTAssertEqual(either[.right(.init(value: 1))], 4)
+        XCTAssertEqual(either.right.map(Array.init), [1, 4, 2])
     }
 }
 
@@ -59,21 +72,26 @@ struct COWCollection<Element>: MutableCollection, RandomAccessCollection, Expres
     func index(before i: Index) -> Index {
         .init(value: buffer.values.index(before: i.value))
     }
+    
+    mutating func append(_ element: Element) {
+        assertUnique()
+        buffer.values.append(element)
+    }
 
     subscript(position: Index) -> Element {
         get { buffer.values[position.value] }
         set {
-            if !isKnownUniquelyReferenced(&buffer) {
-                XCTFail("Buffer is referenced multiple times which would trigger copy on write")
-                buffer = .init(values: buffer.values)
-            }
+            assertUnique()
             buffer.values[position.value] = newValue
         }
     }
-
+    
     @_transparent
-    mutating func isUnique() -> Bool {
-        isKnownUniquelyReferenced(&buffer)
+    mutating func assertUnique() {
+        guard isKnownUniquelyReferenced(&buffer) else {
+            XCTFail("Buffer is referenced multiple times which would trigger copy on write")
+            return
+        }
     }
 }
 

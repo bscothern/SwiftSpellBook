@@ -120,19 +120,19 @@ final class LockedTests: XCTestCase {
         XCTAssertEqual(ObjectIdentifier(type(of: s.$i.lock)), ObjectIdentifier(type(of: Locked<Int>.LockType.platformDefault.createLock())))
     }
 
-    func testNSLock() {
-        runTest(lockType: .nsLock)
-    }
-
-    func testNSRecursiveLock() {
-        runTest(lockType: .nsRecursiveLock)
-    }
-
-    func testOSUnfairLock() {
-        if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-            runTest(lockType: .osUnfairLock)
-        }
-    }
+//    func testNSLock() {
+//        runTest(lockType: .nsLock)
+//    }
+//
+//    func testNSRecursiveLock() {
+//        runTest(lockType: .nsRecursiveLock)
+//    }
+//
+//    func testOSUnfairLock() {
+//        if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
+//            runTest(lockType: .osUnfairLock)
+//        }
+//    }
 
 //    func testNoProjectedValueProtectsLock() {
 //        var value = S(.init(wrappedValue: 0, projectedValueIsProtected: false))
