@@ -10,17 +10,17 @@
 extension Collection {
     @inlinable
     public func drop(while keyPath: KeyPath<Element, Bool>) -> DropWhileSequence<Self> {
-        drop(while: { $0[keyPath: keyPath] })
+        drop(while:) { $0[keyPath: keyPath] }
     }
 
     @inlinable
     public func firstIndex(where keyPath: KeyPath<Element, Bool>) -> Index? {
-        firstIndex(where: { $0[keyPath: keyPath] })
+        firstIndex(where:) { $0[keyPath: keyPath] }
     }
 
     @inlinable
     public func prefix(while keyPath: KeyPath<Element, Bool>) -> SubSequence {
-        prefix(while: { $0[keyPath: keyPath] })
+        prefix(while:) { $0[keyPath: keyPath] }
     }
 }
 #endif

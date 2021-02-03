@@ -16,15 +16,15 @@ final class EitherNoCollectionCOWTests: XCTestCase {
         super.setUp()
         self.continueAfterFailure = false
     }
-    
+
     func testNoCOWLeft() throws {
         var either: Either<COWCollection<Int>, COWCollection<Int>> = .left([1, 3, 2])
         either[.left(.init(value: 1))] = 4
-        
+
         XCTAssertEqual(either[.left(.init(value: 1))], 4)
         XCTAssertEqual(either.left.map(Array.init), [1, 4, 2])
     }
-    
+
     func testNoCOWRight() throws {
         var either: Either<COWCollection<Int>, COWCollection<Int>> = .right([1, 3, 2])
         either[.right(.init(value: 1))] = 4
@@ -72,7 +72,7 @@ struct COWCollection<Element>: MutableCollection, RandomAccessCollection, Expres
     func index(before i: Index) -> Index {
         .init(value: buffer.values.index(before: i.value))
     }
-    
+
     mutating func append(_ element: Element) {
         assertUnique()
         buffer.values.append(element)
@@ -85,7 +85,7 @@ struct COWCollection<Element>: MutableCollection, RandomAccessCollection, Expres
             buffer.values[position.value] = newValue
         }
     }
-    
+
     @_transparent
     mutating func assertUnique() {
         guard isKnownUniquelyReferenced(&buffer) else {

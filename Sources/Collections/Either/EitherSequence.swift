@@ -34,7 +34,7 @@ extension EitherSequence: Sequence {
         }
 
         @inlinable
-        mutating public func next() -> Element? {
+        public mutating func next() -> Element? {
             left?.next() ?? right?.next()
         }
     }

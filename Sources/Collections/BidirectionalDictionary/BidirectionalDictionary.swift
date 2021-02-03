@@ -106,7 +106,8 @@ public struct BidirectionalDictionary<T, U>: Collection where T: Hashable, U: Ha
     public func index(_ i: Index, offsetBy distance: Int, limitedBy limit: Index) -> Index? {
         buffer.withUnsafeMutablePointerToElements { element in
             element.pointee.tToU.index(i.value, offsetBy: distance, limitedBy: limit.value)
-        }.map(Index.init)
+        }
+        .map(Index.init)
     }
 
     @inlinable

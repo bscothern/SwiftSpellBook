@@ -14,7 +14,7 @@ extension MutableCollection where Self: RandomAccessCollection {
 
     @inlinable
     public mutating func sort<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) {
-        sort(by: { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) })
+        sort { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
@@ -31,7 +31,7 @@ extension MutableCollection where Self: RandomAccessCollection {
 extension MutableCollection {
     @inlinable
     public mutating func partition(by keyPath: KeyPath<Element, Bool>) -> Index {
-        partition(by: { $0[keyPath: keyPath] })
+        partition { $0[keyPath: keyPath] }
     }
 }
 #endif

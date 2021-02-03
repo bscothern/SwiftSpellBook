@@ -47,12 +47,12 @@ extension LazySequenceProtocol {
 
     @inlinable
     public func drop(while keyPath: KeyPath<Element, Bool>) -> LazyDropWhileSequence<Self.Elements> {
-        drop(while: { $0[keyPath: keyPath] })
+        drop(while:) { $0[keyPath: keyPath] }
     }
 
     @inlinable
     public func prefix(while keyPath: KeyPath<Element, Bool>) -> LazyPrefixWhileSequence<Self.Elements> {
-        prefix(while: { $0[keyPath: keyPath] })
+        prefix(while:) { $0[keyPath: keyPath] }
     }
 }
 #endif

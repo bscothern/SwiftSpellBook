@@ -34,6 +34,20 @@ public struct OrderedSet<Element>: Hashable where Element: Hashable {
             order: .init(minimumCapacity: minimumCapacity)
         )
     }
+
+    @inlinable
+    public init<S>(_ sequence: S) where S: Sequence, S.Element == Element {
+        var set = Set<Element>()
+        let order = sequence.filter { set.insert($0).inserted }
+        self.init(set: set, order: order)
+    }
+}
+
+extension OrderedSet: ExpressibleByArrayLiteral {
+    @inlinable
+    public init(arrayLiteral elements: Element...) {
+        self.init(elements)
+    }
 }
 
 extension OrderedSet {

@@ -13,9 +13,14 @@ public struct Matrix<Row, Column> where Row: Collection, Column: Collection {
     @usableFromInline
     let column: Column
 
-    public init(row: Row, column: Column) {
+    @usableFromInline
+    init(_row row: Row, column: Column) {
         self.row = row
         self.column = column
+    }
+
+    public init(row: Row, column: Column) {
+        self.init(_row: row, column: column)
     }
 }
 

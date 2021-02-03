@@ -13,7 +13,7 @@ public struct DynamicDidSet<WrappedValue>: MutablePropertyWrapper {
             didSet?(wrappedValue, oldValue)
         }
     }
-    
+
     @inlinable
     public var projectedValue: Self {
         get { self }
@@ -28,7 +28,7 @@ public struct DynamicDidSet<WrappedValue>: MutablePropertyWrapper {
 
     @inlinable
     public init(wrappedValue: WrappedValue, didSet: ((_ value: WrappedValue, _ oldValue: WrappedValue) -> Void)? = nil) {
-        self.wrappedValue =  wrappedValue
+        self.wrappedValue = wrappedValue
         self.didSet = didSet
     }
 }

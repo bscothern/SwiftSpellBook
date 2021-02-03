@@ -12,8 +12,8 @@ import XCTest
 
 final class CustomEquatableTests: XCTestCase {
     func testCustomEquatable() {
-        let value0 = CustomEquatable<Int>(wrappedValue: 1, areEqualBy: { _, _ in true })
-        var value1 = CustomEquatable<Int>(wrappedValue: 2, areEqualBy: { _, _ in false })
+        let value0 = CustomEquatable<Int>(wrappedValue: 1) { _, _ in true }
+        var value1 = CustomEquatable<Int>(wrappedValue: 2) { _, _ in false }
 
         XCTAssertEqual(value0, value1)
         XCTAssertNotEqual(value1, value0)

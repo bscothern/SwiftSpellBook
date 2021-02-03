@@ -25,6 +25,8 @@ extension EitherMutableCollection: MutableCollection {
             var left: UnsafeMutablePointer<Left>?
             var right: UnsafeMutablePointer<Right>?
 
+            // The LOE says that this instance can only be accessed and mutated by one thing at a time so as long as it is restored at the end it should be fine.
+            // In fact this is what Dave Abrahams had done in this thread: https://forums.swift.org/t/law-of-exclusivity-memory-safety-question/43374
             withUnsafeMutablePointer(to: &_value) { value in
                 switch value.move() {
                 case let .left(value):

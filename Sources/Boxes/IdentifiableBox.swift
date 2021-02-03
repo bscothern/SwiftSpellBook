@@ -19,7 +19,7 @@ public struct IdentifiableBox<Value, ID>: MutableBox, Identifiable where ID: Has
 
     @inlinable
     public init(_ boxedValue: Value, id: @escaping @autoclosure () -> ID) {
-        self.init(boxedValue, idBy: { _ in id() })
+        self.init(boxedValue) { _ in id() }
     }
 
     @inlinable

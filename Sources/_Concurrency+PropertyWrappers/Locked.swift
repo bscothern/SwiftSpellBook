@@ -153,7 +153,7 @@ extension Locked {
         defer { lock.unlock() }
         return criticalBlock(&value)
     }
-    
+
     @inlinable
     public func tryUse<Result>(_ criticalBlock: (WrappedValue) -> Result) -> Result? {
         guard lock.try() else {

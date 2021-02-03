@@ -37,7 +37,7 @@ extension Sequence {
 
     @inlinable
     public func min<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) -> Element? {
-        self.min(by: { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) })
+        self.min { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
@@ -47,7 +47,7 @@ extension Sequence {
 
     @inlinable
     public func max<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) -> Element? {
-        self.max(by: { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) })
+        self.max { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
@@ -57,7 +57,7 @@ extension Sequence {
 
     @inlinable
     public func sorted<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) -> [Element] {
-        sorted(by: { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) })
+        sorted { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
@@ -100,12 +100,12 @@ extension Sequence {
 
     @inlinable
     public func contains(where keyPath: KeyPath<Element, Bool>) -> Bool {
-        contains(where: { $0[keyPath: keyPath] })
+        contains(where:) { $0[keyPath: keyPath] }
     }
 
     @inlinable
     public func first(where keyPath: KeyPath<Element, Bool>) -> Element? {
-        first(where: { $0[keyPath: keyPath] })
+        first(where:) { $0[keyPath: keyPath] }
     }
 
     @inlinable
@@ -115,12 +115,12 @@ extension Sequence {
 
     @inlinable
     public func drop(while keyPath: KeyPath<Element, Bool>) -> DropWhileSequence<Self> {
-        drop(while: { $0[keyPath: keyPath] })
+        drop(while:) { $0[keyPath: keyPath] }
     }
 
     @inlinable
     public func prefix(while keyPath: KeyPath<Element, Bool>) -> [Element] {
-        prefix(while: { $0[keyPath: keyPath] })
+        prefix(while:) { $0[keyPath: keyPath] }
     }
 }
 #endif

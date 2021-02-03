@@ -28,7 +28,7 @@ public struct DynamicWillSet<WrappedValue>: MutablePropertyWrapper {
 
     @inlinable
     public init(wrappedValue: WrappedValue, willSet: ((_ value: WrappedValue, _ newValue: WrappedValue) -> Void)? = nil) {
-        self.wrappedValue =  wrappedValue
+        self.wrappedValue = wrappedValue
         self.willSet = willSet
     }
 }
