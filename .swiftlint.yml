@@ -5,10 +5,6 @@ included:
     - Test
     - Tests
 
-# attributes ?
-#   prohibited_super_call has as part of its configuration
-#	included: [["*"]] so hopefully we can do that will attributes
-
 # raw_value_for_camel_cased_codable_enum ?
 
 opt_in_rules:
@@ -22,7 +18,7 @@ opt_in_rules:
     - contains_over_first_not_nil
     - contains_over_range_nil_comparison
     - convenience_type
-    - discouraged_assert
+    #- discouraged_assert #This is missing from 0.42.0 for some reason...
     - empty_collection_literal
     - empty_count
     - empty_string
@@ -69,7 +65,7 @@ opt_in_rules:
     - unneeded_parentheses_in_closure_argument
     - untyped_error_in_catch
     - unused_import
-    - vertical_parameter_alignment_on_cal
+    - vertical_parameter_alignment_on_call
     - vertical_whitespace_closing_braces
     - vertical_whitespace_opening_braces
     - xct_specific_matcher
@@ -93,3 +89,20 @@ disabled_rules:
     - trailing_comma
     - type_body_length
     - type_name
+
+custom_rules:
+    already_true:
+        regex: "== true"
+        message: "Don't compare to true, just use the bool value or nil coalesce."
+    already_bool:
+        regex: "== false"
+        message: "Don't compare to false, just use !value or nil coalesce."
+    attribues_on_own_line:
+        # TODO: Add this to regex somehow but in a working way...
+        # It should be put in after the @. We want to explicitly not error on escaping, autoclosure, or Result Builders
+        # # [^(autoclosure|escaping|([A-Z_][a-zA-Z_0-9]*Builder))]
+        regex: '^\w*[^//][^\n]*?[^//]@[a-zA-Z_][^(\n|//)]*?( var | let | struct | class | enum | protocol | func | init | deinit | subscript<| subscript\()[^\n]*$'
+        message: "Attributes and property wrappers should always be on their own line for types variables, types, and functions."
+    auto_generated_leftovers:
+        regex: 'func [^\n]*\{\n(\s*super\.[^\n]*\n(\s*\/\/[^\n]*\n)*|(\s*\/\/[^\n]*\n)+)\s*\}'
+        message: "Delete auto-generated functions that you don't use"
