@@ -97,12 +97,14 @@ custom_rules:
     already_bool:
         regex: "== false"
         message: "Don't compare to false, just use !value or nil coalesce."
-    attribues_on_own_line:
+    #attribues_on_own_line:
         # TODO: Add this to regex somehow but in a working way...
         # It should be put in after the @. We want to explicitly not error on escaping, autoclosure, or Result Builders
         # # [^(autoclosure|escaping|([A-Z_][a-zA-Z_0-9]*Builder))]
-        regex: '^\w*[^//][^\n]*?[^//]@[a-zA-Z_][^(\n|//)]*?( var | let | struct | class | enum | protocol | func | init | deinit | subscript<| subscript\()[^\n]*$'
-        message: "Attributes and property wrappers should always be on their own line for types variables, types, and functions."
+        # TODO: Get this to prevent more attributes on the same line...
+        # this will require knowing how to not trip on autoclosure, escaping, or builders since they can be applied on the same line.
+        #regex: '^\w*[^//][^\n]*?[^//]@[a-zA-Z_][^(\n|//)]*?( var | let | struct | class | enum | protocol | func | init(\w)*<| init(\w)*\(| deinit | subscript(\w)*<| subscript(\w)*\()[^\n]*$'
+        #message: "Attributes and property wrappers should always be on their own line for types variables, types, and functions."
     auto_generated_leftovers:
         regex: 'func [^\n]*\{\n(\s*super\.[^\n]*\n(\s*\/\/[^\n]*\n)*|(\s*\/\/[^\n]*\n)+)\s*\}'
         message: "Delete auto-generated functions that you don't use"

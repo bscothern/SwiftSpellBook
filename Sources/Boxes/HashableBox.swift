@@ -6,6 +6,8 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
+import Foundation
+
 @dynamicMemberLookup
 public struct HashableBox<Value>: MutableBox, Hashable {
     public typealias AreEqualFunction = EquatableBox<Value>.AreEqualFunction
@@ -19,6 +21,9 @@ public struct HashableBox<Value>: MutableBox, Hashable {
             yield &equatableBox.boxedValue
         }
     }
+
+    @usableFromInline
+    let lock = NSLock()
 
     @usableFromInline
     var equatableBox: EquatableBox<Value>
@@ -44,7 +49,13 @@ public struct HashableBox<Value>: MutableBox, Hashable {
 
     @inlinable
     public func hash(into hasher: inout Hasher) {
+        print("\(#fileID) - \(boxedValue)")
         hashFunction(&hasher, boxedValue)
+
+        if lock.try() {
+            defer { lock.unlock() }
+            print("Hashed", boxedValue, self.hashValue)
+        }
     }
 
     public subscript<Result>(dynamicMember keyPath: KeyPath<Value, Result>) -> Result {

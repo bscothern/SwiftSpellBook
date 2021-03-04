@@ -45,7 +45,7 @@ let package = Package(
     ],
     dependencies: [
 //        .package(url: "https://github.com/bscothern/ProtocolTests.git", .upToNextMinor(from: "0.2.0"))
-        .package(path: "/Users/Braden/Documents/Programming/ProtocolTests")
+        .package(path: "/Users/Braden/Documents/Programming/Personal/ProtocolTests")
     ],
     targets: [
         .target(
@@ -70,6 +70,7 @@ let package = Package(
             name: "SwiftBoxesSpellBookTests",
             dependencies: [
                 .target(name: "SwiftBoxesSpellBook"),
+                .product(name: "ProtocolTests", package: "ProtocolTests"),
             ],
             path: "Tests/Boxes"
         ),
@@ -84,7 +85,7 @@ let package = Package(
             name: "SwiftCollectionsSpellBookTests",
             dependencies: [
                 .target(name: "SwiftCollectionsSpellBook"),
-                .product(name: "ProtocolTests", package: "ProtocolTests")
+                .product(name: "ProtocolTests", package: "ProtocolTests"),
             ],
             path: "Tests/Collections"
         ),

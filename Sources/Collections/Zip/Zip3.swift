@@ -36,6 +36,7 @@
 @inlinable
 public func zip<Sequence1, Sequence2, Sequence3>(_ sequence1: Sequence1, _ sequence2: Sequence2, _ sequence3: Sequence3) -> AnySequence<(Sequence1.Element, Sequence2.Element, Sequence3.Element)> where Sequence1: Sequence, Sequence2: Sequence, Sequence3: Sequence {
     var iterators = (sequence1.makeIterator(), sequence2.makeIterator(), sequence3.makeIterator())
+    let z = zip([1, 2, 3], "abc")
     return AnySequence {
         AnyIterator {
             guard let sequence1Value = iterators.0.next(),
