@@ -18,9 +18,6 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
     @usableFromInline
     let lock: NSLocking & TryLocking
 
-    @usableFromInline
-    let projectedValueIsProtected: Bool
-
     @inlinable
     @_transparent
     public var wrappedValue: WrappedValue {
@@ -37,6 +34,14 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
         _modify {
             lock.lock()
             defer { lock.unlock() }
+            var value = withUnsafeMutablePointer(to: &self.value) { valuePointer in
+                valuePointer.move()
+            }
+            defer {
+                withUnsafeMutablePointer(to: &self.value) { valuePointer in
+                    valuePointer.initialize(to: value)
+                }
+            }
             yield &value
         }
     }
@@ -47,38 +52,18 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
         _modify {
             defer { _fixLifetime(self) }
             yield &self
-//            if projectedValueIsProtected {
-//                var copy = self
-//                defer { self = copy }
-////                withUnsafeMutablePointer(to: &value) { valuePointer in
-////                    _ = valuePointer.deinitialize(count: 1)
-////                }
-////                defer {
-////                    withUnsafeMutablePointer(to: &value) { valuePointer in
-////                        valuePointer.initialize(to: copy.value)
-////                    }
-////                }
-//                yield &copy
-//            } else {
-//                var copy = self
-//                defer {
-//                    self = .init(wrappedValue: copy.wrappedValue, lock: copy.lock, projectedValueIsProtected: projectedValueIsProtected)
-//                }
-//                yield &copy
-//            }
         }
     }
 
     @usableFromInline
-    init(wrappedValue: WrappedValue, lock: NSLocking & TryLocking, projectedValueIsProtected: Bool) {
+    init(wrappedValue: WrappedValue, lock: NSLocking & TryLocking) {
         self.value = wrappedValue
         self.lock = lock
-        self.projectedValueIsProtected = projectedValueIsProtected
     }
 
     @inlinable
-    public init(wrappedValue: WrappedValue, lockType: LockType = .platformDefault, projectedValueIsProtected: Bool = true) {
-        self.init(wrappedValue: wrappedValue, lock: lockType.createLock(), projectedValueIsProtected: projectedValueIsProtected)
+    public init(wrappedValue: WrappedValue, lockType: LockType = .platformDefault) {
+        self.init(wrappedValue: wrappedValue, lock: lockType.createLock())
     }
 }
 #else
@@ -124,11 +109,10 @@ extension Locked {
         func createLock() -> NSLocking & TryLocking {
             switch self {
             case .osUnfairLock:
-                if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-                    return OSUnfairLock()
-                } else {
+                guard #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) else {
                     fatalError("Unavailable")
                 }
+                return OSUnfairLock()
             case .nsLock:
                 return NSLock()
             case .nsRecursiveLock:
@@ -141,35 +125,35 @@ extension Locked {
 
 extension Locked {
     @inlinable
-    public func use<Result>(_ criticalBlock: (WrappedValue) -> Result) -> Result {
+    public func use<Result>(_ criticalBlock: (WrappedValue) throws -> Result) rethrows -> Result {
         lock.lock()
         defer { lock.unlock() }
-        return criticalBlock(value)
+        return try criticalBlock(value)
     }
 
     @inlinable
-    public mutating func modify<Result>(_ criticalBlock: (inout WrappedValue) -> Result) -> Result {
+    public mutating func modify<Result>(_ criticalBlock: (inout WrappedValue) throws -> Result) rethrows -> Result {
         lock.lock()
         defer { lock.unlock() }
-        return criticalBlock(&value)
+        return try criticalBlock(&value)
     }
 
     @inlinable
-    public func tryUse<Result>(_ criticalBlock: (WrappedValue) -> Result) -> Result? {
+    public func tryUse<Result>(_ criticalBlock: (WrappedValue) throws -> Result) rethrows -> Result? {
         guard lock.try() else {
             return nil
         }
         defer { lock.unlock() }
-        return criticalBlock(value)
+        return try criticalBlock(value)
     }
 
     @inlinable
-    public mutating func tryModify<Result>(_ criticalBlock: (inout WrappedValue) -> Result) -> Result? {
+    public mutating func tryModify<Result>(_ criticalBlock: (inout WrappedValue) throws -> Result) rethrows -> Result? {
         guard lock.try() else {
             return nil
         }
         defer { lock.unlock() }
-        return criticalBlock(&value)
+        return try criticalBlock(&value)
     }
 }
 

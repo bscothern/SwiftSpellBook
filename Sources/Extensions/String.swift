@@ -8,6 +8,9 @@
 
 // MARK: - StaticString Support
 extension String {
+    /// Creates a `String` from a `StaticString`
+    ///
+    /// - Parameter staticString: The `StaticString` to create a copy of as a normal `String`
     @inlinable
     public init(_ staticString: StaticString) {
         if staticString.hasPointerRepresentation {
