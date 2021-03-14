@@ -11,10 +11,16 @@ import Foundation
 
 extension OutputStream {
     public enum WriteAllOfError: Error {
+        /// Thrown when a stream is not in an open state and an operation is attempted on it.
         case streamNotInOpenState
+        /// Thrown when an output buffer is empty.
         case emptyBuffer
+        /// Thrown when the stream is unable to write more bytes because the output buffer is full.
         case streamAtCapacity
-        case streamError(Error?)
+        /// Thrown when the stream reports an error and has an error available to provide.
+        case streamError(Error)
+        /// Thrown when the stream reports an error but it doesn't have an error available to provide.
+        case unknownStreamError
     }
 
     @inlinable
@@ -37,7 +43,7 @@ extension OutputStream {
             if bytesJustWritten == 0 {
                 throw WriteAllOfError.streamAtCapacity
             } else if bytesJustWritten == -1 {
-                throw WriteAllOfError.streamError(streamError)
+                throw streamError.map(WriteAllOfError.streamError) ?? WriteAllOfError.unknownStreamError
             } else {
                 bytesWritten += bytesJustWritten
             }

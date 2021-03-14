@@ -45,8 +45,13 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            name: "LoftTest_CheckXCAssertionFailure",
+            url: "https://github.com/loftware/CheckXCAssertionFailure",
+            from: "0.9.6"
+        ),
+        .package(
             name: "LoftTest_StandardLibraryProtocolChecks",
-            url: "https://github.com/loftware/StandardLibraryProtocolChecks.git",
+            url: "https://github.com/loftware/StandardLibraryProtocolChecks",
             .exact("0.1.0")
         ),
     ],
@@ -73,6 +78,7 @@ let package = Package(
             name: "SwiftBoxesSpellBookTests",
             dependencies: [
                 .target(name: "SwiftBoxesSpellBook"),
+                .product(name: "LoftTest_CheckXCAssertionFailure", package: "LoftTest_CheckXCAssertionFailure"),
                 .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "LoftTest_StandardLibraryProtocolChecks"),
             ],
             path: "Tests/Boxes"

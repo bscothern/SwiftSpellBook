@@ -7,31 +7,17 @@
 //
 
 #if !os(watchOS)
-import ProtocolTests
+import LoftTest_StandardLibraryProtocolChecks
 import SwiftCollectionsSpellBook
 import XCTest
 
-final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
+final class SingleLinkedListPublicTests: XCTestCase {
     typealias List<T> = SingleLinkedList<T>
-    typealias CollectionType = List<Int>
-    typealias Element = Int
-
-    func testRunCollectionTests() throws {
-        try runCollectionTests()
-    }
-
-    func protocolTestSuiteEmptyCollection() -> CollectionType? {
-        CollectionType()
-    }
-
-    func protocolTestSuitePopulatedCollection() -> CollectionType? {
-        [1, 2, 3, 4, 5]
-    }
 
     func testInit() {
         let list = List<Int>()
-        XCTAssert(list.isEmpty)
-        XCTAssertEqual(list.startIndex, list.endIndex)
+        list.checkCollectionLaws(expecting: [])
+        list.checkHashableLaws()
     }
 
     func testAppendMany() {
@@ -40,6 +26,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.append(i)
         }
+        list.checkHashableLaws()
         XCTAssertEqual(list.count, count)
         zip(list, 0..<count).forEach {
             XCTAssertEqual($0, $1)
@@ -52,6 +39,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.prepend(i)
         }
+        list.checkHashableLaws()
         XCTAssertEqual(list.count, count)
         zip(list, (0..<count).reversed()).forEach {
             XCTAssertEqual($0, $1)
@@ -65,9 +53,8 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
             list.prepend(i)
         }
 
-        zip(list.reversed(), 0..<count).forEach {
-            XCTAssertEqual($0, $1)
-        }
+        list.checkCollectionLaws(expecting: (0..<count).reversed())
+        list.checkHashableLaws()
     }
 
     func testFullSlice() {
@@ -76,9 +63,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.append(i)
         }
-        zip(list[...], 0...).forEach {
-            XCTAssertEqual($0, $1)
-        }
+        list[...].checkCollectionLaws(expecting: 0..<count)
     }
 
     func testSlice1() {
@@ -87,9 +72,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.append(i)
         }
-        zip(list[1...5], 1...5).forEach {
-            XCTAssertEqual($0, $1)
-        }
+        list[1...5].checkCollectionLaws(expecting: 1...5)
     }
 
     func testSlice2() {
@@ -98,11 +81,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.append(i)
         }
-
-//        zip(list[1..<4], 1...).forEach {
-//            print("-------------")
-//            XCTAssertEqual($0, $1)
-//        }
+        list[1..<4].checkCollectionLaws(expecting: 1..<4)
     }
 
     func testSlice3() {
@@ -111,9 +90,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.append(i)
         }
-        zip(list[...8], 0...).forEach {
-            XCTAssertEqual($0, $1)
-        }
+        list[...8].checkCollectionLaws(expecting: 0...8)
     }
 
     func testSlice4() {
@@ -122,9 +99,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.append(i)
         }
-        zip(list[..<8], 0...).forEach {
-            XCTAssertEqual($0, $1)
-        }
+        list[..<8].checkCollectionLaws(expecting: 0..<8)
     }
 
     func testSlice5() {
@@ -133,9 +108,7 @@ final class SingleLinkedListPublicTests: XCTestCase, CollectionTests {
         for i in 0..<count {
             list.append(i)
         }
-        zip(list[2...], 2...).forEach {
-            XCTAssertEqual($0, $1)
-        }
+        list[2...].checkCollectionLaws(expecting: 2..<count)
     }
 
     func testIndexStartingWithOffset() {

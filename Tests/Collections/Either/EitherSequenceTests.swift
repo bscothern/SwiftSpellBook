@@ -7,21 +7,33 @@
 //
 
 #if !os(watchOS)
+import LoftTest_StandardLibraryProtocolChecks
 import SwiftCollectionsSpellBook
 import XCTest
 
 final class EitherSequenceTests: XCTestCase {
-    func testEitherSequence2() {
-        let e = Either<[Int], Set<Int>>.left([1, 2, 3, 4, 5])
-
-        for values in zip(e, [1, 2, 3, 4, 5]) {
-            XCTAssertEqual(values.0, values.1)
-        }
+    func testLeftSequenceConformance() {
+        Either<[Int], Set<Int>>
+            .left([1, 2, 3, 4, 5])
+            .checkSequenceLaws(expecting: [1, 2, 3, 4, 5])
     }
 
-    func testEitherSequence3() {
-        let e = Either<[Int], Set<Int>>.right([1, 2, 3, 4, 5])
-        XCTAssertEqual(Set(e), Set([1, 2, 3, 4, 5]))
+    func testRightSequenceConformance() {
+        Either<Set<Int>, [Int]>
+            .right([6, 7, 8, 9, 0])
+            .checkSequenceLaws(expecting: [6, 7, 8, 9, 0])
+    }
+
+    func testEmptyLeftSequenceConformance() {
+        Either<[Int], [Int]>
+            .left([])
+            .checkSequenceLaws(expecting: [])
+    }
+
+    func testEmptyRightSequenceConformance() {
+        Either<[Int], [Int]>
+            .right([])
+            .checkSequenceLaws(expecting: [])
     }
 }
 #endif

@@ -7,35 +7,30 @@
 //
 
 #if !os(watchOS)
-import ProtocolTests
+import LoftTest_CheckXCAssertionFailure
+import LoftTest_StandardLibraryProtocolChecks
 import SwiftBoxesSpellBook
 import XCTest
 
-final class EquatableBoxTests: XCTestCase, EquatableTests {
-    typealias EquatableValue = EquatableBox<Int>
-
-    var testableValueRequestIDRange: Range<Int> = 0..<100
-
-    func equatableValue(requestID: Int) -> EquatableBox<Int> {
-        .init(requestID, areEqualBy: ==)
-    }
-
-    func testRunEqutableTests() throws {
-        try runEquatableTests()
-    }
-
+final class EquatableBoxTests: CheckXCAssertionFailureTestCase {
     func testAreEqual() {
         let value1 = EquatableBox(1, areEqualBy: { _, _ in true })
         let value2 = EquatableBox(2, areEqualBy: { _, _ in true })
 
-        XCTAssertEqual(value1, value2)
+        value1.checkEquatableLaws()
+        value2.checkEquatableLaws()
+        value1.checkEquatableLaws(equal: value2)
     }
 
     func testAreNotEqual() {
-        let value1 = EquatableBox(1, areEqualBy: { _, _ in false })
-        let value2 = EquatableBox(2, areEqualBy: { _, _ in false })
+        let value1 = EquatableBox(1, areEqualBy: ==)
+        let value2 = EquatableBox(2, areEqualBy: ==)
 
-        XCTAssertNotEqual(value1, value2)
+        value1.checkEquatableLaws()
+        value2.checkEquatableLaws()
+        checkXCAssertionFailure(
+            value1.checkEquatableLaws(equal: value2)
+        )
     }
 
     func testKeyPath() {

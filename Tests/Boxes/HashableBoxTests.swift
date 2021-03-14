@@ -7,38 +7,33 @@
 //
 
 #if !os(watchOS)
-import ProtocolTests
+import LoftTest_CheckXCAssertionFailure
+import LoftTest_StandardLibraryProtocolChecks
 import SwiftBoxesSpellBook
 import XCTest
 
-final class HashableBoxTests: XCTestCase, HashableTests {
-    typealias HashableValue = HashableBox<Int>
-    typealias EquatableValue = HashableValue
-
-    let testableValueRequestIDRange: Range<Int> = 10..<11
-
-    func hashableValue(requestID: Int) -> HashableBox<Int> {
-        .init(requestID, areEqualBy: ==, hashedBy: { hasher, boxedValue in
-            XCTAssertEqual(boxedValue, requestID)
-            hasher.combine(boxedValue)
-        })
-    }
-
-    func testRunHashableTests() throws {
-        try runHashableTests()
-    }
-
+final class HashableBoxTests: CheckXCAssertionFailureTestCase {
     func testAreEqual() {
         let value1 = HashableBox(1, areEqualBy: { _, _ in true }, hashedBy: { hasher, _ in hasher.combine(#function) })
         let value2 = HashableBox(2, areEqualBy: { _, _ in true }, hashedBy: { hasher, _ in hasher.combine(#function) })
+
+        value1.checkHashableLaws()
+        value2.checkHashableLaws()
+        value1.checkHashableLaws(equal: value2)
 
         XCTAssertEqual(value1, value2)
         XCTAssertEqual(value1.hashValue, value2.hashValue)
     }
 
     func testAreNotEqual1() {
-        let value1 = HashableBox(1, areEqualBy: { _, _ in false }, hashedBy: { hasher, _ in hasher.combine(#function) })
-        let value2 = HashableBox(2, areEqualBy: { _, _ in false }, hashedBy: { hasher, _ in hasher.combine(#function) })
+        let value1 = HashableBox(1, areEqualBy: ==, hashedBy: { hasher, _ in hasher.combine(#function) })
+        let value2 = HashableBox(2, areEqualBy: ==, hashedBy: { hasher, _ in hasher.combine(#function) })
+
+        value1.checkHashableLaws()
+        value2.checkHashableLaws()
+        checkXCAssertionFailure(
+            value1.checkHashableLaws(equal: value2)
+        )
 
         XCTAssertNotEqual(value1, value2)
         XCTAssertEqual(value1.hashValue, value2.hashValue)

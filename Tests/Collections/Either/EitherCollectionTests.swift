@@ -7,47 +7,33 @@
 //
 
 #if !os(watchOS)
-import ProtocolTests
+import LoftTest_StandardLibraryProtocolChecks
 import SwiftCollectionsSpellBook
 import XCTest
 
-final class EitherCollectionTests: XCTestCase, CollectionTests {
-    typealias CollectionType = Either<[Int], Set<Int>>
-    typealias Element = Int
-
-    static var mode: Mode = .left
-
-    enum Mode {
-        case left
-        case right
+final class EitherCollectionTests: XCTestCase {
+    func testLeftCollectionConformance() {
+        Either<[Int], [Int]>
+            .left([1, 2, 3, 4, 5])
+            .checkCollectionLaws(expecting: [1, 2, 3, 4, 5])
     }
 
-    func testRunCollectionTestsLeft() throws {
-        Self.mode = .left
-        try runCollectionTests()
+    func testRightCollectionConformance() {
+        Either<[Int], [Int]>
+            .right([6, 7, 8, 9, 0])
+            .checkCollectionLaws(expecting: [6, 7, 8, 9, 0])
     }
 
-    func testRunCollectionTestsRight() throws {
-        Self.mode = .right
-        try runCollectionTests()
+    func testEmptyLeftCollectionConformance() {
+        Either<[Int], [Int]>
+            .left([])
+            .checkCollectionLaws(expecting: [])
     }
 
-    func protocolTestSuiteEmptyCollection() -> CollectionType? {
-        switch Self.mode {
-        case .left:
-            return .left([])
-        case .right:
-            return .right([])
-        }
-    }
-
-    func protocolTestSuitePopulatedCollection() -> CollectionType? {
-        switch Self.mode {
-        case .left:
-            return .left([1, 2, 3, 4, 5])
-        case .right:
-            return .right([6, 7, 8, 9, 0])
-        }
+    func testEmptyRightCollectionConformance() {
+        Either<[Int], [Int]>
+            .right([])
+            .checkCollectionLaws(expecting: [])
     }
 }
 #endif

@@ -40,7 +40,7 @@ public struct IdentifiableBox<Value, ID>: MutableBox, Identifiable where ID: Has
 
     public subscript<Result>(dynamicMember keyPath: ReferenceWritableKeyPath<Value, Result>) -> Result {
         get { boxedValue[keyPath: keyPath] }
-        set { boxedValue[keyPath: keyPath] = newValue }
-        _modify { yield &boxedValue[keyPath: keyPath] }
+        nonmutating set { boxedValue[keyPath: keyPath] = newValue }
+        nonmutating _modify { yield &boxedValue[keyPath: keyPath] }
     }
 }

@@ -11,8 +11,12 @@ import Foundation
 
 extension InputStream {
     public enum ForEachChunkError: Error {
+        /// Thrown when a stream is not in an open state and an operation is attempted on it.
         case streamNotInOpenState
-        case streamError(Error?)
+        /// Thrown when the stream reports an error and has an error available to provide.
+        case streamError(Error)
+        /// Thrown when the stream reports an error but it doesn't have an error available to provide.
+        case unknownStreamError
     }
 
     @inlinable
@@ -27,7 +31,7 @@ extension InputStream {
             if bytesRead == 0 {
                 break
             } else if bytesRead == -1 {
-                throw ForEachChunkError.streamError(streamError)
+                throw streamError.map(ForEachChunkError.streamError) ?? ForEachChunkError.unknownStreamError
             } else {
                 try body(.init(start: buffer, count: bytesRead))
             }

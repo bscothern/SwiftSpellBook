@@ -7,47 +7,33 @@
 //
 
 #if !os(watchOS)
-import ProtocolTests
+import LoftTest_StandardLibraryProtocolChecks
 import SwiftCollectionsSpellBook
 import XCTest
 
-final class EitherBidirectionalCollectionTests: XCTestCase, BidirectionalCollectionTests {
-    typealias CollectionType = Either<[Int], [Int]>
-    typealias Element = Int
-
-    static var mode: Mode = .left
-
-    enum Mode {
-        case left
-        case right
+final class EitherBidirectionalCollectionTests: XCTestCase {
+    func testLeftBidirectionalCollectionConformance() {
+        Either<[Int], [Int]>
+            .left([1, 2, 3, 4, 5])
+            .checkBidirectionalCollectionLaws(expecting: [1, 2, 3, 4, 5])
     }
 
-    func testRunCollectionTestsLeft() throws {
-        Self.mode = .left
-        try runBidirectionalCollectionTests()
+    func testRightBidirectionalCollectionConformance() {
+        Either<[Int], [Int]>
+            .right([6, 7, 8, 9, 0])
+            .checkBidirectionalCollectionLaws(expecting: [6, 7, 8, 9, 0])
     }
 
-    func testRunCollectionTestsRight() throws {
-        Self.mode = .right
-        try runBidirectionalCollectionTests()
+    func testEmptyLeftBidirectionalCollectionConformance() {
+        Either<[Int], [Int]>
+            .left([])
+            .checkBidirectionalCollectionLaws(expecting: [])
     }
 
-    func protocolTestSuiteEmptyCollection() -> CollectionType? {
-        switch Self.mode {
-        case .left:
-            return .left([])
-        case .right:
-            return .right([])
-        }
-    }
-
-    func protocolTestSuitePopulatedCollection() -> CollectionType? {
-        switch Self.mode {
-        case .left:
-            return .left([1, 2, 3, 4, 5])
-        case .right:
-            return .right([6, 7, 8, 9, 0])
-        }
+    func testEmptyRightBidirectionalCollectionConformance() {
+        Either<[Int], [Int]>
+            .right([])
+            .checkBidirectionalCollectionLaws(expecting: [])
     }
 }
 #endif

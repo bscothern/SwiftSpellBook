@@ -8,9 +8,8 @@
 
 @propertyWrapper
 public struct ToggledState<State> where State: Hashable {
-    
     public var wrappedValue: [State: Bool]
-    
+
     public var projectedValue: Self {
         get { self }
         set { self = newValue }
@@ -19,14 +18,14 @@ public struct ToggledState<State> where State: Hashable {
             yield &self
         }
     }
-    
+
     public var defaultToggleValue: Bool
-    
+
     @inlinable
     public init() {
         self.init(wrappedValue: [:], defaultToggleValue: false)
     }
-    
+
     @inlinable
     public init(wrappedValue: [State: Bool]) {
         self.init(wrappedValue: wrappedValue, defaultToggleValue: false)
@@ -42,12 +41,12 @@ public struct ToggledState<State> where State: Hashable {
             defaultToggleValue: false
         )
     }
-    
+
     @inlinable
     public init(defaultToggleValue: Bool) {
         self.init(wrappedValue: [:], defaultToggleValue: defaultToggleValue)
     }
-    
+
     @inlinable
     public init(wrappedValue: [State: Bool], defaultToggleValue: Bool) {
         self.wrappedValue = wrappedValue

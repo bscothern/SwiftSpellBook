@@ -50,7 +50,7 @@ final class LockedTests: XCTestCase {
         value.$i = newLocked
         XCTAssertEqual(value.i, newLocked.wrappedValue, file: file, line: line)
         XCTAssertEqual(value.i, 0, file: file, line: line)
-        
+
         // Make sure try functions work
         let ranTryUse = try XCTUnwrap(
             value.$i.tryUse { value -> Bool in
@@ -68,12 +68,12 @@ final class LockedTests: XCTestCase {
             }
         )
         XCTAssertTrue(ranTryModify, file: file, line: line)
-        
+
         // Test try functions when already aquired
         do {
             let waitExpecation = XCTestExpectation()
             let continueExpectation = XCTestExpectation()
-            
+
             DispatchQueue.global().async {
                 value.$i.use { _ in
                     waitExpecation.fulfill()
@@ -88,11 +88,11 @@ final class LockedTests: XCTestCase {
             continueExpectation.fulfill()
             XCTAssertNil(gotLock, file: file, line: line)
         }
-        
+
         do {
             let waitExpecation = XCTestExpectation()
             let continueExpectation = XCTestExpectation()
-            
+
             DispatchQueue.global().async {
                 value.$i.modify { _ in
                     waitExpecation.fulfill()
@@ -118,7 +118,7 @@ final class LockedTests: XCTestCase {
         try runTest(lockType: .nsLock)
     }
 
-    func testNSRecursiveLock() throws  {
+    func testNSRecursiveLock() throws {
         try runTest(lockType: .nsRecursiveLock)
     }
 
