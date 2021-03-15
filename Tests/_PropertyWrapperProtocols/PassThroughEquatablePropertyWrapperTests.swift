@@ -17,16 +17,16 @@ final class PassThroughEquatablePropertyWrapperTests: CheckXCAssertionFailureTes
     struct TestPropertyWrapper<WrappedValue>: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {
         var wrappedValue: WrappedValue
     }
-    
+
     func testEqualPassThroughComparablePropertyWrapper() throws {
         let value1 = TestPropertyWrapper(wrappedValue: 1)
         let value2 = TestPropertyWrapper(wrappedValue: 1)
         let value3 = TestPropertyWrapper(wrappedValue: 2)
         let value4 = TestPropertyWrapper(wrappedValue: 3)
-        
+
         value1.checkEquatableLaws()
         value1.checkEquatableLaws(equal: value2)
-        
+
         checkXCAssertionFailure(
             value2.checkEquatableLaws(equal: value3)
         )

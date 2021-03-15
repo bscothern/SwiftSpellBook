@@ -15,7 +15,7 @@ extension Sequence {
 
     @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     @inlinable
-    public func uniqueElements() -> [Element] where Element: Identifiable {
+    public func uniqueElementsByID() -> [Element] where Element: Identifiable {
         var seenElements: Set<Element.ID> = []
         return filter { seenElements.insert($0.id).inserted }
     }

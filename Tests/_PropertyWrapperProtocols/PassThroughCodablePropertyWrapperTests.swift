@@ -15,7 +15,7 @@ final class PassThroughCodablePropertyWrapperTests: XCTestCase {
     struct TestPropertyWrapper<WrappedValue>: PassThroughCodablePropertyWrapper where WrappedValue: Codable {
         var wrappedValue: WrappedValue
     }
-    
+
     func testPassThroughCodablePropertyWrapper() throws {
         let original = TestPropertyWrapper(wrappedValue: #function)
         let data = try JSONEncoder().encode(original)

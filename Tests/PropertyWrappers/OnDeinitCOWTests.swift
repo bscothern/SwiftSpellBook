@@ -38,7 +38,7 @@ final class OnDeinitCOWTests: XCTestCase {
                 deinitTotal += 1
             }
             expectedDeinitTotal += 1
-            
+
             // This shouldn't make a copy since only the one reference exists
             value.wrappedValue += 1
             expectedDeinitTotal += 0
@@ -49,7 +49,7 @@ final class OnDeinitCOWTests: XCTestCase {
             expectedDeinitTotal += 1
             copy.wrappedValue -= 1
             expectedValue += 0
-            
+
             // This shouldn't make a copy since only the one reference exists the unsafe copy isn't the same reference
             value.wrappedValue += 3
             expectedDeinitTotal += 0

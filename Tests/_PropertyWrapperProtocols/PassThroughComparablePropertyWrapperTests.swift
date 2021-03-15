@@ -16,13 +16,13 @@ final class PassThroughComparablePropertyWrapperTests: XCTestCase {
     struct TestPropertyWrapper<WrappedValue>: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {
         var wrappedValue: WrappedValue
     }
-    
+
     func testEqualPassThroughComparablePropertyWrapper() throws {
         let value1 = TestPropertyWrapper(wrappedValue: 1)
         let value2 = TestPropertyWrapper(wrappedValue: 1)
         let value3 = TestPropertyWrapper(wrappedValue: 2)
         let value4 = TestPropertyWrapper(wrappedValue: 3)
-        
+
         value1.checkComparableLaws(equal: value2, greater: value3, greaterStill: value4)
     }
 }

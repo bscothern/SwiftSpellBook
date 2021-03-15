@@ -37,20 +37,19 @@ final class OnDeinitTests: XCTestCase {
                 deinitTotal += 1
             }
             expectedTotal += 1
-            
+
             // This shouldn't make a copy since only the one reference exists
             value.unsafeMakeUnique()
             expectedTotal += 0
-            
-            
+
             let copy = value.unsafeCopy()
             XCTAssertEqual(copy, value)
             expectedTotal += 1
-            
+
             // This shouldn't make a copy since only the one reference exists the unsafe copy isn't the same reference
             value.unsafeMakeUnique()
             expectedTotal += 0
-            
+
             var extraReference = value
             XCTAssert(extraReference.box === value.box)
             extraReference.unsafeMakeUnique()

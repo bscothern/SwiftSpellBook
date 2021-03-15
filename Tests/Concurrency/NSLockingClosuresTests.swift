@@ -16,14 +16,14 @@ final class NSLockingClosuresTests: XCTestCase {
         let lock = NSLock()
         var value = 0
         let iterations = 1000
-        
+
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             lock.protect { value += 1 }
         }
-        
+
         XCTAssertEqual(value, iterations)
     }
-    
+
     func testTryProtect() {
         let throwingLock = NSLock()
         var throwCount = 0
@@ -31,7 +31,7 @@ final class NSLockingClosuresTests: XCTestCase {
         var catchCount = 0
         let iterations = 1000
         struct TestError: Error {}
-        
+
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             do {
                 try throwingLock.protect {

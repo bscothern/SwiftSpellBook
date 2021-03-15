@@ -14,10 +14,10 @@ final class ArrayTests: XCTestCase {
     func testInitMinimumCapacity() {
         let defaultCapacity = [Int]().capacity
         let minimumCapacity = Int.random(in: (defaultCapacity * 2)...(defaultCapacity * 3))
-        var array = Array<Int>(minimumCapacity: minimumCapacity)
+        var array = [Int](minimumCapacity: minimumCapacity)
         let capacity = array.capacity
         XCTAssertGreaterThan(capacity, minimumCapacity)
-        
+
         for _ in 0..<capacity {
             array.append(0)
         }
