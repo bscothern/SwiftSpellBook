@@ -1,8 +1,8 @@
 //
-//  OnDeinitTests.swift
+//  OnDeinitCOWTests.swift
 //  SwiftSpellBookTests
 //
-//  Created by Braden Scothern on 11/2/20.
+//  Created by Braden Scothern on 3/13/21.
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
@@ -11,14 +11,14 @@ import Foundation
 @testable import SwiftPropertyWrappersSpellBook
 import XCTest
 
-final class OnDeinitTests: XCTestCase {
+final class OnDeinitCOWTests: XCTestCase {
     @available(iOS 13.0, tvOS 13.0, *)
     func testPerformance1() {
         var total = 0
         measure(metrics: [XCTStorageMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
             total = 0
             for i in 0..<10_000 {
-                var value = OnDeinit<Int>(wrappedValue: i) { _ in
+                var value = OnDeinitCOW<Int>(wrappedValue: i) { _ in
                     total += 1
                 }
                 XCTAssertEqual(value.wrappedValue, i)
@@ -31,32 +31,31 @@ final class OnDeinitTests: XCTestCase {
 
     func testCopying() {
         var deinitTotal = 0
-        var expectedTotal = 0
+        var expectedDeinitTotal = 0
+        var expectedValue = 0
         do {
-            var value = OnDeinit<Int>(wrappedValue: 42) { _ in
+            var value = OnDeinitCOW<Int>(wrappedValue: 0) { _ in
                 deinitTotal += 1
             }
-            expectedTotal += 1
+            expectedDeinitTotal += 1
             
             // This shouldn't make a copy since only the one reference exists
-            value.unsafeMakeUnique()
-            expectedTotal += 0
-            
-            
-            let copy = value.unsafeCopy()
+            value.wrappedValue += 1
+            expectedDeinitTotal += 0
+            expectedValue += 1
+
+            var copy = value
             XCTAssertEqual(copy, value)
-            expectedTotal += 1
+            expectedDeinitTotal += 1
+            copy.wrappedValue -= 1
+            expectedValue += 0
             
             // This shouldn't make a copy since only the one reference exists the unsafe copy isn't the same reference
-            value.unsafeMakeUnique()
-            expectedTotal += 0
-            
-            var extraReference = value
-            XCTAssert(extraReference.box === value.box)
-            extraReference.unsafeMakeUnique()
-            expectedTotal += 1
+            value.wrappedValue += 3
+            expectedDeinitTotal += 0
+            expectedValue += 3
         }
-        XCTAssertEqual(deinitTotal, expectedTotal)
+        XCTAssertEqual(deinitTotal, expectedDeinitTotal)
     }
 }
 #endif

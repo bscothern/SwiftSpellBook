@@ -6,7 +6,7 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-/// A property wrapper that ties a deinit function to the lifetime of its `WrappedValue` with copy on write semantics.
+/// A property wrapper that ties a deinit function to the lifetime of its `WrappedValue` with copy on write semantics during mutation.
 ///
 /// This is extra helpful when you want to use a pointer in a struct type.
 ///
@@ -48,3 +48,7 @@ public struct OnDeinitCOW<WrappedValue>: MutablePropertyWrapper {
         self.onDeinit = .init(wrappedValue: wrappedValue, do: deinitAction)
     }
 }
+
+extension OnDeinitCOW: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
+extension OnDeinitCOW: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
+extension OnDeinitCOW: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}

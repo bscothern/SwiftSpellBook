@@ -198,5 +198,14 @@ let package = Package(
             dependencies: [],
             path: "Sources/_PropertyWrapperProtocols"
         ),
+        .testTarget(
+            name: "_PropertyWrapperProtocolsTests",
+            dependencies: [
+                .target(name: "_PropertyWrapperProtocols"),
+                .product(name: "LoftTest_CheckXCAssertionFailure", package: "LoftTest_CheckXCAssertionFailure"),
+                .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "LoftTest_StandardLibraryProtocolChecks"),
+            ],
+            path: "Tests/_PropertyWrapperProtocols"
+        ),
     ]
 )

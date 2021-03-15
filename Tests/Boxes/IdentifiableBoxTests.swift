@@ -12,7 +12,7 @@ import LoftTest_StandardLibraryProtocolChecks
 import SwiftBoxesSpellBook
 import XCTest
 
-final class IdentifiableBoxTests: CheckXCAssertionFailureTestCase {
+final class IdentifiableBoxTests: XCTestCase {
     typealias FooBox = IdentifiableBox<Foo, Int>
     typealias BarBox = IdentifiableBox<Bar, Int>
 

@@ -26,12 +26,3 @@ extension MutableCollection where Self: RandomAccessCollection {
         }
     }
 }
-
-#if swift(<5.2)
-extension MutableCollection {
-    @inlinable
-    public mutating func partition(by keyPath: KeyPath<Element, Bool>) -> Index {
-        partition { $0[keyPath: keyPath] }
-    }
-}
-#endif
