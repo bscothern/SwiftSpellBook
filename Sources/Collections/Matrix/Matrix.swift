@@ -11,12 +11,20 @@ public struct Matrix<Row, Column> where Row: Collection, Column: Collection {
     let row: Row
 
     @usableFromInline
+    let rowCount: Int
+
+    @usableFromInline
     let column: Column
+
+    @usableFromInline
+    let columnCount: Int
 
     @usableFromInline
     init(_row row: Row, column: Column) {
         self.row = row
+        self.rowCount = row.count
         self.column = column
+        self.columnCount = column.count
     }
 
     public init(row: Row, column: Column) {
@@ -40,10 +48,10 @@ extension Matrix: Collection {
 
         @inlinable
         public static func < (lhs: Self, rhs: Self) -> Bool {
-            guard lhs.rowIndex != rhs.rowIndex else {
-                return lhs.columnIndex < rhs.columnIndex
+            guard lhs.columnIndex != rhs.columnIndex else {
+                return lhs.rowIndex < rhs.rowIndex
             }
-            return lhs.rowIndex < rhs.rowIndex
+            return lhs.columnIndex < rhs.columnIndex
         }
     }
 
@@ -64,16 +72,44 @@ extension Matrix: Collection {
 
     @inlinable
     public func index(after i: Index) -> Index {
-        let rowIndex = row.index(after: i.rowIndex)
-        guard rowIndex != row.endIndex else {
-            return .init(rowIndex: row.startIndex, columnIndex: column.index(after: i.columnIndex))
+        let columnIndex = column.index(after: i.columnIndex)
+        guard columnIndex == column.endIndex else {
+            return .init(rowIndex: i.rowIndex, columnIndex: columnIndex)
         }
-        return .init(rowIndex: rowIndex, columnIndex: i.columnIndex)
+
+        let rowIndex = row.index(after: i.rowIndex)
+        guard rowIndex == row.endIndex else {
+            return endIndex
+        }
+
+        return .init(rowIndex: rowIndex, columnIndex: column.startIndex)
     }
 
     @inlinable
     public func index(_ i: Index, offsetBy distance: Int) -> Index {
-        #warning("TODO")
+        if let columnIndex = column.index(i.columnIndex, offsetBy: distance, limitedBy: column.endIndex) {
+            guard columnIndex != column.endIndex else {
+                return .init(rowIndex: i.rowIndex, columnIndex: columnIndex)
+            }
+
+            let rowIndex = row.index(after: i.rowIndex)
+            if rowIndex != row.endIndex {
+                return .init(rowIndex: rowIndex, columnIndex: column.startIndex)
+            } else {
+                return endIndex
+            }
+        } else {
+            let remainingRowDistance = column.distance(from: i.columnIndex, to: column.endIndex)
+            var distanceToGo = distance - remainingRowDistance
+            var rowOffset = 1
+            while distanceToGo > columnCount {
+                distanceToGo -= columnCount
+                rowOffset += 1
+            }
+
+            return .init(rowIndex: row.index(i.rowIndex, offsetBy: rowOffset), columnIndex: column.index(column.startIndex, offsetBy: distanceToGo))
+        }
+
         fatalError("TODO")
     }
 

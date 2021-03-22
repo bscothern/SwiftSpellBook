@@ -7,7 +7,6 @@
 //
 
 #if !os(watchOS)
-import ProtocolTests
 import SwiftCollectionsSpellBook
 import XCTest
 

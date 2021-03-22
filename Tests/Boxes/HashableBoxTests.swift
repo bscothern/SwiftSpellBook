@@ -12,6 +12,7 @@ import LoftTest_StandardLibraryProtocolChecks
 import SwiftBoxesSpellBook
 import XCTest
 
+//swiftlint:disable trailing_closure
 final class HashableBoxTests: CheckXCAssertionFailureTestCase {
     func testAreEqual() {
         let value1 = HashableBox(1, areEqualBy: { _, _ in true }, hashedBy: { hasher, _ in hasher.combine(#function) })
@@ -74,4 +75,5 @@ final class HashableBoxTests: CheckXCAssertionFailureTestCase {
         XCTAssertEqual(value.i, 2)
     }
 }
+//swiftlint:enable trailing_closure
 #endif

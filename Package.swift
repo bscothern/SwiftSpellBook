@@ -187,7 +187,7 @@ let package = Package(
             path: "Sources/_Concurrency+PropertyWrappers"
         ),
         .testTarget(
-            name: "_Concurrency_PropertyWrappersSpellBookTests",
+            name: "Concurrency.PropertyWrappersSpellBookTests",
             dependencies: [
                 .target(name: "_Concurrency_PropertyWrappersSpellBook")
             ],
@@ -199,7 +199,7 @@ let package = Package(
             path: "Sources/_PropertyWrapperProtocols"
         ),
         .testTarget(
-            name: "_PropertyWrapperProtocolsTests",
+            name: "PropertyWrapperProtocolsTests",
             dependencies: [
                 .target(name: "_PropertyWrapperProtocols"),
                 .product(name: "LoftTest_CheckXCAssertionFailure", package: "LoftTest_CheckXCAssertionFailure"),

@@ -8,16 +8,47 @@
 
 extension Sequence {
     @inlinable
-    public func map<Value0, Value1>(_ value0KeyPath: KeyPath<Element, Value0>, _ value1KeyPath: KeyPath<Element, Value1>) -> [(Value0, Value1)] {
+    public func map<Value0, Value1>(
+        _ value0KeyPath: KeyPath<Element, Value0>,
+        _ value1KeyPath: KeyPath<Element, Value1>
+    ) -> [(Value0, Value1)] {
         map { element in
-            (element[keyPath: value0KeyPath], element[keyPath: value1KeyPath])
+            (
+                element[keyPath: value0KeyPath],
+                element[keyPath: value1KeyPath]
+            )
         }
     }
 
     @inlinable
-    public func map<Value0, Value1, Value2>(_ value0KeyPath: KeyPath<Element, Value0>, _ value1KeyPath: KeyPath<Element, Value1>, _ value2KeyPath: KeyPath<Element, Value2>) -> [(Value0, Value1, Value2)] {
+    public func map<Value0, Value1, Value2>(
+        _ value0KeyPath: KeyPath<Element, Value0>,
+        _ value1KeyPath: KeyPath<Element, Value1>,
+        _ value2KeyPath: KeyPath<Element, Value2>
+    ) -> [(Value0, Value1, Value2)] {
         map { element in
-            (element[keyPath: value0KeyPath], element[keyPath: value1KeyPath], element[keyPath: value2KeyPath])
+            (
+                element[keyPath: value0KeyPath],
+                element[keyPath: value1KeyPath],
+                element[keyPath: value2KeyPath]
+            )
+        }
+    }
+
+    @inlinable
+    public func map<Value0, Value1, Value2, Value3>(
+        _ value0KeyPath: KeyPath<Element, Value0>,
+        _ value1KeyPath: KeyPath<Element, Value1>,
+        _ value2KeyPath: KeyPath<Element, Value2>,
+        _ value3KeyPath: KeyPath<Element, Value3>
+    ) -> [(Value0, Value1, Value2, Value3)] {
+        map { element in
+            (
+                element[keyPath: value0KeyPath],
+                element[keyPath: value1KeyPath],
+                element[keyPath: value2KeyPath],
+                element[keyPath: value3KeyPath]
+            )
         }
     }
 }

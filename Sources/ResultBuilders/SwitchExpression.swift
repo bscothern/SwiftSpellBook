@@ -6,8 +6,9 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
+#if swift(>=5.4)
 /// A result builder that turns a switch into an expression
-@_functionBuilder
+@resultBuilder
 public enum SwitchExpression<Result> {
     public static func buildBlock(_ component: Result) -> Result {
         component
@@ -25,3 +26,4 @@ public enum SwitchExpression<Result> {
         component
     }
 }
+#endif

@@ -1,5 +1,5 @@
 //
-//  LazySequenceProtocol+UniqueTests.swift
+//  Seqeunce+UniqueTests.swift
 //  SwiftSpellBookTests
 //
 //  Created by Braden Scothern on 3/14/21.
@@ -10,20 +10,12 @@
 import SwiftCollectionsSpellBook
 import XCTest
 
-final class LazySequenceProtocolUniqueTests: XCTestCase {
+final class SeqeunceUniqueTests: XCTestCase {
     class Foo: Hashable {
-        static var fail = true
-
-        var _i: Int
-        var i: Int {
-            if Foo.fail {
-                XCTFail("Should be lazy")
-            }
-            return _i
-        }
+        var i: Int
 
         init() {
-            _i = Int.random(in: 0..<3)
+            i = Int.random(in: 0..<3)
         }
 
         func hash(into hasher: inout Hasher) {
@@ -35,11 +27,6 @@ final class LazySequenceProtocolUniqueTests: XCTestCase {
         }
     }
 
-    override func setUp() {
-        super.setUp()
-        Foo.fail = true
-    }
-
     func testUniqueElements() {
         // Because Foo.i must be in the range 0..<3 this must have a duplicate Foo
         let original: [Foo] = [
@@ -49,9 +36,7 @@ final class LazySequenceProtocolUniqueTests: XCTestCase {
             .init(),
         ]
 
-        let unique = original.lazy.uniqueElements()
-
-        Foo.fail.toggle()
+        let unique = original.uniqueElements()
 
         let uniqueArray: [Foo] = Array(unique)
         XCTAssertLessThan(uniqueArray.count, original.count)
@@ -73,9 +58,7 @@ final class LazySequenceProtocolUniqueTests: XCTestCase {
             .init(),
         ]
 
-        let unique = original.lazy.uniqueElementsByID()
-
-        Foo.fail.toggle()
+        let unique = original.uniqueElementsByID()
 
         let uniqueArray: [Foo] = Array(unique)
         XCTAssertLessThan(uniqueArray.count, original.count)
@@ -89,7 +72,7 @@ final class LazySequenceProtocolUniqueTests: XCTestCase {
 }
 
 @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
-extension LazySequenceProtocolUniqueTests.Foo: Identifiable {
+extension SeqeunceUniqueTests.Foo: Identifiable {
     var id: Int { i }
 }
 

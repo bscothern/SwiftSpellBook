@@ -12,6 +12,7 @@ import LoftTest_StandardLibraryProtocolChecks
 import SwiftBoxesSpellBook
 import XCTest
 
+//swiftlint:disable trailing_closure
 final class EquatableBoxTests: CheckXCAssertionFailureTestCase {
     func testAreEqual() {
         let value1 = EquatableBox(1, areEqualBy: { _, _ in true })
@@ -60,4 +61,5 @@ final class EquatableBoxTests: CheckXCAssertionFailureTestCase {
         XCTAssertEqual(value.i, 2)
     }
 }
+//swiftlint:enable trailing_closure
 #endif

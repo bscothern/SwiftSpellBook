@@ -6,8 +6,9 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-/// A result builder that collects instances into an array.
-@_functionBuilder
+#if swift(>=5.4)
+/// A result builxder that collects instances into an array.
+@resultBuilder
 public enum ArrayBuilder<Element> {
     public static func buildBlock(_ components: Element) -> [Element] {
         [components]
@@ -17,3 +18,4 @@ public enum ArrayBuilder<Element> {
         components
     }
 }
+#endif

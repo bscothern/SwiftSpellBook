@@ -53,8 +53,8 @@ extension EitherCollection: Collection {
     /// - Parameter position: The position of the element to access.
     ///  `position` must be a valid index of the collection that is not equal to the `endIndex` property.
     /// - Returns: The `Element` at `position`.
-    @usableFromInline
     @_transparent
+    @usableFromInline
     func getElement(at position: Either<Left.Index, Right.Index>) -> Element {
         switch (value, position.value) {
         case let (.left(value), .left(position)):

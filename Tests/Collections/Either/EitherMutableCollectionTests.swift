@@ -6,52 +6,34 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-//#if !os(watchOS)
-//import ProtocolTests
-//import SwiftCollectionsSpellBook
-//import XCTest
-//
-//final class EitherMutableCollectionTests: XCTestCase, MutableCollectionTests {
-//    typealias CollectionType = Either<[Int], [Int]>
-//    typealias Element = Int
-//
-//    static var mode: Mode = .left
-//
-//    enum Mode {
-//        case left
-//        case right
-//    }
-//
-//    func testRunCollectionTestsLeft() throws {
-//        Self.mode = .left
-//        try runMutableCollectionTests()
-//    }
-//
-//    func testRunCollectionTestsRight() throws {
-//        Self.mode = .right
-//        try runMutableCollectionTests()
-//    }
-//
-//    func protocolTestSuiteEmptyCollection() -> CollectionType? {
-//        switch Self.mode {
-//        case .left:
-//            return .left([])
-//        case .right:
-//            return .right([])
-//        }
-//    }
-//
-//    func protocolTestSuitePopulatedCollection() -> CollectionType? {
-//        switch Self.mode {
-//        case .left:
-//            return .left([1, 2, 3, 4, 5])
-//        case .right:
-//            return .right([6, 7, 8, 9, 0])
-//        }
-//    }
-//    
-//    func randomElement() -> Int {
-//        Int.random(in: 11...20)
-//    }
-//}
-//#endif
+#if !os(watchOS)
+import LoftTest_StandardLibraryProtocolChecks
+import SwiftCollectionsSpellBook
+import XCTest
+
+final class EitherMutableCollectionTests: XCTestCase {
+    func testLeftMutableCollectionConformance() {
+        var value = Either<[Int], [Int]>
+            .left([1, 2, 3, 4, 5])
+        value.checkMutableCollectionLaws(expecting: [1, 2, 3, 4, 5], writing: [6, 7, 8, 9, 10])
+    }
+
+    func testRightMutableCollectionConformance() {
+        var value = Either<[Int], [Int]>
+            .right([1, 2, 3, 4, 5])
+        value.checkMutableCollectionLaws(expecting: [1, 2, 3, 4, 5], writing: [6, 7, 8, 9, 10])
+    }
+
+    func testEmptyLeftMutableCollectionConformance() {
+        var value = Either<[Int], [Int]>
+            .left([])
+        value.checkMutableCollectionLaws(expecting: [], writing: [])
+    }
+
+    func testEmptyRightMutableCollectionConformance() {
+        var value = Either<[Int], [Int]>
+            .right([])
+        value.checkMutableCollectionLaws(expecting: [], writing: [])
+    }
+}
+#endif
