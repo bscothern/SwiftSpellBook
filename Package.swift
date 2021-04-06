@@ -42,8 +42,16 @@ let package = Package(
             name: "SwiftResultBuildersSpellBook",
             targets: ["SwiftResultBuildersSpellBook"]
         ),
+//        .executable(
+//            name: "SwiftCollectionsSpellBookBenchmark",
+//            targets: ["SwiftCollectionsSpellBookBenchmark"]
+//        ),
     ],
     dependencies: [
+//        .package(
+//            url: "https://github.com/apple/swift-collections-benchmark",
+//            .upToNextMinor(from: "0.0.1")
+//        ),
         .package(
             name: "LoftTest_CheckXCAssertionFailure",
             url: "https://github.com/loftware/CheckXCAssertionFailure",
@@ -86,6 +94,7 @@ let package = Package(
         .target(
             name: "SwiftCollectionsSpellBook",
             dependencies: [
+                .target(name: "_AutoClosurePropertyWrapper"),
                 .target(name: "SwiftMemoryManagementSpellBook"),
             ],
             path: "Sources/Collections"
@@ -186,6 +195,13 @@ let package = Package(
             ],
             path: "Sources/_Concurrency+PropertyWrappers"
         ),
+        .target(
+            name: "_AutoClosurePropertyWrapper",
+            dependencies: [
+                .target(name: "_PropertyWrapperProtocols")
+            ],
+            path: "Sources/_AutoClosurePropertyWrapper"
+        ),
         .testTarget(
             name: "Concurrency.PropertyWrappersSpellBookTests",
             dependencies: [
@@ -207,5 +223,14 @@ let package = Package(
             ],
             path: "Tests/_PropertyWrapperProtocols"
         ),
+//        // MARK: - Benchmark
+//        .target(
+//            name: "SwiftCollectionsSpellBookBenchmark",
+//            dependencies: [
+//                .target(name: "SwiftCollectionsSpellBook"),
+//                .product(name: "CollectionsBenchmark", package: "swift-collections-benchmark"),
+//            ],
+//            path: "Benchmark/Collections"
+//        )
     ]
 )

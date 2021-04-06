@@ -1,6 +1,6 @@
 # SwiftSpellBook
 
-A collection of common types and extensions to the Swift Standard Library.
+A collection of common types and extensions to the Swift Standard Library and its preview/deveopment packages.
 
 ![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 ![SwiftPM](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)
