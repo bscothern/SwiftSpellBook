@@ -100,21 +100,19 @@ extension OnDeinit: PassThroughEquatablePropertyWrapper where WrappedValue: Equa
 extension OnDeinit: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
 extension OnDeinit: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
 
-// This is all experimental stuff to learn more about how to work with ManagedBuffer and SafeManagedBuffer
-// It does not currently work as all accessed to wrappedValue crash...
-#if false
+#if PROPERTYWRAPPER_ON_DEINIT_BUFFERED
+// This is mostly all experimental stuff to learn more about how to work with ManagedBuffer and SafeManagedBuffer
+// Performance wise it is WAY slower than the struct with a normal final class implimentation.
 
 import SwiftMemoryManagementSpellBook
 
 @propertyWrapper
-public final class OnDeinit_Buffered<WrappedValue>: SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>, _OnDeinit {
+public final class OnDeinitBuffered<WrappedValue>: SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>,
+//SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>,
+MutablePropertyWrapper, _OnDeinit {
     @inlinable
     public var wrappedValue: WrappedValue {
-        get {
-            withUnsafeMutablePointerToElements { element in
-                element.pointee
-            }
-        }
+        get { withUnsafeMutablePointerToElements(\.pointee) }
         set { withUnsafeMutablePointerToElements { $0.pointee = newValue } }
         _modify {
             defer { _fixLifetime(self) }
@@ -153,7 +151,7 @@ extension _OnDeinit {
     }
 }
 
-extension OnDeinit_Buffered: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
-extension OnDeinit_Buffered: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
-extension OnDeinit_Buffered: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
+extension OnDeinitBuffered: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
+extension OnDeinitBuffered: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
+extension OnDeinitBuffered: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
 #endif

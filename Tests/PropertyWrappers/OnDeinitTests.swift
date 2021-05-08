@@ -12,12 +12,15 @@ import Foundation
 import XCTest
 
 final class OnDeinitTests: XCTestCase {
+    let performanceTestIterations = 1_000_000
+
     @available(iOS 13.0, tvOS 13.0, *)
-    func testPerformance1() {
+    func testPerformance() {
+        let iterations = performanceTestIterations
         var total = 0
         measure(metrics: [XCTStorageMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
             total = 0
-            for i in 0..<10_000 {
+            for i in (0..<iterations).reversed() {
                 var value = OnDeinit<Int>(wrappedValue: i) { _ in
                     total += 1
                 }
@@ -25,9 +28,29 @@ final class OnDeinitTests: XCTestCase {
                 value.wrappedValue = Int.random(in: 1...10)
                 value.wrappedValue += 1
             }
-            XCTAssertEqual(total, 10_000)
+            XCTAssertEqual(total, iterations)
         }
     }
+
+    #if PROPERTYWRAPPER_ON_DEINIT_BUFFERED
+    @available(iOS 13.0, tvOS 13.0, *)
+    func testPerformanceBuffered() {
+        let iterations = performanceTestIterations
+        var total = 0
+        measure(metrics: [XCTStorageMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
+            total = 0
+            for i in (0..<iterations).reversed() {
+                let value = OnDeinitBuffered<Int>(wrappedValue: i) { _ in
+                    total += 1
+                }
+                XCTAssertEqual(value.wrappedValue, i)
+                value.wrappedValue = Int.random(in: 1...10)
+                value.wrappedValue += 1
+            }
+            XCTAssertEqual(total, iterations)
+        }
+    }
+    #endif
 
     func testCopying() {
         var deinitTotal = 0

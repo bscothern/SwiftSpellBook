@@ -52,16 +52,20 @@ extension OutputStream {
 }
 
 extension OutputStream {
-    public typealias WriteAllOfInputStreamOperation = (_ outputStream: OutputStream, _ inputStream: InputStream) throws -> Void
+    public typealias WriteAllOfInputStreamOperation = (_ outputStream: OutputStream, _ inputStream: InputStream, _ buffer: UnsafeBufferPointer<UInt8>) throws -> Void
 
     @inlinable
-    public func write(allOf inputStream: InputStream, maxIntermediateBufferSize: Int, beforeEachWriteOperation: WriteAllOfInputStreamOperation? = nil, afterEachWriteOperation: WriteAllOfInputStreamOperation? = nil) throws {
+    public func write(
+        allOf inputStream: InputStream,
+        maxIntermediateBufferSize: Int,
+        beforeEachWriteOperation: WriteAllOfInputStreamOperation? = nil,
+        afterEachWriteOperation: WriteAllOfInputStreamOperation? = nil
+    ) throws {
         try inputStream.forEachChunk(upToSize: maxIntermediateBufferSize) { buffer in
-            try beforeEachWriteOperation?(self, inputStream)
+            try beforeEachWriteOperation?(self, inputStream, buffer)
             try write(allOf: buffer)
-            try afterEachWriteOperation?(self, inputStream)
+            try afterEachWriteOperation?(self, inputStream, buffer)
         }
     }
 }
-
 #endif

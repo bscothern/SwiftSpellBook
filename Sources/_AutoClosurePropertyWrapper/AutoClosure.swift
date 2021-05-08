@@ -9,7 +9,7 @@
 @propertyWrapper
 public struct AutoClosure<WrappedValue>: PropertyWrapper, ProjectedPropertyWrapper {
     @usableFromInline
-    var _wrappedValue: () -> WrappedValue
+    let _wrappedValue: () -> WrappedValue
 
     @inlinable
     @_transparent

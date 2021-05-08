@@ -15,4 +15,11 @@ extension Comparable {
             self = range.upperBound
         }
     }
+
+    @inlinable
+    public func clamped(to range: ClosedRange<Self>) -> Self {
+        var copy = self
+        copy.clamp(to: range)
+        return copy
+    }
 }

@@ -1,7 +1,42 @@
 // swift-tools-version:5.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
+import Foundation
 import PackageDescription
+
+// These flags can be set in the environment or via the force flag here.
+// They are used to test language features, implimentations, and to allow code to exists that currenlty doesn't work but should.
+let experimentalFlags: [(flag: String, force: Bool)] = [
+    // Provides @OnDeinitBuffered which is the same as @OnDeinit but backed by 
+    (flag: "PROPERTYWRAPPER_ON_DEINIT_BUFFERED", force: false),
+    
+    // Provides @_FromKeyPath like @_FromReferenceWritableKeyPath.
+    // Currently causes a compiler error but it should work ¯\_(ツ)_/¯
+    (flag: "PROPERTYWRAPPER_FROM_KEY_PATH", force: false),
+]
+
+/// Controls the experimental defines to trigger those features for development.
+let experimentalSwiftSettings: [String: SwiftSetting]  = {
+    func define(flag: String, force: Bool) -> SwiftSetting? {
+        guard ProcessInfo.processInfo.environment[flag] != nil || force else {
+            return nil
+        }
+        return .define(flag)
+    }
+
+    return .init(
+        uniqueKeysWithValues: experimentalFlags.lazy
+            .map { (flag, force) in
+                (flag, define(flag: flag, force: force))
+            }
+            .compactMap { (flag, define) in
+                guard let define = define else {
+                    return nil
+                }
+                return (flag, define)
+            }
+    )
+}()
 
 let package = Package(
     name: "SwiftSpellBook",
@@ -42,6 +77,10 @@ let package = Package(
             name: "SwiftResultBuildersSpellBook",
             targets: ["SwiftResultBuildersSpellBook"]
         ),
+        .library(
+            name: "XCTestSpellBook",
+            targets: ["XCTestSpellBook"]
+        ),
 //        .executable(
 //            name: "SwiftCollectionsSpellBookBenchmark",
 //            targets: ["SwiftCollectionsSpellBookBenchmark"]
@@ -79,7 +118,6 @@ let package = Package(
         ),
         .target(
             name: "SwiftBoxesSpellBook",
-            dependencies: [],
             path: "Sources/Boxes"
         ),
         .testTarget(
@@ -123,8 +161,6 @@ let package = Package(
         ),
         .target(
             name: "SwiftExtensionsSpellBook",
-            dependencies: [
-            ],
             path: "Sources/Extensions"
         ),
         .testTarget(
@@ -144,12 +180,12 @@ let package = Package(
             name: "SwiftFoundationSpellBookTests",
             dependencies: [
                 .target(name: "SwiftFoundationSpellBook"),
+                .target(name: "XCTestSpellBook"),
             ],
             path: "Tests/Foundation"
         ),
         .target(
             name: "SwiftMemoryManagementSpellBook",
-            dependencies: [],
             path: "Sources/MemoryManagement"
         ),
         .testTarget(
@@ -165,9 +201,15 @@ let package = Package(
                 .target(name: "_Concurrency_PropertyWrappersSpellBook"),
                 .target(name: "_PropertyWrapperProtocols"),
                 .target(name: "SwiftBoxesSpellBook"),
-                .target(name: "SwiftMemoryManagementSpellBook"),
-            ],
-            path: "Sources/PropertyWrappers"
+            ] + {
+                var experimentalDependencies: [Target.Dependency] = []
+                if experimentalSwiftSettings.keys.contains("PROPERTYWRAPPER_ON_DEINIT_BUFFERED") {
+                    experimentalDependencies.append(.target(name: "SwiftMemoryManagementSpellBook"))
+                }
+                return experimentalDependencies
+            }(),
+            path: "Sources/PropertyWrappers",
+            swiftSettings: Array(experimentalSwiftSettings.values)
         ),
         .testTarget(
             name: "SwiftPropertyWrappersSpellBookTests",
@@ -178,7 +220,6 @@ let package = Package(
         ),
         .target(
             name: "SwiftResultBuildersSpellBook",
-            dependencies: [],
             path: "Sources/ResultBuilders"
         ),
         .testTarget(
@@ -195,13 +236,6 @@ let package = Package(
             ],
             path: "Sources/_Concurrency+PropertyWrappers"
         ),
-        .target(
-            name: "_AutoClosurePropertyWrapper",
-            dependencies: [
-                .target(name: "_PropertyWrapperProtocols")
-            ],
-            path: "Sources/_AutoClosurePropertyWrapper"
-        ),
         .testTarget(
             name: "Concurrency.PropertyWrappersSpellBookTests",
             dependencies: [
@@ -210,8 +244,21 @@ let package = Package(
             path: "Tests/_Concurrency+PropertyWrappers"
         ),
         .target(
+            name: "_AutoClosurePropertyWrapper",
+            dependencies: [
+                .target(name: "_PropertyWrapperProtocols")
+            ],
+            path: "Sources/_AutoClosurePropertyWrapper"
+        ),
+        .testTarget(
+            name: "AutoClosurePropertyWrapperTests",
+            dependencies: [
+                .target(name: "_AutoClosurePropertyWrapper")
+            ],
+            path: "Tests/_AutoClosurePropertyWrapper"
+        ),
+        .target(
             name: "_PropertyWrapperProtocols",
-            dependencies: [],
             path: "Sources/_PropertyWrapperProtocols"
         ),
         .testTarget(
@@ -221,7 +268,15 @@ let package = Package(
                 .product(name: "LoftTest_CheckXCAssertionFailure", package: "LoftTest_CheckXCAssertionFailure"),
                 .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "LoftTest_StandardLibraryProtocolChecks"),
             ],
-            path: "Tests/_PropertyWrapperProtocols"
+            path: "Tests/_PropertyWrapperProtocols",
+            swiftSettings: Array(experimentalSwiftSettings.values)
+        ),
+        .target(
+            name: "XCTestSpellBook",
+            path: "Sources/XCTestSpellBook",
+            linkerSettings: [
+                .linkedFramework("XCTest", .when(platforms: [.macOS, .iOS, .tvOS, .linux, .windows, .android]))
+            ]
         ),
 //        // MARK: - Benchmark
 //        .target(

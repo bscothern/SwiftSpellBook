@@ -19,11 +19,9 @@ public struct _FromReferenceWritableKeyPath<OuterSelf, WrappedValue> where Outer
     }
 
     let writableKeyPath: ReferenceWritableKeyPath<OuterSelf, WrappedValue>!
-    let keyPath: KeyPath<OuterSelf, WrappedValue>!
 
     public init(_ writableKeyPath: ReferenceWritableKeyPath<OuterSelf, WrappedValue>) {
         self.writableKeyPath = writableKeyPath
-        self.keyPath = nil
     }
 
     public static subscript(

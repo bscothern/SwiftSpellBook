@@ -10,6 +10,7 @@
 import Foundation
 
 extension InputStream {
+    /// Errors that can be thrown by `forEachChunk(upToSize:_:)`.
     public enum ForEachChunkError: Error {
         /// Thrown when a stream is not in an open state and an operation is attempted on it.
         case streamNotInOpenState
@@ -19,8 +20,24 @@ extension InputStream {
         case unknownStreamError
     }
 
+    /// Reads from the input stream calling a given closure with each chunk being up to a maximum size.
+    ///
+    /// - Important:
+    ///     It is not guaranteed that the buffer given to the `body` will contain `maxBufferSize` bytes.
+    ///     You should always check the `buffer.count` or use a sequence operation on the buffer to ensure you work with valid bytes.
+    ///
+    /// - Parameters:
+    ///   - maxBufferSize: The maximum buffer size to allocate and use.
+    ///   - body: The body that will work with chunks of the input stream data.
+    ///   - buffer: The bytes most recently read from the stream.
+    ///         You should only work with first `buffer.count`.
+    ///
+    /// - Throws: Always throws a `ForEachChunkError` if an error occurs.
     @inlinable
-    public func forEachChunk(upToSize maxBufferSize: Int, _ body: (_ buffer: UnsafeBufferPointer<UInt8>) throws -> Void) throws {
+    public func forEachChunk(
+        upToSize maxBufferSize: Int,
+        _ body: (_ buffer: UnsafeBufferPointer<UInt8>) throws -> Void
+    ) throws {
         guard streamStatus == .open else { throw ForEachChunkError.streamNotInOpenState }
 
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: maxBufferSize)

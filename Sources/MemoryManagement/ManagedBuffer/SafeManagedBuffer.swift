@@ -6,7 +6,7 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-open class SafeManagedBuffer<HeaderValue, Element>: ManagedBuffer<SafeManagedBuffer<HeaderValue, Element>.Header, Element>, SafeManagedBufferProtocol {
+open class _SafeManagedBuffer<HeaderValue, Element>: ManagedBuffer<_SafeManagedBuffer<HeaderValue, Element>.Header, Element> {
     @dynamicMemberLookup
     public struct Header: _ManagedBufferHeader {
         public let minimumCapacity: Int
@@ -104,40 +104,69 @@ public protocol _ManagedBufferHeader {
     init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy, value: HeaderValue)
 }
 
-public protocol _SafeManagedBuffer where Header.HeaderValue == HeaderValue {
+public protocol _SafeManagedBufferProtocol where Header.HeaderValue == HeaderValue {
     associatedtype Header: _ManagedBufferHeader
     associatedtype HeaderValue
     associatedtype Element
-    init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy, makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue)
-    static func create(minimumCapacity: Int, makingHeaderWith factory: (ManagedBuffer<Header, Element>) throws -> Header) rethrows -> ManagedBuffer<Header, Element>
+
+    init(
+        minimumCapacity: Int,
+        deinitStrategy: SafeManagedBufferDeinitStrategy,
+        makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue
+    )
+
+    static func create(
+        minimumCapacity: Int,
+        makingHeaderWith factory: (ManagedBuffer<Header, Element>) throws -> Header
+    ) rethrows -> ManagedBuffer<Header, Element>
 }
 
-extension _SafeManagedBuffer {
+extension _SafeManagedBufferProtocol {
     @inlinable
-    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0), makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue) {
+    public init(
+        minimumCapacity: Int,
+        deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0),
+        makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue
+    ) {
         self = Self.create(minimumCapacity: minimumCapacity) { managedBuffer in
-            .init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, value: makingHeaderWith(managedBuffer))
+            .init(
+                minimumCapacity: minimumCapacity,
+                deinitStrategy: deinitStrategy,
+                value: makingHeaderWith(managedBuffer)
+            )
         } as! Self
     }
 
     @inlinable
-    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0)) where HeaderValue == Void {
+    public init(
+        minimumCapacity: Int,
+        deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0)
+    ) where HeaderValue == Void {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy) { _ in }
     }
 
     @inlinable
-    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0), makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue, thenFinishInit finishInit: (Self) -> Void) {
+    public init(
+        minimumCapacity: Int,
+        deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0),
+        makingHeaderWith: (ManagedBuffer<Header, Element>) -> HeaderValue,
+        thenFinishInit finishInit: (Self) -> Void
+    ) {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, makingHeaderWith: makingHeaderWith)
         finishInit(self)
     }
 
     @inlinable
-    public init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0), thenFinishInit finishInit: (Self) -> Void)  where HeaderValue == Void {
+    public init(
+        minimumCapacity: Int,
+        deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0),
+        thenFinishInit finishInit: (Self) -> Void
+    )  where HeaderValue == Void {
         self.init(minimumCapacity: minimumCapacity, deinitStrategy: deinitStrategy, makingHeaderWith: { _ in }, thenFinishInit: finishInit)
     }
 }
 
-public protocol SafeManagedBufferProtocol: _SafeManagedBuffer {
+public protocol SafeManagedBufferProtocol: _SafeManagedBufferProtocol {
     associatedtype Header
     associatedtype HeaderValue
     associatedtype Element
@@ -145,3 +174,5 @@ public protocol SafeManagedBufferProtocol: _SafeManagedBuffer {
     func withUnsafeMutablePointerToElements<R>(_ body: (UnsafeMutablePointer<Element>) throws -> R) rethrows -> R
     func withUnsafeMutablePointers<R>(_ body: (UnsafeMutablePointer<Header>, UnsafeMutablePointer<Element>) throws -> R) rethrows -> R
 }
+
+public typealias SafeManagedBuffer<HeaderValue, Element> = _SafeManagedBuffer<HeaderValue, Element> & SafeManagedBufferProtocol

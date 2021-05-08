@@ -80,9 +80,9 @@ final class ManagedUnsafePointerTests: XCTestCase {
         var address2: Int?
 
         DispatchQueue.global().async {
-            let value0 = DeinitValue(c: .init(onDeinit: {
+            let value0 = DeinitValue(c: .init {
                 expectation.fulfill()
-            }))
+            })
 
             let value1 = value0.$c.copy { pointer in
                 .init(onDeinit: pointer.pointee.onDeinit)
