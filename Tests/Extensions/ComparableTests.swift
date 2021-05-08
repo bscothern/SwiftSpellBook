@@ -28,7 +28,7 @@ final class ComparableTests: XCTestCase {
 
                 XCTAssertGreaterThanOrEqual(value, lower)
                 XCTAssertLessThanOrEqual(value, upper)
-                
+
                 if value == originalValue {
                     containedValue += 1
                 }
@@ -37,7 +37,7 @@ final class ComparableTests: XCTestCase {
             XCTAssertGreaterThanOrEqual(containedValue, minimumContained)
         }
     }
-    
+
     func testClamped() {
         let lowerMax = 40
         let upperMin = 60

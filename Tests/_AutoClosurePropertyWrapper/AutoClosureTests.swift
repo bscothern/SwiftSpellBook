@@ -17,22 +17,22 @@ final class AutoClosureTests: XCTestCase {
             XCTAssert(isLazy)
             return 42
         }
-        
+
         isLazy.toggle()
         XCTAssertEqual(autoClosure.wrappedValue, 42)
     }
-    
+
     func testInitWithAutoClosure() {
         var isLazy = false
         let autoClosure: AutoClosure<Int> = .init(wrappedValue: { () -> Int in
             XCTAssert(isLazy)
             return 123
         }())
-        
+
         isLazy.toggle()
         XCTAssertEqual(autoClosure.wrappedValue, 123)
     }
-    
+
     func testProjectedValue() {
         let autoClosure: AutoClosure<Int> = .init(wrappedValue: 1)
         let projected = autoClosure.projectedValue

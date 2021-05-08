@@ -8,8 +8,8 @@
 
 #if !os(watchOS)
 import SwiftFoundationSpellBook
-import XCTestSpellBook
 import XCTest
+import XCTestSpellBook
 
 final class OutputStreamTests: XCTestCase {
     func testWriteAllOfNotOpened() {
@@ -57,7 +57,7 @@ final class OutputStreamTests: XCTestCase {
         let outputStream: OutputStream = .toMemory()
         outputStream.open()
         defer { outputStream.close() }
-        
+
         let familyEmoji = "👨‍👩‍👦"
         var bytes: [UInt8] = []
         familyEmoji.utf8.forEach { (byte: UInt8) in
@@ -72,7 +72,7 @@ final class OutputStreamTests: XCTestCase {
                 )
             }
         )
-        
+
         guard let data = outputStream.property(forKey: .dataWrittenToMemoryStreamKey) as? Data else {
             XCTFail("Unable to access data in outputStream")
             return
@@ -80,7 +80,7 @@ final class OutputStreamTests: XCTestCase {
         let stringFromData = String(data: data, encoding: .utf8)
         XCTAssertEqual(stringFromData, familyEmoji)
     }
-    
+
     func testWriteAllOfInputStream() throws {
         let streamDataString = """
             qwertyuiop
@@ -88,18 +88,18 @@ final class OutputStreamTests: XCTestCase {
             zxcvbnm
             """
         let streamData = try XCTUnwrap(streamDataString.data(using: .utf8))
-        
+
         let inputStream = InputStream(data: streamData)
         inputStream.open()
         defer { inputStream.close() }
-        
+
         let outputStream: OutputStream = .toMemory()
         outputStream.open()
         defer { outputStream.close() }
-        
+
         var beforeByteCount = 0
         var afterByteCount = 0
-        
+
         try outputStream.write(
             allOf: inputStream,
             maxIntermediateBufferSize: 5,
@@ -114,16 +114,16 @@ final class OutputStreamTests: XCTestCase {
                 afterByteCount += buffer.count
             }
         )
-        
+
         XCTAssertEqual(streamData.count, beforeByteCount)
         XCTAssertEqual(streamData.count, afterByteCount)
-        
+
         guard let data = outputStream.property(forKey: .dataWrittenToMemoryStreamKey) as? Data else {
             XCTFail("Unable to access data in outputStream")
             return
         }
         XCTAssertEqual(data, streamData)
-        
+
         let stringFromData = String(data: data, encoding: .utf8)
         XCTAssertEqual(stringFromData, streamDataString)
     }
