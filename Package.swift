@@ -278,6 +278,13 @@ let package = Package(
                 .linkedFramework("XCTest", .when(platforms: [.macOS, .iOS, .tvOS, .linux, .windows, .android]))
             ]
         ),
+        .testTarget(
+            name: "XCTestSpellBookTests",
+            dependencies: [
+                .target(name: "XCTestSpellBook"),
+            ],
+            path: "Tests/XCTestSpellBook"
+        )
 //        // MARK: - Benchmark
 //        .target(
 //            name: "SwiftCollectionsSpellBookBenchmark",

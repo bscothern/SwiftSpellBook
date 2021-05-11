@@ -1,5 +1,5 @@
 //
-//  XCAssertThrownErrorMatches.swift
+//  XCAssertThrownErrorIsExpected.swift
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 12/15/20.

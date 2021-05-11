@@ -14,7 +14,7 @@ final class DynamicWillSetTests: XCTestCase {
     func testExpectedValueAndNewValue() {
         var willSetValue = 0
         var willSetNewValue = 0
-        var called: Bool = false
+        var called = false
 
         let expectedValue = 1
         let expectedNewValue = 2
@@ -35,7 +35,7 @@ final class DynamicWillSetTests: XCTestCase {
     func testExpectedValueAndNewValueModified() {
         var willSetValue = 0
         var willSetNewValue = 0
-        var called: Bool = false
+        var called = false
 
         let expectedValue = 1
         let expectedNewValue = 2
@@ -56,7 +56,7 @@ final class DynamicWillSetTests: XCTestCase {
     func testProjectedValueExpectedValueAndNewValue() {
         var willSetValue = 0
         var willSetNewValue = 0
-        var called: Bool = false
+        var called = false
 
         let expectedValue = 1
         let expectedNewValue = 2
@@ -77,7 +77,7 @@ final class DynamicWillSetTests: XCTestCase {
     func testProjectedValueExpectedValueAndNewValueModified() {
         var willSetValue = 0
         var willSetNewValue = 0
-        var called: Bool = false
+        var called = false
 
         let expectedValue = 1
         let expectedNewValue = 2
@@ -98,7 +98,7 @@ final class DynamicWillSetTests: XCTestCase {
     func testProjectedValueAssignmet() {
         var willSetValue = 0
         var willSetNewValue = 0
-        var called: Bool = false
+        var called = false
 
         let expectedValue = 1
         let expectedNewValue = 2
@@ -125,7 +125,7 @@ final class DynamicWillSetTests: XCTestCase {
     func testProjectedValueCopies() {
         var willSetValue = 0
         var willSetNewValue = 0
-        var called: Bool = false
+        var called = false
 
         let expectedValue = 1
         let expectedNewValue = 2

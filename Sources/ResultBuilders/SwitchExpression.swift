@@ -14,10 +14,6 @@ public enum SwitchExpression<Result> {
         component
     }
 
-    public static func buildExpression(_ expression: Result) -> Result {
-        expression
-    }
-
     public static func buildEither(first component: Result) -> Result {
         component
     }

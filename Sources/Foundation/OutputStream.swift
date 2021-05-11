@@ -24,6 +24,7 @@ extension OutputStream {
     }
 
     @inlinable
+    @inline(__always)
     public func write(allOf buffer: UnsafePointer<UInt8>, length: Int) throws {
         try write(allOf: .init(start: buffer, count: length))
     }
