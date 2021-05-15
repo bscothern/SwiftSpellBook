@@ -14,16 +14,16 @@ final class SafeManagedBufferTests: XCTestCase {
     final class DidDeinit {
         let value: String
         let onDeinit: () -> Void
-        
+
         var a: String { value }
-        
+
         var b: Int = 0
-        
+
         init(value: String, onDeinit: @escaping () -> Void) {
             self.value = value
             self.onDeinit = onDeinit
         }
-        
+
         deinit {
             onDeinit()
         }
@@ -34,7 +34,7 @@ final class SafeManagedBufferTests: XCTestCase {
     final class CustomSafeManagedBufferFullCapacity: SafeManagedBuffer<DidDeinit, Int>, _CustomSafeManagedBufferFullCapacity {}
     final class CustomSafeManagedBufferChunks: SafeManagedBuffer<DidDeinit, Int>, _CustomSafeManagedBufferChunks {}
     final class InitTesterSafeManagedBuffer: SafeManagedBuffer<Void, Int>, _InitTesterSafeManagedBuffer {}
-    
+
     func testCount() {
         var deinitCount = 0
         do {
@@ -48,13 +48,13 @@ final class SafeManagedBufferTests: XCTestCase {
                 bufferPointer.deallocate()
             }
             bufferPointer.initialize(to: CustomSafeManagedBufferCount(header: didDeinit, values: [3, 2, 1]))
-            
+
             XCTAssertEqual(bufferPointer.pointee.header.value.value, headerValue)
             XCTAssertEqual(bufferPointer.pointee.header.a, headerValue)
             bufferPointer.pointee.header.b = 1
             bufferPointer.pointee.header.b += 1
             XCTAssertEqual(bufferPointer.pointee.header.b, 2)
-            
+
             bufferPointer.pointee.withUnsafeMutablePointerToElements { elements in
                 // Ensure that the offset functionality works
                 XCTAssertEqual(elements[1], 3)
@@ -64,7 +64,7 @@ final class SafeManagedBufferTests: XCTestCase {
         }
         XCTAssertEqual(deinitCount, 1)
     }
-    
+
     func testMinimum() {
         var deinitCount = 0
         do {
@@ -78,13 +78,13 @@ final class SafeManagedBufferTests: XCTestCase {
                 bufferPointer.deallocate()
             }
             bufferPointer.initialize(to: CustomSafeManagedBufferMinimum(header: didDeinit, values: [10, 11, 12]))
-            
+
             XCTAssertEqual(bufferPointer.pointee.header.value.value, headerValue)
             XCTAssertEqual(bufferPointer.pointee.header.a, headerValue)
             bufferPointer.pointee.header.b = 1
             bufferPointer.pointee.header.b += 1
             XCTAssertEqual(bufferPointer.pointee.header.b, 2)
-            
+
             bufferPointer.pointee.withUnsafeMutablePointerToElements { elements in
                 XCTAssertEqual(elements[0], 10)
                 XCTAssertEqual(elements[1], 11)
@@ -93,7 +93,7 @@ final class SafeManagedBufferTests: XCTestCase {
         }
         XCTAssertEqual(deinitCount, 1)
     }
-    
+
     func testFullCapacity() {
         var deinitCount = 0
         do {
@@ -108,13 +108,13 @@ final class SafeManagedBufferTests: XCTestCase {
             }
             let scale = Int.random(in: 1_000...10_000)
             bufferPointer.initialize(to: CustomSafeManagedBufferFullCapacity(header: didDeinit, scale: scale))
-            
+
             XCTAssertEqual(bufferPointer.pointee.header.value.value, headerValue)
             XCTAssertEqual(bufferPointer.pointee.header.a, headerValue)
             bufferPointer.pointee.header.b = 1
             bufferPointer.pointee.header.b += 1
             XCTAssertEqual(bufferPointer.pointee.header.b, 2)
-            
+
             let capacity = bufferPointer.pointee.capacity
             bufferPointer.pointee.withUnsafeMutablePointerToElements { elements in
                 for i in 0..<capacity {
@@ -124,7 +124,7 @@ final class SafeManagedBufferTests: XCTestCase {
         }
         XCTAssertEqual(deinitCount, 1)
     }
-    
+
     func testChunks() {
         var deinitCount = 0
         do {
@@ -138,13 +138,13 @@ final class SafeManagedBufferTests: XCTestCase {
                 bufferPointer.deallocate()
             }
             bufferPointer.initialize(to: CustomSafeManagedBufferChunks(header: didDeinit, values: [42, 43, 44]))
-            
+
             XCTAssertEqual(bufferPointer.pointee.header.value.value, headerValue)
             XCTAssertEqual(bufferPointer.pointee.header.a, headerValue)
             bufferPointer.pointee.header.b = 1
             bufferPointer.pointee.header.b += 1
             XCTAssertEqual(bufferPointer.pointee.header.b, 2)
-            
+
             bufferPointer.pointee.withUnsafeMutablePointers { header, elements in
                 XCTAssertEqual(header.pointee.count, 3)
                 XCTAssertEqual(elements[1], 42)
@@ -154,7 +154,7 @@ final class SafeManagedBufferTests: XCTestCase {
         }
         XCTAssertEqual(deinitCount, 1)
     }
-    
+
     func testInits() {
         let buffers = [
             InitTesterSafeManagedBuffer(_1: Void()),
@@ -162,7 +162,7 @@ final class SafeManagedBufferTests: XCTestCase {
             InitTesterSafeManagedBuffer(_3: Void()),
             InitTesterSafeManagedBuffer(_4: Void()),
         ]
-        
+
         for index in buffers.indices {
             var buffer: InitTesterSafeManagedBuffer { buffers[index] }
             buffer.header.count = 1
@@ -170,14 +170,13 @@ final class SafeManagedBufferTests: XCTestCase {
                 elements.initialize(to: Int(index))
             }
         }
-        
+
         for index in buffers.indices {
             var buffer: InitTesterSafeManagedBuffer { buffers[index] }
             buffer.withUnsafeMutablePointerToElements { elements in
                 XCTAssertEqual(elements.pointee, Int(index))
             }
         }
-        
     }
 }
 
@@ -281,20 +280,20 @@ extension _InitTesterSafeManagedBuffer {
             thenFinishInit: { _ in }
         )
     }
-    
+
     init(_2 _: Void) {
         self.init(
             minimumCapacity: 1,
             makingHeaderWith: { _ in }
         )
     }
-    
+
     init(_3 _: Void) {
         self.init(
             minimumCapacity: 1
         )
     }
-    
+
     init(_4 _: Void) {
         self.init(
             minimumCapacity: 1,

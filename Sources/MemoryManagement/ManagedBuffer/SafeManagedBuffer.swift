@@ -59,13 +59,13 @@ public protocol SafeManagedBufferProtocol: _SafeManagedBufferProtocol {
     ///
     /// This is provided for you and should not be customized.
     associatedtype Header
-    
+
     /// A custom value to put in your `SafeManagedBuffer.Header`.
     associatedtype HeaderValue
-    
+
     /// The element type that the `SafeManagedBuffer` will contain.
     associatedtype Element
-    
+
     /// The actual number of elements that can be stored in this object.
     ///
     /// This header may be nontrivial to compute; it is usually a good idea to store this information in the "header" area when an instance is created.
@@ -77,13 +77,13 @@ public protocol SafeManagedBufferProtocol: _SafeManagedBufferProtocol {
     /// - Note:
     ///     This pointer is valid only for the duration of the call to `body`.
     func withUnsafeMutablePointerToHeader<R>(_ body: (UnsafeMutablePointer<Header>) throws -> R) rethrows -> R
-    
+
     /// Call `body` with an `UnsafeMutablePointer` to the `Element` storage.
     ///
     /// - Note:
     ///     This pointer is valid only for the duration of the call to `body`.
     func withUnsafeMutablePointerToElements<R>(_ body: (UnsafeMutablePointer<Element>) throws -> R) rethrows -> R
-    
+
     /// Call `body` with `UnsafeMutablePointer`s to the stored `Header` and raw `Element` storage.
     ///
     /// - Note:
@@ -95,17 +95,17 @@ public protocol SafeManagedBufferProtocol: _SafeManagedBufferProtocol {
 public enum SafeManagedBufferDeinitStrategy {
     /// Deinitialize the header's `count` elements at the specified element offset in the buffer.
     case count(fromOffset: Int = 0)
-    
+
     /// Deinitialize only the memory that was requested.
     ///
     /// This means you shouldn't access memory past the minimum capacity requested when allocated even if the buffer is larger.
     case minimumCapacity
-    
+
     /// Deinitialize the entire buffer.
     ///
     /// This should only be used over `.minimumCapacity` if you plan on using the entire buffer which may be larger than the minimum size requested.
     case fullCapacity
-    
+
     /// Defines chunks of memory that should be deinitialized.
     ///
     /// - Important:
@@ -120,7 +120,7 @@ public enum SafeManagedBufferDeinitStrategy {
             public let offset: Offset
             /// How many elements should be cleaned up in this chunk.
             public let count: Int
-            
+
             /// Creates a `DeinitChunks.Value`.
             ///
             /// - Parameters:
@@ -146,7 +146,7 @@ public enum SafeManagedBufferDeinitStrategy {
 
         /// The current chunks to be deinitialized on `SafeManagedBuffer` deinit.
         public var values: [Value] = []
-        
+
         /// Creates an empty `DeinitChunks`.
         @inlinable
         public init() {}
@@ -224,7 +224,7 @@ public protocol _ManagedBufferHeader {
     var deinitStrategy: SafeManagedBufferDeinitStrategy { get set }
     var count: Int { get set }
     var value: HeaderValue { get set }
-    
+
     init(minimumCapacity: Int, deinitStrategy: SafeManagedBufferDeinitStrategy, value: HeaderValue)
 }
 
@@ -262,7 +262,7 @@ extension _SafeManagedBufferProtocol {
         } as! Self
         finishInit(self)
     }
-    
+
     @inlinable
     public init(
         minimumCapacity: Int,

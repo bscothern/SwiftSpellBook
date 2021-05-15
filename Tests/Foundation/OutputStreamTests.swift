@@ -157,12 +157,12 @@ final class OutputStreamTests: XCTestCase {
                 let outputStream: OutputStream = .init(toBuffer: buffer, capacity: capacity)
                 outputStream.open()
                 defer { outputStream.close() }
-                
+
                 let bytes = Array(0 as UInt8 ..< UInt8(capacity + 1)).shuffled()
                 try bytes.withUnsafeBytes { buffer in
                     try outputStream.write(allOf: buffer.bindMemory(to: UInt8.self))
                 }
-                
+
                 for i in 0..<(capacity + 1) {
                     XCTAssertEqual(bytes[i], buffer[i])
                 }
