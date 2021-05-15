@@ -24,9 +24,9 @@ final class OutputStreamTests: XCTestCase {
         XCAssertThrownErrorIsExpected(try outputStream.write(allOf: pointer, length: 1)) { (error: OutputStream.WriteAllOfError) in
             switch error {
             case .streamNotInOpenState:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
     }
@@ -46,9 +46,9 @@ final class OutputStreamTests: XCTestCase {
         XCAssertThrownErrorIsExpected(try outputStream.write(allOf: pointer, length: 0)) { (error: OutputStream.WriteAllOfError) in
             switch error {
             case .emptyBuffer:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
     }
@@ -128,45 +128,55 @@ final class OutputStreamTests: XCTestCase {
         XCTAssertEqual(stringFromData, streamDataString)
     }
 
-    // Apparently OutputStream.init(toBuffer:capacity) and write(_:maxLength:) don't match the documentation of them at all so this test fails...
+    func testWriteAllOfToCapacity() throws {
+        let capacity = 10
+        let buffer: UnsafeMutablePointer<UInt8> = .allocate(capacity: capacity)
+        defer {
+            buffer.deinitialize(count: capacity)
+            buffer.deallocate()
+        }
 
-//    func testWriteAllOfToCapacity() throws {
-//        let capacity = 10
-//        let buffer: UnsafeMutablePointer<UInt8> = .allocate(capacity: capacity)
-//        defer {
-//            buffer.deinitialize(count: capacity)
-//            buffer.deallocate()
-//        }
-//
-//        do {
-//            let outputStream: OutputStream = .init(toBuffer: buffer, capacity: capacity)
-//            outputStream.open()
-//            defer { outputStream.close() }
-//
-//            let bytes = Array(0 as UInt8 ..< UInt8(capacity)).shuffled()
-//            try bytes.withUnsafeBytes { buffer in
-//                try outputStream.write(allOf: buffer.bindMemory(to: UInt8.self))
-//            }
-//
-//            for i in 0..<10 {
-//                XCTAssertEqual(bytes[i], buffer[i])
-//            }
-//        }
-//
-//        do {
-//            let outputStream: OutputStream = .init(toBuffer: buffer, capacity: capacity)
-//            outputStream.open()
-//            defer { outputStream.close() }
-//
-//            let bytes = Array(0 as UInt8 ..< UInt8(capacity + 1)).shuffled()
-//            try bytes.withUnsafeBytes { buffer in
-//                try outputStream.write(allOf: buffer.bindMemory(to: UInt8.self))
-//            }
-//
-//            for i in 0..<(capacity + 1) {
-//                XCTAssertEqual(bytes[i], buffer[i])
-//            }
-//        }
-//    }
+        do {
+            let outputStream: OutputStream = .init(toBuffer: buffer, capacity: capacity)
+            outputStream.open()
+            defer { outputStream.close() }
+
+            let bytes = Array(0 as UInt8 ..< UInt8(capacity)).shuffled()
+            try bytes.withUnsafeBytes { buffer in
+                try outputStream.write(allOf: buffer.bindMemory(to: UInt8.self))
+            }
+
+            for i in 0..<10 {
+                XCTAssertEqual(bytes[i], buffer[i])
+            }
+        }
+
+        // Apparently OutputStream.init(toBuffer:capacity) and write(_:maxLength:) don't match the documentation of them at all so that is fun...
+        try XCTExpectFailure("OutputStream is behaving as expected now so this test can be updated.") {
+            do {
+                let outputStream: OutputStream = .init(toBuffer: buffer, capacity: capacity)
+                outputStream.open()
+                defer { outputStream.close() }
+                
+                let bytes = Array(0 as UInt8 ..< UInt8(capacity + 1)).shuffled()
+                try bytes.withUnsafeBytes { buffer in
+                    try outputStream.write(allOf: buffer.bindMemory(to: UInt8.self))
+                }
+                
+                for i in 0..<(capacity + 1) {
+                    XCTAssertEqual(bytes[i], buffer[i])
+                }
+            } catch let error as OutputStream.WriteAllOfError {
+                switch error {
+                case .streamAtCapacity:
+                    break
+                default:
+                    throw error
+                }
+            } catch {
+                throw error
+            }
+        }
+    }
 }
 #endif

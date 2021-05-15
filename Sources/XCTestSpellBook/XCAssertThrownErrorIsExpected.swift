@@ -7,6 +7,7 @@
 //
 
 #if canImport(XCTest) && !os(watchOS)
+import SwiftResultBuildersSpellBook
 import XCTest
 
 @inlinable
@@ -20,7 +21,9 @@ public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
 ) where ExpectedError: Equatable {
     XCAssertThrownErrorIsExpected(
         try expression(),
-        errorComparator: { $0 == expectedError },
+        errorComparator: { (error: ExpectedError) in
+            error == expectedError
+        },
         message(),
         file: file,
         line: line,
@@ -31,7 +34,7 @@ public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
 @inlinable
 public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
     _ expression: @autoclosure () throws -> T,
-    errorComparator: (ExpectedError) -> Bool,
+    @SwitchExpression<Bool> errorComparator: (ExpectedError) -> Bool,
     _ message: @autoclosure () -> String = "Didn't throw expected error",
     file: StaticString = #file,
     line: UInt = #line,

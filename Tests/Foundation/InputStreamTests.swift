@@ -22,9 +22,9 @@ final class InputStreamTests: XCTestCase {
         XCAssertThrownErrorIsExpected(try stream.forEachChunk(upToSize: 11) { _ in }) { (error: InputStream.ForEachChunkError) in
             switch error {
             case .streamNotInOpenState:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
     }
@@ -33,9 +33,9 @@ final class InputStreamTests: XCTestCase {
         XCAssertThrownErrorIsExpected(try stream.forEachChunk(upToSize: 11) { _ in }) { (error: InputStream.ForEachChunkError) in
             switch error {
             case .streamNotInOpenState:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
     }

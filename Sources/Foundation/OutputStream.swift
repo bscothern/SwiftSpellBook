@@ -69,4 +69,29 @@ extension OutputStream {
         }
     }
 }
-#endif
+
+//TODO: Verify if this can be done
+
+//#if canImport(Darwin) || canImport(Glibc)
+//
+//#if canImport(Darwin)
+//import Darwin
+//#else
+//import Glibc
+//#endif
+//
+//extension OutputStream {
+//    @inlinable
+//    public static func stdout() -> OutputStream? {
+//        OutputStream(toFileAtPath: "/dev/fd/\(STDOUT_FILENO)", append: true)
+//    }
+//
+//    @inlinable
+//    public static func stderr() -> OutputStream? {
+//        OutputStream(toFileAtPath: "/dev/fd/\(STDERR_FILENO)", append: true)
+//    }
+//}
+//
+//#endif // canImport(Darwin) || canImport(Glibc)
+
+#endif // canImport(Foundation)

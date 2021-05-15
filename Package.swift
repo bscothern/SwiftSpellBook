@@ -273,6 +273,9 @@ let package = Package(
         ),
         .target(
             name: "XCTestSpellBook",
+            dependencies: [
+                .target(name: "SwiftResultBuildersSpellBook"),
+            ],
             path: "Sources/XCTestSpellBook",
             linkerSettings: [
                 .linkedFramework("XCTest", .when(platforms: [.macOS, .iOS, .tvOS, .linux, .windows, .android]))
