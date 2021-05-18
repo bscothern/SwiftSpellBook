@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// A `Box` that a custom implimentation that allows a custom implimentation `Hashable` for the contained type.
+///
+/// - Important: When the `==` operator is caled on this type it will use the `lhs` box equality function.
 @dynamicMemberLookup
 public struct HashableBox<Value>: MutableBox, Hashable {
     public typealias AreEqualFunction = EquatableBox<Value>.AreEqualFunction
@@ -23,21 +26,36 @@ public struct HashableBox<Value>: MutableBox, Hashable {
     }
 
     @usableFromInline
-    let lock = NSLock()
-
-    @usableFromInline
     var equatableBox: EquatableBox<Value>
 
     @usableFromInline
     let hashFunction: HashFunction
-
+    
+    /// Creates a `HashableBox`.
+    ///
+    /// - Parameters:
+    ///   - boxedValue: The initial value of the `Box`.
+    ///   - areEqual: The function to use for `Equtable` operations.
+    ///   - hashFunction: The function to use for `Hashable` operations.
     @inlinable
-    public init(_ boxedValue: Value, areEqualBy areEqual: @escaping AreEqualFunction, hashedBy hashFunction: @escaping HashFunction) {
+    public init(
+        _ boxedValue: Value,
+        areEqualBy areEqual: @escaping AreEqualFunction,
+        hashedBy hashFunction: @escaping HashFunction
+    ) {
         self.init(customEquatable: .init(boxedValue, areEqualBy: areEqual), hashedBy: hashFunction)
     }
 
+    /// Creates a `HashableBox`.
+    ///
+    /// - Parameters:
+    ///   - equatableBox: An `EquatableBox<Value>` that contains the initial value of this `Box` and the `AreEqualFunction` to use for `Equtable` operations.
+    ///   - hashFunction: The function to use for `Hashable` operations.
     @inlinable
-    public init(customEquatable equatableBox: EquatableBox<Value>, hashedBy hashFunction: @escaping HashFunction) {
+    public init(
+        customEquatable equatableBox: EquatableBox<Value>,
+        hashedBy hashFunction: @escaping HashFunction
+    ) {
         self.equatableBox = equatableBox
         self.hashFunction = hashFunction
     }
@@ -49,13 +67,7 @@ public struct HashableBox<Value>: MutableBox, Hashable {
 
     @inlinable
     public func hash(into hasher: inout Hasher) {
-        print("\(#fileID) - \(boxedValue)")
         hashFunction(&hasher, boxedValue)
-
-        if lock.try() {
-            defer { lock.unlock() }
-            print("Hashed", boxedValue, self.hashValue)
-        }
     }
 
     public subscript<Result>(dynamicMember keyPath: KeyPath<Value, Result>) -> Result {

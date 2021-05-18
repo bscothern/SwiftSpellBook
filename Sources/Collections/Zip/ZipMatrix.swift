@@ -1,12 +1,12 @@
 //
-//  Matrix.swift
+//  ZipMatrix.swift
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 11/19/20.
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-public struct Matrix<Row, Column> where Row: Collection, Column: Collection {
+public struct ZipMatrix<Row, Column> where Row: Collection, Column: Collection {
     @usableFromInline
     let row: Row
 

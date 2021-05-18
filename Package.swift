@@ -7,7 +7,7 @@ import PackageDescription
 // These flags can be set in the environment or via the force flag here.
 // They are used to test language features, implimentations, and to allow code to exists that currenlty doesn't work but should.
 let experimentalFlags: [(flag: String, force: Bool)] = [
-    // Provides @OnDeinitBuffered which is the same as @OnDeinit but backed by 
+    // Provides @OnDeinitBuffered which is the same as @OnDeinit but backed by SafeManagedBuffer
     (flag: "PROPERTYWRAPPER_ON_DEINIT_BUFFERED", force: false),
     
     // Provides @_FromKeyPath like @_FromReferenceWritableKeyPath.

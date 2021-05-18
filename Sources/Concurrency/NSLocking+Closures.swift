@@ -10,6 +10,10 @@
 import Foundation
 
 extension NSLocking {
+    /// Creates a protected scope of code that ensures it is locked on entry and unlocked on exit.
+    ///
+    /// - Parameter criticalBlock: A block of code that should execute while locked.
+    /// - Returns: The result of `criticalBlock`.
     @inlinable
     @discardableResult
     public func protect<T>(_ criticalBlock: () throws -> T) rethrows -> T {
