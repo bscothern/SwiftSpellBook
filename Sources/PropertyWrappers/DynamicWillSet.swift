@@ -6,8 +6,18 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
+/// A property wrapper that allows you to customize the willSet property observer at runtime.
 @propertyWrapper
 public struct DynamicWillSet<WrappedValue>: MutablePropertyWrapper {
+    /// The function type called on `willSet` operations of the `wrappedValue`.
+    ///
+    /// - Important: This must not cause another setting of the same property this is tied to.
+    ///
+    /// - Parameters:
+    ///   - value: The current value of `wrappedValue`.
+    ///   - newValue: The new value of `wrappedValue`.
+    public typealias WillSet = (_ value: WrappedValue, _ newValue: WrappedValue) -> Void
+
     public var wrappedValue: WrappedValue {
         willSet {
             willSet?(wrappedValue, newValue)
@@ -24,10 +34,19 @@ public struct DynamicWillSet<WrappedValue>: MutablePropertyWrapper {
         }
     }
 
-    public var willSet: ((_ value: WrappedValue, _ newValue: WrappedValue) -> Void)?
+    /// The `WillSet` function to call when `wrappedValue`'s willSet property observer triggers.
+    public var willSet: WillSet?
 
+    /// Create a `DynamicWillSet`.
+    ///
+    /// - Parameters:
+    ///   - wrappedValue: The initial value of the `DynamicWillSet`.
+    ///   - willSet: The function to call when the `wrappedValue`'s willSet property observer triggers.
     @inlinable
-    public init(wrappedValue: WrappedValue, willSet: ((_ value: WrappedValue, _ newValue: WrappedValue) -> Void)? = nil) {
+    public init(
+        wrappedValue: WrappedValue,
+        willSet: WillSet? = nil
+    ) {
         self.wrappedValue = wrappedValue
         self.willSet = willSet
     }

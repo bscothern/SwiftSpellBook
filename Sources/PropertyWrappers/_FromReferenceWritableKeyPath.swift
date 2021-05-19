@@ -8,7 +8,12 @@
 
 /// A property wrapper to easily map key paths of other properties to vended properties on the same instance.
 ///
-/// - Note: The _ prefix is used because this uses private language features that haven't gone through Swift evolution.
+/// - Important:
+///     This property wrapper can only be used inside of `AnyObject` types not structs.
+///     This is because it must use a `ReferenceWritableKeyPath` to be able to access the value.
+///
+/// - Note:
+///     The _ prefix is used because this uses private language features that haven't gone through Swift evolution.
 ///     Because of this it is not guaranteed to be stable but it should continue to work.
 @propertyWrapper
 public struct _FromReferenceWritableKeyPath<OuterSelf, WrappedValue> where OuterSelf: AnyObject {
@@ -20,6 +25,11 @@ public struct _FromReferenceWritableKeyPath<OuterSelf, WrappedValue> where Outer
 
     let writableKeyPath: ReferenceWritableKeyPath<OuterSelf, WrappedValue>!
 
+    /// Creates a `_FromReferenceWritableKeyPath` with the given `ReferenceWritableKeyPath` value.
+    ///
+    /// - Parameter keyPath:
+    ///     The `ReferenceWritableKeyPath` to follow on `OuterSelf` to get the value of this object.
+    ///     Genrally this needs to be a fully qualified KeyPath in order for type checking to work.
     public init(_ writableKeyPath: ReferenceWritableKeyPath<OuterSelf, WrappedValue>) {
         self.writableKeyPath = writableKeyPath
     }

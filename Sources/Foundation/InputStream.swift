@@ -10,7 +10,7 @@
 import Foundation
 
 extension InputStream {
-    /// Errors that can be thrown by `forEachChunk(upToSize:_:)`.
+    /// Errors that can be thrown by `InputStream.forEachChunk(upToSize:_:)`.
     public enum ForEachChunkError: Error {
         /// Thrown when a stream is not in an open state and an operation is attempted on it.
         case streamNotInOpenState
@@ -32,7 +32,9 @@ extension InputStream {
     ///   - buffer: The bytes most recently read from the stream.
     ///         You should only work with first `buffer.count`.
     ///
-    /// - Throws: Always throws a `ForEachChunkError` if an error occurs.
+    /// - Throws:
+    ///     An `InputStream.ForEachChunkError` if an error occurs while reading the stream.
+    ///     Otherwise whatever is thrown by `body`.
     @inlinable
     public func forEachChunk(
         upToSize maxBufferSize: Int,

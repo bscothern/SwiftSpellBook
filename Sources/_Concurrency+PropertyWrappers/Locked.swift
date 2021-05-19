@@ -61,6 +61,11 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
         self.lock = lock
     }
 
+    /// Creates a `Locked`.
+    ///
+    /// - Parameters:
+    ///   - wrappedValue: The initial value to contain in the `Locked` instance.
+    ///   - lockType: The type of lock used to protect access to the `wrappedValue`.
     @inlinable
     public init(wrappedValue: WrappedValue, lockType: LockType = .platformDefault) {
         self.init(wrappedValue: wrappedValue, lock: lockType.createLock())
@@ -81,19 +86,28 @@ public struct Locked<WrappedValue> {
 extension Locked {
     public enum LockType {
         //swiftlint:disable duplicate_enum_cases
+
+        /// Specifies the `Foundation.NSLock` type.
         case nsLock
+
+        /// Specifies the `Foundation.NSRecursiveLock` type.
         case nsRecursiveLock
 
         #if canImport(os) && (os(iOS) || os(macOS) || os(watchOS) || os(tvOS))
+        /// Specifies the `OSUnfairLock` type.
         @available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
         case osUnfairLock
         #else
+        /// Specifies the `OSUnfairLock` type.
         @available(*, unavailable, message: "OSUnfairLock is only available on Apple platforms.")
         case osUnfairLock
         #endif
 
         //swiftlint:enable duplicate_enum_cases
 
+        /// The default lock type to use on each platform.
+        ///
+        /// It is potentially different for each platform to gain the best performance available.
         @inlinable
         public static var platformDefault: Self {
             #if canImport(os) && (os(iOS) || os(macOS) || os(watchOS) || os(tvOS))
@@ -124,6 +138,10 @@ extension Locked {
 }
 
 extension Locked {
+    /// Allows you to access the `wrappedValue` of the `Locked` instance for the scope of the `criticalBlock`.
+    ///
+    /// - Parameter criticalBlock: A block which will have exclusive read access to the `wrappedValue` for its scope.
+    /// - Returns: The return value of `criticalBlock`.
     @inlinable
     public func use<Result>(_ criticalBlock: (WrappedValue) throws -> Result) rethrows -> Result {
         lock.lock()
@@ -131,6 +149,10 @@ extension Locked {
         return try criticalBlock(value)
     }
 
+    /// Allows you to access and modify the `wrappedValue` of the `Locked` instance for the scope of the `criticalBlock`.
+    ///
+    /// - Parameter criticalBlock: A block which will have exclusive read and write access to the `wrappedValue` for its scope.
+    /// - Returns: The return value of `criticalBlock`.
     @inlinable
     public mutating func modify<Result>(_ criticalBlock: (inout WrappedValue) throws -> Result) rethrows -> Result {
         lock.lock()
@@ -138,6 +160,10 @@ extension Locked {
         return try criticalBlock(&value)
     }
 
+    /// Allows you to access the `wrappedValue` of the `Locked` instance for the scope of the `criticalBlock` if the lock can successfully be acquired without waiting.
+    ///
+    /// - Parameter criticalBlock: A block which will have exclusive read access to the `wrappedValue` for its scope.
+    /// - Returns: The return value of `criticalBlock` if it was executed, otherwise `nil`.
     @inlinable
     public func tryUse<Result>(_ criticalBlock: (WrappedValue) throws -> Result) rethrows -> Result? {
         guard lock.try() else {
@@ -147,6 +173,10 @@ extension Locked {
         return try criticalBlock(value)
     }
 
+    /// Allows you to access and modify the `wrappedValue` of the `Locked` instance for the scope of the `criticalBlock` if the lock can successfully be acquired without waiting.
+    ///
+    /// - Parameter criticalBlock: A block which will have exclusive read and write access to the `wrappedValue` for its scope.
+    /// - Returns: The return value of `criticalBlock` if it was executed, otherwise `nil`.
     @inlinable
     public mutating func tryModify<Result>(_ criticalBlock: (inout WrappedValue) throws -> Result) rethrows -> Result? {
         guard lock.try() else {

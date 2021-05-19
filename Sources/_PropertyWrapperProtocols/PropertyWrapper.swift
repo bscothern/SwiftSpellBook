@@ -30,6 +30,8 @@ public protocol MutablePropertyWrapper: PropertyWrapper {
 /// @ExamplePropertyWrapper var foo = 1
 /// ```
 public protocol DefaultInitializablePropertyWrapper: PropertyWrapper {
+    /// The default init used on a property wrapper when it takes no other arguments.
+    /// This allows for traditional property assignment syntax.
     init(wrappedValue: WrappedValue)
 }
 

@@ -15,18 +15,23 @@
 @propertyWrapper
 public struct _FromKeyPath<OuterSelf, WrappedValue> where OuterSelf: AnyObject {
     @available(*, unavailable, message: "You shouldn't directly access this property wrapper. It uses OuterSelf access so you need to directly access the property not this value.")
-    public var wrappedValue: WrappedValue {
+    public var wrappedValue: WrappedValue { //swiftlint:disable:this missing_docs
         get { fatalError("Unavailable") }
         set { fatalError("Unavailable") } //swiftlint:disable:this unused_setter_value
     }
 
     let keyPath: KeyPath<OuterSelf, WrappedValue>!
 
+    /// Creates a `_FromKeyPath` with the given `KeyPath` value.
+    ///
+    /// - Parameter keyPath:
+    ///     The `KeyPath` to follow on `OuterSelf` to get the value of this object.
+    ///     Genrally this needs to be a fully qualified KeyPath in order for type checking to work.
     public init(_ keyPath: KeyPath<OuterSelf, WrappedValue>) {
         self.keyPath = keyPath
     }
 
-    public static subscript(
+    public static subscript( //swiftlint:disable:this missing_docs
         _enclosingInstance instance: OuterSelf,
         wrapped wrappedKeyPath: KeyPath<OuterSelf, WrappedValue>,
         storage storageKeyPath: KeyPath<OuterSelf, Self>
