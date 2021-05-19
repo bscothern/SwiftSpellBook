@@ -71,7 +71,6 @@ opt_in_rules:
     - xct_specific_matcher
 
 disabled_rules:
-    - auto_generated_leftovers
     - comment_spacing
     - cyclomatic_complexity
     - file_length
@@ -106,6 +105,3 @@ custom_rules:
         # this will require knowing how to not trip on autoclosure, escaping, or builders since they can be applied on the same line.
         #regex: '^\w*[^//][^\n]*?[^//]@[a-zA-Z_][^(\n|//)]*?( var | let | struct | class | enum | protocol | func | init(\w)*<| init(\w)*\(| deinit | subscript(\w)*<| subscript(\w)*\()[^\n]*$'
         #message: "Attributes and property wrappers should always be on their own line for types variables, types, and functions."
-    auto_generated_leftovers:
-        regex: 'func [^\n]*\{\n(\s*super\.[^\n]*\n(\s*\/\/[^\n]*\n)*|(\s*\/\/[^\n]*\n)+)\s*\}'
-        message: "Delete auto-generated functions that you don't use"

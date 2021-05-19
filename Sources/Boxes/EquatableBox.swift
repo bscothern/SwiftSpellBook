@@ -25,7 +25,7 @@ public struct EquatableBox<Value>: MutableBox, Equatable {
 
     /// The `AreEqualFunction` used by this box for equality checks if it is the `lhs` argument of the `==` operator.
     public let areEqual: AreEqualFunction
-    
+
     /// Creates an `EquatableBox`.
     ///
     /// - Parameters:

@@ -12,7 +12,7 @@
 public struct IdentifiableBox<Value, ID>: MutableBox, Identifiable where ID: Hashable {
     /// A function that maps the `Value` of the `Box` to its `ID`.
     public typealias IDGenerator = (Value) -> ID
-    
+
     public var boxedValue: Value
 
     @inlinable
@@ -34,7 +34,7 @@ public struct IdentifiableBox<Value, ID>: MutableBox, Identifiable where ID: Has
         self.boxedValue = boxedValue
         self.idGenerator = idGenerator
     }
-    
+
     /// Creates an `IdentifiableBox`.
     ///
     /// - Parameters:

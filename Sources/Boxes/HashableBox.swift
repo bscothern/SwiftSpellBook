@@ -30,7 +30,7 @@ public struct HashableBox<Value>: MutableBox, Hashable {
 
     @usableFromInline
     let hashFunction: HashFunction
-    
+
     /// Creates a `HashableBox`.
     ///
     /// - Parameters:
