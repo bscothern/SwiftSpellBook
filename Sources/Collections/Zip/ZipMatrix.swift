@@ -32,7 +32,7 @@ public struct ZipMatrix<Row, Column> where Row: Collection, Column: Collection {
     }
 }
 
-extension Matrix: Collection {
+extension ZipMatrix: Collection {
     public struct Index: Comparable {
         @usableFromInline
         var rowIndex: Row.Index
@@ -109,8 +109,6 @@ extension Matrix: Collection {
 
             return .init(rowIndex: row.index(i.rowIndex, offsetBy: rowOffset), columnIndex: column.index(column.startIndex, offsetBy: distanceToGo))
         }
-
-        fatalError("TODO")
     }
 
     @inlinable
@@ -126,18 +124,18 @@ extension Matrix: Collection {
     }
 }
 
-extension Matrix {
+extension ZipMatrix {
     public struct RowLens: Collection {
         public typealias Index = Column.Index
 
         @usableFromInline
-        let base: Matrix
+        let base: ZipMatrix
 
         @usableFromInline
         let rowIndex: Row.Index
 
         @usableFromInline
-        init(base: Matrix, rowIndex: Row.Index) {
+        init(base: ZipMatrix, rowIndex: Row.Index) {
             self.base = base
             self.rowIndex = rowIndex
         }
@@ -149,7 +147,7 @@ extension Matrix {
         public var endIndex: Index { base.column.endIndex }
 
         @inlinable
-        public subscript(position: Index) -> Matrix.Element {
+        public subscript(position: Index) -> ZipMatrix.Element {
             base[.init(rowIndex: rowIndex, columnIndex: position)]
         }
 
@@ -160,17 +158,17 @@ extension Matrix {
     }
 
     @inlinable
-    public subscript(row: Row.Index) -> Matrix.RowLens {
+    public subscript(row: Row.Index) -> ZipMatrix.RowLens {
         RowLens(base: self, rowIndex: row)
     }
 }
 
-extension Matrix {
+extension ZipMatrix {
     public struct ColumnLens: Collection {
         public typealias Index = Row.Index
 
         @usableFromInline
-        let base: Matrix
+        let base: ZipMatrix
 
         @usableFromInline
         let columnIndex: Column.Index
@@ -182,13 +180,13 @@ extension Matrix {
         public var endIndex: Index { base.row.endIndex }
 
         @usableFromInline
-        init(base: Matrix, columnIndex: Column.Index) {
+        init(base: ZipMatrix, columnIndex: Column.Index) {
             self.base = base
             self.columnIndex = columnIndex
         }
 
         @inlinable
-        public subscript(position: Index) -> Matrix.Element {
+        public subscript(position: Index) -> ZipMatrix.Element {
             base[.init(rowIndex: position, columnIndex: columnIndex)]
         }
 
@@ -199,7 +197,7 @@ extension Matrix {
     }
 
     @inlinable
-    public subscript(column: Column.Index) -> Matrix.ColumnLens {
+    public subscript(column: Column.Index) -> ZipMatrix.ColumnLens {
         ColumnLens(base: self, columnIndex: column)
     }
 }
