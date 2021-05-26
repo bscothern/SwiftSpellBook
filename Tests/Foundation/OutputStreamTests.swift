@@ -99,16 +99,16 @@ final class OutputStreamTests: XCTestCase {
 
         var beforeByteCount = 0
         var afterByteCount = 0
-
+    
         try outputStream.write(
             allOf: inputStream,
             maxIntermediateBufferSize: 5,
-            beforeEachWriteOperation: { _outputStream, _inputStream, buffer in
+            beforeEachWrite: { _outputStream, _inputStream, buffer in
                 XCTAssertIdentical(outputStream, _outputStream)
                 XCTAssertIdentical(inputStream, _inputStream)
                 beforeByteCount += buffer.count
             },
-            afterEachWriteOperation: { _outputStream, _inputStream, buffer in
+            afterEachWrite: { _outputStream, _inputStream, buffer in
                 XCTAssertIdentical(outputStream, _outputStream)
                 XCTAssertIdentical(inputStream, _inputStream)
                 afterByteCount += buffer.count

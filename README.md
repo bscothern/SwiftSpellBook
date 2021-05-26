@@ -4,7 +4,7 @@ A collection of common types and extensions to the Swift Standard Library and it
 
 ![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 ![SwiftPM](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)
-![Swift Versions](https://img.shields.io/badge/Swift-5.3-orange.svg)
+![Swift Versions](https://img.shields.io/badge/Swift-5.3+-orange.svg)
 
 ## Adding `SwiftSpellBook` as a dependency
 Add the following line to your package dependencies in your `Package.swift` file:
@@ -33,3 +33,7 @@ There are a handful of them that depend on others but for the most part they are
 * `SwiftMemoryManagementSpellBook` - This adds some types to help with manage memory when working with low level operations.
 * `SwiftPropertyWrappersSpellBook` - This adds lots of property wrappers for all sorts of tasks.
 * `SwiftResultBuildersSpellBook` - This adds different common result builders to use in your projects.
+
+## Testing
+There is also the `XCTestSpellBook` module which is not part of the `SwiftSpellBook` umbrella module.
+This module adds some convenience functinos for testing with `XCTest`.
