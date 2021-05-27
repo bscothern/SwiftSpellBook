@@ -17,7 +17,7 @@ Then in the targets section add this line as a dependency in your `Package.swift
 .product(name: "SwiftSpellBook", package: "SwiftSpellBook"),
 ```
 
-It is recommended to use .upToNextMinor(from: "0.1.0") for the version number because this project will be source stable between minor versions until version 1.0.0 is reached.
+It is recommended to use `.upToNextMinor(from: "0.1.0")` for the version number because this project will be source stable between minor versions until version `1.0.0` is reached.
 
 ## Submodules
 If you want everything you can just use the umbrella module `SwiftSpellBook`.
