@@ -6,11 +6,10 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
-#if !os(watchOS)
+#if !os(watchOS) && swift(>=5.4)
 import XCTest
 import XCTestSpellBook
 
-@available(swift 5.4)
 final class XCAssertThrownErrorIsExpectedTests: XCTestCase {
     static let defaultCompactDescription = "XCTAssertTrue failed - Didn't throw expected error"
 
