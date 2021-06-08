@@ -38,6 +38,16 @@ let experimentalSwiftSettings: [String: SwiftSetting]  = {
     )
 }()
 
+// Needed to support versions of SwiftPM before 5.4
+extension Array {
+    init?<S>(ifNotEmpty sequence: S) where S: Sequence, S.Element == Element {
+        self.init(sequence)
+        guard !isEmpty else {
+            return nil
+        }
+    }
+}
+
 let package = Package(
     name: "SwiftSpellBook",
     products: [
@@ -209,7 +219,7 @@ let package = Package(
                 return experimentalDependencies
             }(),
             path: "Sources/PropertyWrappers",
-            swiftSettings: Array(experimentalSwiftSettings.values)
+            swiftSettings: Array(ifNotEmpty: experimentalSwiftSettings.values)
         ),
         .testTarget(
             name: "SwiftPropertyWrappersSpellBookTests",
@@ -269,7 +279,7 @@ let package = Package(
                 .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "LoftTest_StandardLibraryProtocolChecks"),
             ],
             path: "Tests/_PropertyWrapperProtocols",
-            swiftSettings: Array(experimentalSwiftSettings.values)
+            swiftSettings: Array(ifNotEmpty: experimentalSwiftSettings.values)
         ),
         .target(
             name: "XCTestSpellBook",
