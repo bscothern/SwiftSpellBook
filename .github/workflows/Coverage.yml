@@ -1,0 +1,16 @@
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  package-coverage:
+    runs-on: macos-latest
+    name: Package Coverage
+    steps:
+      - uses: actions/checkout@v2
+      - id: package-coverage
+        uses: bscothern/swift-package-coverage@v0.0.1
+        with:
+          custom-flags: 'this is a test'
