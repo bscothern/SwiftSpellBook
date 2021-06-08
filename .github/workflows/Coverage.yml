@@ -12,5 +12,3 @@ jobs:
       - uses: actions/checkout@v2
       - id: package-coverage
         uses: bscothern/swift-package-coverage@v0.0.1
-        with:
-          custom-flags: 'this is a test'
