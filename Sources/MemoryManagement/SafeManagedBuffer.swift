@@ -66,11 +66,19 @@ public protocol SafeManagedBufferProtocol: _SafeManagedBufferProtocol {
     /// The element type that the `SafeManagedBuffer` will contain.
     associatedtype Element
 
+    #if swift(>=5.4)
     /// The actual number of elements that can be stored in this object.
     ///
     /// This header may be nontrivial to compute; it is usually a good idea to store this information in the "header" area when an instance is created.
     @available(OpenBSD, unavailable, message: "malloc_size is unavailable.")
     var capacity: Int { get }
+    #else
+    
+    /// The actual number of elements that can be stored in this object.
+    ///
+    /// This header may be nontrivial to compute; it is usually a good idea to store this information in the "header" area when an instance is created.
+    var capacity: Int { get }
+    #endif
 
     /// Call `body` with an `UnsafeMutablePointer` to the stored `Header`.
     ///

@@ -31,14 +31,15 @@ public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
     )
 }
 
-@inlinable
-public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
-    _ expression: @autoclosure () throws -> T,
-    @SwitchExpression<Bool> errorComparator: (ExpectedError) -> Bool,
-    _ message: @autoclosure () -> String = "Didn't throw expected error",
-    file: StaticString = #file,
-    line: UInt = #line,
-    errorHandler: (Error) -> Void = { _ in }
+@usableFromInline
+@inline(__always)
+func _XCAssertThrownErrorIsExpected<ExpectedError, T>(
+    _ expression: () throws -> T,
+    errorComparator: (ExpectedError) -> Bool,
+    _ message: () -> String,
+    file: StaticString,
+    line: UInt,
+    errorHandler: (Error) -> Void
 ) {
     XCTAssertThrowsError(try expression(), message(), file: file, line: line) { error in
         errorHandler(error)
@@ -49,5 +50,31 @@ public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
         XCTAssert(errorComparator(expectedError), message(), file: file, line: line)
     }
 }
+
+#if swift(>=5.4)
+@inlinable
+public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
+    _ expression: @autoclosure () throws -> T,
+    @SwitchExpression<Bool> errorComparator: (ExpectedError) -> Bool,
+    _ message: @autoclosure () -> String = "Didn't throw expected error",
+    file: StaticString = #file,
+    line: UInt = #line,
+    errorHandler: (Error) -> Void = { _ in }
+) {
+    _XCAssertThrownErrorIsExpected(expression, errorComparator: errorComparator, message, file: file, line: line, errorHandler: errorHandler)
+}
+#else
+@inlinable
+public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
+    _ expression: @autoclosure () throws -> T,
+    errorComparator: (ExpectedError) -> Bool,
+    _ message: @autoclosure () -> String = "Didn't throw expected error",
+    file: StaticString = #file,
+    line: UInt = #line,
+    errorHandler: (Error) -> Void = { _ in }
+) {
+    _XCAssertThrownErrorIsExpected(expression, errorComparator: errorComparator, message, file: file, line: line, errorHandler: errorHandler)
+}
+#endif
 
 #endif

@@ -235,6 +235,7 @@ let package = Package(
         .testTarget(
             name: "SwiftResultBuildersSpellBookTests",
             dependencies: [
+                .target(name: "XCTestSpellBook"),
                 .target(name: "SwiftResultBuildersSpellBook")
             ],
             path: "Tests/ResultBuilders"
