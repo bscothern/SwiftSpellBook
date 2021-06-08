@@ -9,7 +9,14 @@
 #if swift(>=5.4)
 /// A result builxder that collects instances into an array.
 @resultBuilder
-public enum ArrayBuilder<Element> {
+public enum ArrayBuilder<Element> {}
+#else
+/// A result builxder that collects instances into an array.
+@_functionBuilder
+public enum ArrayBuilder<Element> {}
+#endif
+
+extension ArrayBuilder {
     public static func buildBlock(_ components: [Element]...) -> [Element] {
         components.flatMap { $0 }
     }
@@ -38,4 +45,3 @@ public enum ArrayBuilder<Element> {
         component
     }
 }
-#endif

@@ -41,17 +41,9 @@ func _XCAssertThrownErrorIsExpected<ExpectedError, T>(
     line: UInt,
     errorHandler: (Error) -> Void
 ) {
-    XCTAssertThrowsError(try expression(), message(), file: file, line: line) { error in
-        errorHandler(error)
-        guard let expectedError = error as? ExpectedError else {
-            XCTFail(message(), file: file, line: line)
-            return
-        }
-        XCTAssert(errorComparator(expectedError), message(), file: file, line: line)
-    }
+
 }
 
-#if swift(>=5.4)
 @inlinable
 public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
     _ expression: @autoclosure () throws -> T,
@@ -61,20 +53,14 @@ public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
     line: UInt = #line,
     errorHandler: (Error) -> Void = { _ in }
 ) {
-    _XCAssertThrownErrorIsExpected(expression, errorComparator: errorComparator, message, file: file, line: line, errorHandler: errorHandler)
+    XCTAssertThrowsError(try expression(), message(), file: file, line: line) { error in
+        errorHandler(error)
+        guard let expectedError = error as? ExpectedError else {
+            XCTFail(message(), file: file, line: line)
+            return
+        }
+        XCTAssert(errorComparator(expectedError), message(), file: file, line: line)
+    }
 }
-#else
-@inlinable
-public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
-    _ expression: @autoclosure () throws -> T,
-    errorComparator: (ExpectedError) -> Bool,
-    _ message: @autoclosure () -> String = "Didn't throw expected error",
-    file: StaticString = #file,
-    line: UInt = #line,
-    errorHandler: (Error) -> Void = { _ in }
-) {
-    _XCAssertThrownErrorIsExpected(expression, errorComparator: errorComparator, message, file: file, line: line, errorHandler: errorHandler)
-}
-#endif
 
 #endif

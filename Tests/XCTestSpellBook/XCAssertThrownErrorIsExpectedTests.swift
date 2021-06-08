@@ -63,9 +63,9 @@ final class XCAssertThrownErrorIsExpectedTests: XCTestCase {
             errorComparator: { (error: ErrorE) in
                 switch error {
                 case .a:
-                    return true
+                    true
                 default:
-                    return false
+                    false
                 }
             },
             errorHandler: { error in
@@ -124,9 +124,9 @@ final class XCAssertThrownErrorIsExpectedTests: XCTestCase {
             errorComparator: { (error: ErrorE) in
                 switch error {
                 case .a:
-                    return true
+                    true
                 default:
-                    return false
+                    false
                 }
             }
         )
