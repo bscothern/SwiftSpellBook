@@ -128,6 +128,7 @@ final class OutputStreamTests: XCTestCase {
         XCTAssertEqual(stringFromData, streamDataString)
     }
 
+    #if swift(>=5.4)
     func testWriteAllOfToCapacity() throws {
         let capacity = 10
         let buffer: UnsafeMutablePointer<UInt8> = .allocate(capacity: capacity)
@@ -178,5 +179,6 @@ final class OutputStreamTests: XCTestCase {
             }
         }
     }
+    #endif
 }
 #endif
