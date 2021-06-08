@@ -10,6 +10,7 @@
 import XCTest
 import XCTestSpellBook
 
+@available(swift 5.4)
 final class XCAssertThrownErrorIsExpectedTests: XCTestCase {
     static let defaultCompactDescription = "XCTAssertTrue failed - Didn't throw expected error"
 
