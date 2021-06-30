@@ -1,4 +1,4 @@
-name: SwiftPM macOS 10
+name: SwiftPM (macOS 10)
 
 on:
   push:

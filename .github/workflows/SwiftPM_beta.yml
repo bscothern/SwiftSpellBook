@@ -1,4 +1,4 @@
-name: SwiftPM (Stable)
+name: SwiftPM (Beta)
 
 on:
   push:
