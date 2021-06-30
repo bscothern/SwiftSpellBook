@@ -7,7 +7,7 @@ on:
 
 jobs:
   package-coverage:
-    runs-on: macos-11
+    runs-on: macos-latest
     name: Package Coverage
     steps:
       - uses: actions/checkout@v2
