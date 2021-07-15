@@ -8,21 +8,29 @@
 
 extension MutableCollection where Self: RandomAccessCollection {
     @inlinable
-    public mutating func sort<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) where ComparableValue: Comparable {
+    @_transparent
+    public mutating func sort<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>)
+    where ComparableValue: Comparable {
         sort(keyPath: keyPath, by: <)
     }
 
     @inlinable
-    public mutating func sort<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) {
+    public mutating func sort<ComparableValue>(
+        keyPath: KeyPath<Element, ComparableValue>,
+        by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool
+    ) {
         sort { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
-    public mutating func assign<Value>(_ keyPath: WritableKeyPath<Element, Value>, to newValue: Value) {
+    public mutating func assign<Value>(
+        _ value: Value,
+        to keyPath: WritableKeyPath<Element, Value>
+    ) {
         var index = startIndex
         while index != endIndex {
             defer { formIndex(after: &index) }
-            self[index][keyPath: keyPath] = newValue
+            self[index][keyPath: keyPath] = value
         }
     }
 }

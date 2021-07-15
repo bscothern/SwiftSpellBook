@@ -8,21 +8,32 @@
 
 extension Sequence {
     @inlinable
-    public func assign<Value>(_ keyPath: ReferenceWritableKeyPath<Element, Value>, to newValue: Value) {
+    public func assign<Value>(
+        _ value: Value,
+        to keyPath: ReferenceWritableKeyPath<Element, Value>
+    ) {
         forEach {
-            $0[keyPath: keyPath] = newValue
+            $0[keyPath: keyPath] = value
         }
     }
 
     @inlinable
-    public func reduce<Result, Value>(keyPath: KeyPath<Element, Value>, initialValue: Result, _ nextPartialResult: (Result, Value) -> Result) -> Result {
+    public func reduce<Result, Value>(
+        _ keyPath: KeyPath<Element, Value>,
+        initialValue: Result,
+        _ nextPartialResult: (Result, Value) -> Result
+    ) -> Result {
         reduce(initialValue) { result, element in
             nextPartialResult(result, element[keyPath: keyPath])
         }
     }
 
     @inlinable
-    public func reduce<Result, Value>(keyPath: KeyPath<Element, Value>, into initialValue: Result, _ nextPartialResult: (inout Result, Value) -> Void) -> Result {
+    public func reduce<Result, Value>(
+        _ keyPath: KeyPath<Element, Value>,
+        into initialValue: Result,
+        _ nextPartialResult: (inout Result, Value) -> Void
+    ) -> Result {
         reduce(into: initialValue) { result, element in
             nextPartialResult(&result, element[keyPath: keyPath])
         }
@@ -31,47 +42,70 @@ extension Sequence {
 
 extension Sequence {
     @inlinable
-    public func min<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) -> Element? where ComparableValue: Comparable {
+    public func min<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) -> Element?
+    where ComparableValue: Comparable {
         min(keyPath: keyPath, by: <)
     }
 
     @inlinable
-    public func min<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) -> Element? {
+    public func min<ComparableValue>(
+        keyPath: KeyPath<Element, ComparableValue>,
+        by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool
+    ) -> Element? {
         self.min { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
-    public func max<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) -> Element? where ComparableValue: Comparable {
+    public func max<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) -> Element?
+    where ComparableValue: Comparable {
         max(keyPath: keyPath, by: >)
     }
 
     @inlinable
-    public func max<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) -> Element? {
+    public func max<ComparableValue>(
+        keyPath: KeyPath<Element, ComparableValue>,
+        by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool
+    ) -> Element? {
         self.max { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
-    public func sorted<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) -> [Element] where ComparableValue: Comparable {
+    public func sorted<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>) -> [Element]
+    where ComparableValue: Comparable {
         sorted(keyPath: keyPath, by: <)
     }
 
     @inlinable
-    public func sorted<ComparableValue>(keyPath: KeyPath<Element, ComparableValue>, by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool) -> [Element] {
+    public func sorted<ComparableValue>(
+        keyPath: KeyPath<Element, ComparableValue>,
+        by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool
+    ) -> [Element] {
         sorted { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
     @inlinable
-    public func filter<EquatableValue>(_ keyPath: KeyPath<Element, EquatableValue>, equalTo value: EquatableValue) -> [Element] where EquatableValue: Equatable {
+    public func filter<EquatableValue>(
+        _ keyPath: KeyPath<Element, EquatableValue>,
+        equalTo value: EquatableValue
+    ) -> [Element]
+    where EquatableValue: Equatable {
         filter { $0[keyPath: keyPath] == value }
     }
 
     @inlinable
-    public func filter<EquatableValue>(_ keyPath: KeyPath<Element, EquatableValue>, notEqualto value: EquatableValue) -> [Element] where EquatableValue: Equatable {
+    public func filter<EquatableValue>(
+        _ keyPath: KeyPath<Element, EquatableValue>,
+        notEqualto value: EquatableValue
+    ) -> [Element]
+    where EquatableValue: Equatable {
         filter { $0[keyPath: keyPath] != value }
     }
 
     @inlinable
-    public func filter<Value>(_ keyPath: KeyPath<Element, Value>, satisifies predicate: (Value) -> Bool) -> [Element] {
+    public func filter<Value>(
+        _ keyPath: KeyPath<Element, Value>,
+        satisifies predicate: (Value) -> Bool
+    ) -> [Element] {
         filter { predicate($0[keyPath: keyPath]) }
     }
 }

@@ -11,6 +11,51 @@ import SwiftCollectionsSpellBook
 import XCTest
 
 final class SequenceKeyPathsTests: XCTestCase {
+    func testAssign() {
+        class Foo {
+            var i = 0
+        }
+        
+        let number = Int.random(in: 1...10)
+        
+        func applyAssign<S>(to sequence: S) where S: Sequence, S.Element == Foo {
+            sequence.assign(number, to: \.i)
+        }
+
+        let foos = [Foo(), Foo(), Foo()]
+        applyAssign(to: foos)
+
+        XCTAssertEqual(foos.map(\.i), Array(repeating: number, count: foos.count))
+    }
+    
+    func testReduce() {
+        struct Foo {
+            var i: Int
+        }
+        
+        let range = 0..<10
+        let expected = range.reduce(-1, +)
+        
+        let foos = range.map(Foo.init(i:))
+        let reducedValue = foos.reduce(\.i, initialValue: -1, +)
+        
+        XCTAssertEqual(reducedValue, expected)
+    }
+    
+    func testReduceInto() {
+        struct Foo {
+            var i: Int
+        }
+        
+        let range = 0..<10
+        let expected = range.reduce(into: -1, +=)
+        
+        let foos = range.map(Foo.init(i:))
+        let reducedValue = foos.reduce(\.i, into: -1, +=)
+        
+        XCTAssertEqual(reducedValue, expected)
+    }
+    
     func testSeqeunceFilterKeyPathEqualTo() {
         var called = false
         var equalTo: Int {

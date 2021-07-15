@@ -188,9 +188,15 @@ open class _SafeManagedBuffer<HeaderValue, Element>: ManagedBuffer<_SafeManagedB
             _modify { yield &value[keyPath: dynamicMember] }
         }
     }
-
+    
     @inlinable
     deinit {
+        _deinit()
+    }
+    
+    // Pulled out of the normal deinit in order to get proper code coerage...
+    @usableFromInline
+    func _deinit() {
         withUnsafeMutablePointers { header, elements in
             switch header.pointee.deinitStrategy {
             case let .count(offset):
