@@ -73,7 +73,7 @@ public protocol SafeManagedBufferProtocol: _SafeManagedBufferProtocol {
     @available(OpenBSD, unavailable, message: "malloc_size is unavailable.")
     var capacity: Int { get }
     #else
-    
+
     /// The actual number of elements that can be stored in this object.
     ///
     /// This header may be nontrivial to compute; it is usually a good idea to store this information in the "header" area when an instance is created.
@@ -188,12 +188,12 @@ open class _SafeManagedBuffer<HeaderValue, Element>: ManagedBuffer<_SafeManagedB
             _modify { yield &value[keyPath: dynamicMember] }
         }
     }
-    
+
     @inlinable
     deinit {
         _deinit()
     }
-    
+
     // Pulled out of the normal deinit in order to get proper code coerage...
     @usableFromInline
     func _deinit() {

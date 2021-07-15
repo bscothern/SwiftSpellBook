@@ -13,16 +13,16 @@ import XCTest
 final class SequenceForEachTests: XCTestCase {
     struct Foo {
         static var count = 0
-        
+
         func updateCount() {
             Self.count += 1
         }
-        
+
         func a() -> Int {
             1
         }
     }
-    
+
     func testSequenceForEach() {
         let count = 100
         let sequence = Array(repeating: Foo(), count: count)

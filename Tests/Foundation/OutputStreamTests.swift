@@ -99,7 +99,7 @@ final class OutputStreamTests: XCTestCase {
 
         var beforeByteCount = 0
         var afterByteCount = 0
-    
+
         try outputStream.write(
             allOf: inputStream,
             maxIntermediateBufferSize: 5,

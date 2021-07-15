@@ -41,7 +41,6 @@ func _XCAssertThrownErrorIsExpected<ExpectedError, T>(
     line: UInt,
     errorHandler: (Error) -> Void
 ) {
-
 }
 
 @inlinable
