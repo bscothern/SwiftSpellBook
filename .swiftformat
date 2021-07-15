@@ -1,0 +1,92 @@
+--swiftversion 5.3
+--extensionacl on-declarations
+--funcattributes prev-line
+--indent 4
+--ifdef no-indent
+--guardelse same-line
+--header ignore
+--ranges no-space
+--semicolons never
+--stripunusedargs closure-only
+--typeattributes prev-line
+--varattributes prev-line
+--wraparguments before-first
+--wrapcollections before-first
+--wrapconditions after-first
+--wrapparameters before-first
+
+--enable \
+    anyObjectProtocol, \
+    blankLinesAtStartOfScope, \
+    blankLinesBetweenScopes, \
+    braces, \
+    consecutiveBlankLines, \
+    consecutiveSpaces, \
+    duplicateImports, \
+    elseOnSameLine, \
+    emptyBraces, \
+    enumNamespaces, \
+    extensionAccessControl, \
+    hoistPatternLet, \
+    indent, \
+    initCoderUnavailable, \
+    isEmpty, \
+    leadingDelimiters, \
+    linebreakAtEndOfFile, \
+    linebreaks, \
+    modifierOrder, \
+    numberFormatting, \
+    preferKeyPath, \
+    redundantBackticks, \
+    redundantBreak, \
+    redundantExtensionACL, \
+    redundantFileprivate, \
+    redundantGet, \
+    redundantInit, \
+    redundantLet, \
+    redundantLetError, \
+    redundantNilInit, \
+    redundantObjc, \
+    redundantParens, \
+    redundantPattern, \
+    redundantReturn, \
+    redundantSelf, \
+    redundantType, \
+    redundantVoidReturnType, \
+    semicolons, \
+    sortedImports, \
+    spaceAroundBraces, \
+    spaceAroundBrackets, \
+    spaceAroundComments, \
+    spaceAroundGenerics, \
+    spaceAroundOperators, \
+    spaceAroundParens, \
+    spaceInsideBraces, \
+    spaceInsideBrackets, \
+    spaceInsideComments, \
+    spaceInsideGenerics, \
+    spaceInsideParens, \
+    strongOutlets, \
+    strongifiedSelf, \
+    todos, \
+    trailingCommas, \
+    trailingSpace, \
+    typeSugar, \
+    void, \
+    wrapArguments, \
+    wrapAttributes, \
+    wrapEnumCases, \
+    wrapSwitchCases, \
+    yodaConditions
+    
+--disable \
+    andOperator, \
+    blankLinesAroundMark, \
+    markTypes, \
+    organizeDeclarations, \
+    redundantRawValues, \
+    sortedSwitchCases, \
+    trailingClosures, \
+    wrap, \
+    wrapMultilineStatementBraces
+    
