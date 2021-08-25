@@ -9,14 +9,14 @@ import PackageDescription
 let experimentalFlags: [(flag: String, force: Bool)] = [
     // Provides @OnDeinitBuffered which is the same as @OnDeinit but backed by SafeManagedBuffer
     (flag: "PROPERTYWRAPPER_ON_DEINIT_BUFFERED", force: false),
-    
+
     // Provides @_FromKeyPath like @_FromReferenceWritableKeyPath.
     // Currently causes a compiler error but it should work ¯\_(ツ)_/¯
     (flag: "PROPERTYWRAPPER_FROM_KEY_PATH", force: false),
 ]
 
 /// Controls the experimental defines to trigger those features for development.
-let experimentalSwiftSettings: [String: SwiftSetting]  = {
+let experimentalSwiftSettings: [String: SwiftSetting] = {
     func define(flag: String, force: Bool) -> SwiftSetting? {
         guard ProcessInfo.processInfo.environment[flag] != nil || force else {
             return nil
@@ -26,10 +26,10 @@ let experimentalSwiftSettings: [String: SwiftSetting]  = {
 
     return .init(
         uniqueKeysWithValues: experimentalFlags.lazy
-            .map { (flag, force) in
+            .map { flag, force in
                 (flag, define(flag: flag, force: force))
             }
-            .compactMap { (flag, define) in
+            .compactMap { flag, define in
                 guard let define = define else {
                     return nil
                 }
@@ -97,7 +97,7 @@ let package = Package(
 //        ),
     ],
     dependencies: [
-//        .package(
+        //        .package(
 //            url: "https://github.com/apple/swift-collections-benchmark",
 //            .upToNextMinor(from: "0.0.1")
 //        ),
@@ -201,7 +201,7 @@ let package = Package(
         .testTarget(
             name: "SwiftMemoryManagementSpellBookTests",
             dependencies: [
-                .target(name: "SwiftMemoryManagementSpellBook")
+                .target(name: "SwiftMemoryManagementSpellBook"),
             ],
             path: "Tests/MemoryManagement"
         ),
@@ -224,7 +224,7 @@ let package = Package(
         .testTarget(
             name: "SwiftPropertyWrappersSpellBookTests",
             dependencies: [
-                .target(name: "SwiftPropertyWrappersSpellBook")
+                .target(name: "SwiftPropertyWrappersSpellBook"),
             ],
             path: "Tests/PropertyWrappers"
         ),
@@ -236,35 +236,35 @@ let package = Package(
             name: "SwiftResultBuildersSpellBookTests",
             dependencies: [
                 .target(name: "XCTestSpellBook"),
-                .target(name: "SwiftResultBuildersSpellBook")
+                .target(name: "SwiftResultBuildersSpellBook"),
             ],
             path: "Tests/ResultBuilders"
         ),
         .target(
             name: "_Concurrency_PropertyWrappersSpellBook",
             dependencies: [
-                .target(name: "_PropertyWrapperProtocols")
+                .target(name: "_PropertyWrapperProtocols"),
             ],
             path: "Sources/_Concurrency+PropertyWrappers"
         ),
         .testTarget(
             name: "Concurrency.PropertyWrappersSpellBookTests",
             dependencies: [
-                .target(name: "_Concurrency_PropertyWrappersSpellBook")
+                .target(name: "_Concurrency_PropertyWrappersSpellBook"),
             ],
             path: "Tests/_Concurrency+PropertyWrappers"
         ),
         .target(
             name: "_AutoClosurePropertyWrapper",
             dependencies: [
-                .target(name: "_PropertyWrapperProtocols")
+                .target(name: "_PropertyWrapperProtocols"),
             ],
             path: "Sources/_AutoClosurePropertyWrapper"
         ),
         .testTarget(
             name: "AutoClosurePropertyWrapperTests",
             dependencies: [
-                .target(name: "_AutoClosurePropertyWrapper")
+                .target(name: "_AutoClosurePropertyWrapper"),
             ],
             path: "Tests/_AutoClosurePropertyWrapper"
         ),
@@ -289,7 +289,7 @@ let package = Package(
             ],
             path: "Sources/XCTestSpellBook",
             linkerSettings: [
-                .linkedFramework("XCTest", .when(platforms: [.macOS, .iOS, .tvOS, .linux, .windows, .android]))
+                .linkedFramework("XCTest", .when(platforms: [.macOS, .iOS, .tvOS, .linux, .windows, .android])),
             ]
         ),
         .testTarget(
@@ -298,7 +298,7 @@ let package = Package(
                 .target(name: "XCTestSpellBook"),
             ],
             path: "Tests/XCTestSpellBook"
-        )
+        ),
 //        // MARK: - Benchmark
 //        .target(
 //            name: "SwiftCollectionsSpellBookBenchmark",

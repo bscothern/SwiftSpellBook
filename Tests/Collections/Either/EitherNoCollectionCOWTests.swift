@@ -6,12 +6,12 @@
 ////  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 ////
 //
-//#if !os(watchOS)
-//import ProtocolTests
-//import SwiftCollectionsSpellBook
-//import XCTest
+// #if !os(watchOS)
+// import ProtocolTests
+// import SwiftCollectionsSpellBook
+// import XCTest
 //
-//final class EitherNoCollectionCOWTests: XCTestCase {
+// final class EitherNoCollectionCOWTests: XCTestCase {
 //    override func setUp() {
 //        super.setUp()
 //        self.continueAfterFailure = false
@@ -32,9 +32,9 @@
 //        XCTAssertEqual(either[.right(.init(value: 1))], 4)
 //        XCTAssertEqual(either.right.map(Array.init), [1, 4, 2])
 //    }
-//}
+// }
 //
-//struct COWCollection<Element>: MutableCollection, RandomAccessCollection, ExpressibleByArrayLiteral {
+// struct COWCollection<Element>: MutableCollection, RandomAccessCollection, ExpressibleByArrayLiteral {
 //    final class Buffer {
 //        var values: [Element]
 //
@@ -93,6 +93,6 @@
 //            return
 //        }
 //    }
-//}
+// }
 //
-//#endif
+// #endif

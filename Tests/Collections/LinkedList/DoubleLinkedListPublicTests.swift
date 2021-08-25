@@ -6,12 +6,12 @@
 ////  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 ////
 //
-//#if !os(watchOS)
-//import ProtocolTests
-//import SwiftCollectionsSpellBook
-//import XCTest
+// #if !os(watchOS)
+// import ProtocolTests
+// import SwiftCollectionsSpellBook
+// import XCTest
 //
-//final class DoubleLinkedListPublicTests: XCTestCase, CollectionTests {
+// final class DoubleLinkedListPublicTests: XCTestCase, CollectionTests {
 //    typealias List<T> = DoubleLinkedList<T>
 //    typealias CollectionType = List<Int>
 //    typealias Element = Int
@@ -168,5 +168,5 @@
 //
 //        XCTAssertEqual(list1, list2)
 //    }
-//}
-//#endif
+// }
+// #endif

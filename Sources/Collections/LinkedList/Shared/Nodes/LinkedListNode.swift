@@ -49,7 +49,7 @@ extension LinkedListNode {
     /// This is done in such a way that only one is ever deallocated and deinitialized at a time preventing stack overflows.
     @usableFromInline
     func destoryNodes() {
-        var nextNode: UnsafeMutablePointer<Self>? = self.next
+        var nextNode: UnsafeMutablePointer<Self>? = next
         while let current = nextNode {
             nextNode = current.pointee.next
             current.deinitialize(count: 1)

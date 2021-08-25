@@ -24,12 +24,12 @@ extension EitherSequence: Sequence {
         @usableFromInline
         init(left: Left.Iterator) {
             self.left = left
-            self.right = nil
+            right = nil
         }
 
         @usableFromInline
         init(right: Right.Iterator) {
-            self.left = nil
+            left = nil
             self.right = right
         }
 

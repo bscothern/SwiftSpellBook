@@ -64,6 +64,6 @@ public struct IndirectBox<Value>: MutableBox {
     @inlinable
     @_transparent
     public init(_ boxedValue: Value) {
-        self.indirect = .value(boxedValue)
+        indirect = .value(boxedValue)
     }
 }

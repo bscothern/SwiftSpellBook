@@ -30,7 +30,7 @@ public struct Indirect<WrappedValue>: MutablePropertyWrapper, DefaultInitializab
 
     @inlinable
     public init(wrappedValue: WrappedValue) {
-        self.box = .init(wrappedValue)
+        box = .init(wrappedValue)
     }
 }
 

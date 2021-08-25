@@ -6,9 +6,9 @@
 ////  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 ////
 //
-//import SwiftMemoryManagementSpellBook
+// import SwiftMemoryManagementSpellBook
 //
-//public struct BidirectionalDictionary<T, U>: Collection where T: Hashable, U: Hashable {
+// public struct BidirectionalDictionary<T, U>: Collection where T: Hashable, U: Hashable {
 //    public struct Index: Comparable {
 //        @usableFromInline
 //        var value: Dictionary<T, U>.Index
@@ -216,4 +216,4 @@
 //
 //        buffer = newBuffer
 //    }
-//}
+// }

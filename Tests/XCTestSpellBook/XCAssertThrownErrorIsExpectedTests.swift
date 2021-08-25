@@ -82,7 +82,7 @@ final class XCAssertThrownErrorIsExpectedTests: XCTestCase {
             XCAssertThrownErrorIsExpected(
                 try thrower(),
                 errorComparator: { (_: Error) in
-                    return false
+                    false
                 }
             )
         }

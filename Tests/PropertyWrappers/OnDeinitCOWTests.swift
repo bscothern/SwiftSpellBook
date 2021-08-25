@@ -17,7 +17,7 @@ final class OnDeinitCOWTests: XCTestCase {
         var total = 0
         measure(metrics: [XCTStorageMetric(), XCTCPUMetric(), XCTMemoryMetric()]) {
             total = 0
-            for i in 0..<10_000 {
+            for i in 0..<10000 {
                 var value = OnDeinitCOW<Int>(wrappedValue: i) { _ in
                     total += 1
                 }
@@ -25,7 +25,7 @@ final class OnDeinitCOWTests: XCTestCase {
                 value.wrappedValue = Int.random(in: 1...10)
                 value.wrappedValue += 1
             }
-            XCTAssertEqual(total, 10_000)
+            XCTAssertEqual(total, 10000)
         }
     }
 

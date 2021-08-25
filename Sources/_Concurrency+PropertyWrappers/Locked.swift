@@ -48,7 +48,7 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
 
     @inlinable
     public var projectedValue: Self {
-        get { self } //swiftlint:disable:this implicit_getter
+        get { self } // swiftlint:disable:this implicit_getter
         _modify {
             defer { _fixLifetime(self) }
             yield &self
@@ -57,7 +57,7 @@ public struct Locked<WrappedValue>: MutablePropertyWrapper {
 
     @usableFromInline
     init(wrappedValue: WrappedValue, lock: NSLocking & TryLocking) {
-        self.value = wrappedValue
+        value = wrappedValue
         self.lock = lock
     }
 
@@ -85,7 +85,7 @@ public struct Locked<WrappedValue> {
 
 extension Locked {
     public enum LockType {
-        //swiftlint:disable duplicate_enum_cases
+        // swiftlint:disable duplicate_enum_cases
 
         /// Specifies the `Foundation.NSLock` type.
         case nsLock
@@ -103,7 +103,7 @@ extension Locked {
         case osUnfairLock
         #endif
 
-        //swiftlint:enable duplicate_enum_cases
+        // swiftlint:enable duplicate_enum_cases
 
         /// The default lock type to use on each platform.
         ///

@@ -58,23 +58,23 @@ extension InputStream {
     }
 }
 
-//TODO: Verify if this can be done
+// TODO: Verify if this can be done
 
-//#if canImport(Darwin) || canImport(Glibc)
+// #if canImport(Darwin) || canImport(Glibc)
 //
-//#if canImport(Darwin)
-//import Darwin
-//#else
-//import Glibc
-//#endif
+// #if canImport(Darwin)
+// import Darwin
+// #else
+// import Glibc
+// #endif
 //
-//extension InputStream {
+// extension InputStream {
 //    @inlinable
 //    public static func stdin() -> InputStream? {
 //        InputStream(fileAtPath: "/dev/fd/\(STDIN_FILENO)")
 //    }
-//}
+// }
 //
-//#endif // canImport(Darwin) || canImport(Glibc)
+// #endif // canImport(Darwin) || canImport(Glibc)
 
 #endif // canImport(Foundation)

@@ -45,7 +45,7 @@ public struct OnDeinitCOW<WrappedValue>: MutablePropertyWrapper {
     @inlinable
     @_transparent
     public init(wrappedValue: WrappedValue, do deinitAction: @escaping DeinitAction) {
-        self.onDeinit = .init(wrappedValue: wrappedValue, do: deinitAction)
+        onDeinit = .init(wrappedValue: wrappedValue, do: deinitAction)
     }
 }
 

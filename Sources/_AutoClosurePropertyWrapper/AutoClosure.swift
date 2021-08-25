@@ -27,7 +27,7 @@ public struct AutoClosure<WrappedValue>: PropertyWrapper, ProjectedPropertyWrapp
     /// - Parameter wrappedValue: The closure that will be contained in this `AutoClosure`.
     @inlinable
     public init(wrappedValue: @escaping () -> WrappedValue) {
-        self._wrappedValue = wrappedValue
+        _wrappedValue = wrappedValue
     }
 
     /// Creates an `AutoClosure` from an `@autoclosure` of `WrappedValue`
@@ -35,6 +35,6 @@ public struct AutoClosure<WrappedValue>: PropertyWrapper, ProjectedPropertyWrapp
     /// - Parameter wrappedValue: The `WrappedValue` to turn into a `@autoclosure` and contain in this `AutoClosure`.
     @inlinable
     public init(wrappedValue: @escaping @autoclosure () -> WrappedValue) {
-        self._wrappedValue = wrappedValue
+        _wrappedValue = wrappedValue
     }
 }

@@ -14,8 +14,8 @@ import XCTestSpellBook
 final class InputStreamTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
-        self.stream = nil
-        self.streamData = nil
+        stream = nil
+        streamData = nil
     }
 
     func testForEachNotOpen() {
@@ -62,10 +62,10 @@ final class InputStreamTests: XCTestCase {
     lazy var streamData: Data! = Self.streamDataString.data(using: .utf8)!
 
     static let streamDataString = """
-        1234567890
-        ABCDEFGHIJ
-        KLMNOPQRST
-        UVWXYZ[]{}
-        """
+    1234567890
+    ABCDEFGHIJ
+    KLMNOPQRST
+    UVWXYZ[]{}
+    """
 }
 #endif

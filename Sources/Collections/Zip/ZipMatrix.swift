@@ -22,9 +22,9 @@ public struct ZipMatrix<Row, Column> where Row: Collection, Column: Collection {
     @usableFromInline
     init(_row row: Row, column: Column) {
         self.row = row
-        self.rowCount = row.count
+        rowCount = row.count
         self.column = column
-        self.columnCount = column.count
+        columnCount = column.count
     }
 
     public init(row: Row, column: Column) {

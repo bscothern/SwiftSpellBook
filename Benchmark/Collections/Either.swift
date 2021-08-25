@@ -14,8 +14,7 @@ extension Benchmark {
         addSimple(
             title: "Either Append",
             input: Int.self,
-            body: { i in
-                
+            body: { _ in
             }
         )
     }

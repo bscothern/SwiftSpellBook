@@ -71,7 +71,7 @@ public struct OnDeinit<WrappedValue>: MutablePropertyWrapper {
     @inlinable
     @_transparent
     public init(wrappedValue: WrappedValue, do deinitAction: @escaping DeinitAction) {
-        self.box = .init(boxedValue: wrappedValue, do: deinitAction)
+        box = .init(boxedValue: wrappedValue, do: deinitAction)
     }
 
     /// Creates a copy of the `OnDeinit` that has the current `wrappedValue` and the `DeinitAction` the original instance was created with.
@@ -108,8 +108,8 @@ import SwiftMemoryManagementSpellBook
 
 @propertyWrapper
 public final class OnDeinitBuffered<WrappedValue>: SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>,
-//SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>,
-MutablePropertyWrapper, _OnDeinit {
+    // SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>,
+    MutablePropertyWrapper, _OnDeinit {
     @inlinable
     public var wrappedValue: WrappedValue {
         get { withUnsafeMutablePointerToElements(\.pointee) }

@@ -102,7 +102,7 @@ extension LinkedListProtocol {
 @usableFromInline
 protocol _LinkedListProtocol: LinkedListProtocol where Index: LinkedListIndex, Index.Base == Self {
     associatedtype Node: LinkedListNode where Node.Element == Element
-    typealias  Buffer = LinkedListBuffer<Element, Node>
+    typealias Buffer = LinkedListBuffer<Element, Node>
 
     var buffer: Buffer { get set }
 }
@@ -157,7 +157,7 @@ extension _LinkedListProtocol {
     @inlinable
     public mutating func removeFirst(_ n: Int) {
         createCopyIfNeeded()
-        precondition(n < self.count, "\(#function) requires that n < self.count")
+        precondition(n < count, "\(#function) requires that n < self.count")
         for _ in 0..<n {
             buffer.removeFirst()
         }

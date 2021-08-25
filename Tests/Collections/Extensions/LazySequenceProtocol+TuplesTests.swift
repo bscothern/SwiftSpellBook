@@ -19,16 +19,19 @@ final class LazySequenceProtocolTuplesTests: XCTestCase {
             checkFailure()
             return _a
         }
+
         private var _b: Int = 1
         var b: Int {
             checkFailure()
             return _b
         }
+
         private var _c: Int = 2
         var c: Int {
             checkFailure()
             return _c
         }
+
         private var _d: Int = 3
         var d: Int {
             checkFailure()

@@ -86,4 +86,5 @@ extension Either: Comparable where Left: Comparable, Right: Comparable {
         lhs.value < rhs.value
     }
 }
+
 extension Either._Either: Comparable where Left: Comparable, Right: Comparable {}

@@ -6,7 +6,9 @@
 //  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
+// swiftformat:disable spaceAroundOperators
 infix operator ?= : AssignmentPrecedence
+// swiftformat:enable spaceAroundOperators
 
 /// Assigns to an optional value if it is currently `nil`
 ///

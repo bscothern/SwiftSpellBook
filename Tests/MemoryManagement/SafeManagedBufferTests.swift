@@ -106,7 +106,7 @@ final class SafeManagedBufferTests: XCTestCase {
                 bufferPointer.deinitialize(count: 1)
                 bufferPointer.deallocate()
             }
-            let scale = Int.random(in: 1_000...10_000)
+            let scale = Int.random(in: 1000...10000)
             bufferPointer.initialize(to: CustomSafeManagedBufferFullCapacity(header: didDeinit, scale: scale))
 
             XCTAssertEqual(bufferPointer.pointee.header.value.value, headerValue)

@@ -40,8 +40,7 @@ func _XCAssertThrownErrorIsExpected<ExpectedError, T>(
     file: StaticString,
     line: UInt,
     errorHandler: (Error) -> Void
-) {
-}
+) {}
 
 @inlinable
 public func XCAssertThrownErrorIsExpected<ExpectedError, T>(

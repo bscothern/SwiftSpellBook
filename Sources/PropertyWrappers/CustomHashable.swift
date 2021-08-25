@@ -39,7 +39,7 @@ public struct CustomHashable<WrappedValue>: MutablePropertyWrapper, Hashable {
         areEqualBy areEqual: @escaping (WrappedValue, WrappedValue) -> Bool,
         hashedBy hashFunction: @escaping (_ hasher: inout Hasher, _ value: WrappedValue) -> Void
     ) {
-        self.box = .init(wrappedValue, areEqualBy: areEqual, hashedBy: hashFunction)
+        box = .init(wrappedValue, areEqualBy: areEqual, hashedBy: hashFunction)
     }
 
     /// Creates a `CustomHashable` using the existing `Equatable` conformance of `WrappedValue`.

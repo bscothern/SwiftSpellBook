@@ -20,7 +20,7 @@ final class LockedTests: XCTestCase {
         }
 
         init(_ i: Locked<Int>) {
-            self._i = i
+            _i = i
         }
     }
 

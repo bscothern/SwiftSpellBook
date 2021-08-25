@@ -12,7 +12,7 @@ extension EitherMutableCollection: MutableCollection {
     @inlinable
     public subscript(position: Index) -> Element {
         // swiftlint doesn't recognize _modify as an accessor
-        //swiftlint:disable:next implicit_getter
+        // swiftlint:disable:next implicit_getter
         get { getElement(at: position) }
         _modify {
             // This accessor does some extra explicit memory management to help avoid COW overhead.

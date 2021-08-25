@@ -83,10 +83,10 @@ final class OutputStreamTests: XCTestCase {
 
     func testWriteAllOfInputStream() throws {
         let streamDataString = """
-            qwertyuiop
-            asdfghjkl
-            zxcvbnm
-            """
+        qwertyuiop
+        asdfghjkl
+        zxcvbnm
+        """
         let streamData = try XCTUnwrap(streamDataString.data(using: .utf8))
 
         let inputStream = InputStream(data: streamData)
@@ -142,7 +142,7 @@ final class OutputStreamTests: XCTestCase {
             outputStream.open()
             defer { outputStream.close() }
 
-            let bytes = Array(0 as UInt8 ..< UInt8(capacity)).shuffled()
+            let bytes = Array(0 as UInt8..<UInt8(capacity)).shuffled()
             try bytes.withUnsafeBytes { buffer in
                 try outputStream.write(allOf: buffer.bindMemory(to: UInt8.self))
             }
@@ -159,7 +159,7 @@ final class OutputStreamTests: XCTestCase {
                 outputStream.open()
                 defer { outputStream.close() }
 
-                let bytes = Array(0 as UInt8 ..< UInt8(capacity + 1)).shuffled()
+                let bytes = Array(0 as UInt8..<UInt8(capacity + 1)).shuffled()
                 try bytes.withUnsafeBytes { buffer in
                     try outputStream.write(allOf: buffer.bindMemory(to: UInt8.self))
                 }

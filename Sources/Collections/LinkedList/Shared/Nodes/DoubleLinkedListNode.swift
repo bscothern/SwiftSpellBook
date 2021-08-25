@@ -72,7 +72,7 @@ struct DoubleLinkedListNode<Element>: _DoubleLinkedListNode {
     @usableFromInline
     func createCopy() -> (head: UnsafeMutablePointer<Self>, tail: UnsafeMutablePointer<Self>) {
         let head = UnsafeMutablePointer<Self>.allocate(capacity: 1)
-        head.initialize(to: .init(element: self.element))
+        head.initialize(to: .init(element: element))
         var tail = head
 
         var current = next

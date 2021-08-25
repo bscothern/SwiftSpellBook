@@ -14,6 +14,7 @@
 --wrapcollections before-first
 --wrapconditions after-first
 --wrapparameters before-first
+--xcodeindentation enabled
 
 --enable \
     anyObjectProtocol, \
@@ -72,13 +73,12 @@
     trailingCommas, \
     trailingSpace, \
     typeSugar, \
-    void, \
     wrapArguments, \
     wrapAttributes, \
     wrapEnumCases, \
     wrapSwitchCases, \
     yodaConditions
-    
+
 --disable \
     andOperator, \
     blankLinesAroundMark, \
@@ -89,4 +89,4 @@
     trailingClosures, \
     wrap, \
     wrapMultilineStatementBraces
-    
+

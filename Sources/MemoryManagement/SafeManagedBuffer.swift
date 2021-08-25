@@ -308,7 +308,7 @@ extension _SafeManagedBufferProtocol {
         minimumCapacity: Int,
         deinitStrategy: SafeManagedBufferDeinitStrategy = .count(fromOffset: 0),
         thenFinishInit finishInit: (Self) -> Void
-    )  where HeaderValue == Void {
+    ) where HeaderValue == Void {
         self.init(
             minimumCapacity: minimumCapacity,
             deinitStrategy: deinitStrategy,
