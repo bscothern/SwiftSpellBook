@@ -87,6 +87,7 @@
     redundantRawValues, \
     sortedSwitchCases, \
     trailingClosures, \
+    void, \
     wrap, \
     wrapMultilineStatementBraces
 

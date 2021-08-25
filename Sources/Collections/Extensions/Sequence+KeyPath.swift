@@ -52,6 +52,7 @@ extension Sequence {
         keyPath: KeyPath<Element, ComparableValue>,
         by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool
     ) -> Element? {
+        // swiftformat:disable:next redundantSelf
         self.min { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
@@ -66,6 +67,7 @@ extension Sequence {
         keyPath: KeyPath<Element, ComparableValue>,
         by areInIncreasingOrder: (ComparableValue, ComparableValue) -> Bool
     ) -> Element? {
+        // swiftformat:disable:next redundantSelf
         self.max { areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) }
     }
 
