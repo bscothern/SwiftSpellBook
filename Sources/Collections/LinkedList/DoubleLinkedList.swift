@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 7/15/20.
-//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
 //
 
 public struct DoubleLinkedList<Element>: _LinkedListProtocol {
@@ -105,3 +105,6 @@ extension DoubleLinkedList: Collection {
 
 extension DoubleLinkedList: Equatable where Element: Equatable {}
 extension DoubleLinkedList: Hashable where Element: Hashable {}
+#if canImport(_Concurrency)
+extension DoubleLinkedList: Sendable where Element: Sendable {}
+#endif

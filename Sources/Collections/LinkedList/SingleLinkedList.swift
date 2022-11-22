@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 7/15/20.
-//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
 //
 
 public struct SingleLinkedList<Element>: _LinkedListProtocol {
@@ -104,3 +104,6 @@ extension SingleLinkedList: Collection {
 
 extension SingleLinkedList: Equatable where Element: Equatable {}
 extension SingleLinkedList: Hashable where Element: Hashable {}
+#if canImport(_Concurrency)
+extension SingleLinkedList: Sendable where Element: Sendable {}
+#endif

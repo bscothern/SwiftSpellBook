@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 10/30/20.
-//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
 //
 
 public struct Either<Left, Right> {
@@ -74,12 +74,16 @@ public struct Either<Left, Right> {
     }
 }
 
+// MARK: - Protocol Conformances
+// MARK: Equatable
 extension Either: Equatable where Left: Equatable, Right: Equatable {}
 extension Either._Either: Equatable where Left: Equatable, Right: Equatable {}
 
+// MARK: Hashable
 extension Either: Hashable where Left: Hashable, Right: Hashable {}
 extension Either._Either: Hashable where Left: Hashable, Right: Hashable {}
 
+// MARK: Comparable
 extension Either: Comparable where Left: Comparable, Right: Comparable {
     @inlinable
     public static func < (lhs: Self, rhs: Self) -> Bool {
@@ -88,3 +92,9 @@ extension Either: Comparable where Left: Comparable, Right: Comparable {
 }
 
 extension Either._Either: Comparable where Left: Comparable, Right: Comparable {}
+
+// MARK: Sendable
+#if canImport(_Concurrency)
+extension Either: Sendable where Left: Sendable, Right: Sendable {}
+extension Either._Either: Sendable where Left: Sendable, Right: Sendable {}
+#endif

@@ -1,25 +1,77 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "CheckXCAssertionFailure",
-        "repositoryURL": "https://github.com/loftware/CheckXCAssertionFailure",
-        "state": {
-          "branch": null,
-          "revision": "1e92d9c40059a3ea50e30da05ec83cec54d9b7ab",
-          "version": "0.9.6"
-        }
-      },
-      {
-        "package": "StandardLibraryProtocolChecks",
-        "repositoryURL": "https://github.com/loftware/StandardLibraryProtocolChecks",
-        "state": {
-          "branch": null,
-          "revision": "81c93c9d442bcd87fd37d452d55edc9d4710f7ad",
-          "version": "0.1.0"
-        }
+  "pins" : [
+    {
+      "identity" : "checkxcassertionfailure",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/loftware/CheckXCAssertionFailure",
+      "state" : {
+        "revision" : "1e92d9c40059a3ea50e30da05ec83cec54d9b7ab",
+        "version" : "0.9.6"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "clispinner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bscothern/CLISpinner",
+      "state" : {
+        "revision" : "7489097494e7cecd8a3c9e420b0fef9ea37c15e5",
+        "version" : "0.5.2"
+      }
+    },
+    {
+      "identity" : "rainbow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Rainbow",
+      "state" : {
+        "revision" : "e0dada9cd44e3fa7ec3b867e49a8ddbf543e3df3",
+        "version" : "4.0.1"
+      }
+    },
+    {
+      "identity" : "shellout",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JohnSundell/ShellOut.git",
+      "state" : {
+        "revision" : "e1577acf2b6e90086d01a6d5e2b8efdaae033568",
+        "version" : "2.3.0"
+      }
+    },
+    {
+      "identity" : "signalhandler",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bscothern/SignalHandler",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4f41684a4b27c8e2629e32091d9baaaaf8e16c8e"
+      }
+    },
+    {
+      "identity" : "standardlibraryprotocolchecks",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/loftware/StandardLibraryProtocolChecks",
+      "state" : {
+        "revision" : "81c93c9d442bcd87fd37d452d55edc9d4710f7ad",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "82905286cc3f0fa8adc4674bf49437cab65a8373",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON.git",
+      "state" : {
+        "revision" : "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
+        "version" : "5.0.1"
+      }
+    }
+  ],
+  "version" : 2
 }

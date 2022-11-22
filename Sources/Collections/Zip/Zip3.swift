@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 11/9/20.
-//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
 //
 
 /// Creates a sequence of 3 values built out of 3 underlying sequences.
@@ -34,7 +34,14 @@
 /// - Returns: A sequence of tuple values, where the elements of each set are
 ///   corresponding elements of `sequence1`, `sequence2`, and `sequence3`.
 @inlinable
-public func zip<Sequence1, Sequence2, Sequence3>(_ sequence1: Sequence1, _ sequence2: Sequence2, _ sequence3: Sequence3) -> AnySequence<(Sequence1.Element, Sequence2.Element, Sequence3.Element)> where Sequence1: Sequence, Sequence2: Sequence, Sequence3: Sequence {
+public func zip<Sequence1, Sequence2, Sequence3>(
+    _ sequence1: Sequence1,
+    _ sequence2: Sequence2,
+    _ sequence3: Sequence3
+) -> AnySequence<(Sequence1.Element, Sequence2.Element, Sequence3.Element)>
+where Sequence1: Sequence,
+      Sequence2: Sequence,
+      Sequence3: Sequence {
     var iterators = (sequence1.makeIterator(), sequence2.makeIterator(), sequence3.makeIterator())
     return AnySequence {
         AnyIterator {

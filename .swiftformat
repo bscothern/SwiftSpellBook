@@ -29,7 +29,6 @@
     enumNamespaces, \
     extensionAccessControl, \
     hoistPatternLet, \
-    indent, \
     initCoderUnavailable, \
     isEmpty, \
     leadingDelimiters, \
@@ -82,6 +81,7 @@
 --disable \
     andOperator, \
     blankLinesAroundMark, \
+    indent, \
     markTypes, \
     organizeDeclarations, \
     redundantRawValues, \

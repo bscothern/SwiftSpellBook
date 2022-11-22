@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 5/19/21.
-//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
 //
 
 /// A `Box` that keeps makes its `Value` indirect so it can be on the heap if needed.
@@ -67,3 +67,8 @@ public struct IndirectBox<Value>: MutableBox {
         indirect = .value(boxedValue)
     }
 }
+
+#if canImport(_Concurrency)
+extension IndirectBox: Sendable where Value: Sendable {}
+extension IndirectBox.Indirect: Sendable where Value: Sendable{}
+#endif

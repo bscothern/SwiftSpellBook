@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 11/23/20.
-//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
 //
 
 // swiftformat:disable spaceAroundOperators
@@ -17,8 +17,8 @@ infix operator ?= : AssignmentPrecedence
 ///   - rhs: The value that should be assigned to `lhs` if it is currently `nil`.
 @inlinable
 public func ?= <Value>(lhs: inout Value?, rhs: @autoclosure () -> Value) {
-    // TODO: Figure out how this works with double optionals when you have .some(nil) and what not.
-    // If that isn't desired behavior should this be: `if case Optional<Value>.none = lhs` instead?
+    // So this only works with one layer of optionality.
+    // So if you have .some(nil) it will not set the value.
     if lhs == nil {
         lhs = rhs()
     }

@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import Foundation
@@ -6,22 +6,26 @@ import PackageDescription
 
 // These flags can be set in the environment or via the force flag here.
 // They are used to test language features, implimentations, and to allow code to exists that currenlty doesn't work but should.
-let experimentalFlags: [(flag: String, force: Bool)] = [
+enum ExperimentalFlags: String {
     // Provides @OnDeinitBuffered which is the same as @OnDeinit but backed by SafeManagedBuffer
-    (flag: "PROPERTYWRAPPER_ON_DEINIT_BUFFERED", force: false),
-
+    case propertyWrapper_OnDeinitBuffered = "PROPERTYWRAPPER_ON_DEINIT_BUFFERED"
     // Provides @_FromKeyPath like @_FromReferenceWritableKeyPath.
     // Currently causes a compiler error but it should work ¯\_(ツ)_/¯
-    (flag: "PROPERTYWRAPPER_FROM_KEY_PATH", force: false),
+    case propertyWrapper_FromKeyPath = "PROPERTYWRAPPER_FROM_KEY_PATH"
+}
+
+let experimentalFlags: [(flag: ExperimentalFlags, force: Bool)] = [
+    (flag: .propertyWrapper_OnDeinitBuffered, force: false),
+    (flag: .propertyWrapper_FromKeyPath, force: false),
 ]
 
 /// Controls the experimental defines to trigger those features for development.
-let experimentalSwiftSettings: [String: SwiftSetting] = {
-    func define(flag: String, force: Bool) -> SwiftSetting? {
-        guard ProcessInfo.processInfo.environment[flag] != nil || force else {
+let experimentalSwiftSettings: [ExperimentalFlags: SwiftSetting] = {
+    func define(flag: ExperimentalFlags, force: Bool) -> SwiftSetting? {
+        guard ProcessInfo.processInfo.environment[flag.rawValue] != nil || force else {
             return nil
         }
-        return .define(flag)
+        return .define(flag.rawValue)
     }
 
     return .init(
@@ -37,16 +41,6 @@ let experimentalSwiftSettings: [String: SwiftSetting] = {
             }
     )
 }()
-
-// Needed to support versions of SwiftPM before 5.4
-extension Array {
-    init?<S>(ifNotEmpty sequence: S) where S: Sequence, S.Element == Element {
-        self.init(sequence)
-        guard !isEmpty else {
-            return nil
-        }
-    }
-}
 
 let package = Package(
     name: "SwiftSpellBook",
@@ -76,6 +70,10 @@ let package = Package(
             targets: ["SwiftFoundationSpellBook"]
         ),
         .library(
+            name: "SwiftFunctionSpellBook",
+            targets: ["SwiftFunctionSpellBook"]
+        ),
+        .library(
             name: "SwiftMemoryManagementSpellBook",
             targets: ["SwiftMemoryManagementSpellBook"]
         ),
@@ -97,19 +95,18 @@ let package = Package(
 //        ),
     ],
     dependencies: [
-        //        .package(
+        .package(path: "../swift-package-coverage"),
+//        .package(
 //            url: "https://github.com/apple/swift-collections-benchmark",
 //            .upToNextMinor(from: "0.0.1")
 //        ),
         .package(
-            name: "LoftTest_CheckXCAssertionFailure",
             url: "https://github.com/loftware/CheckXCAssertionFailure",
-            from: "0.9.6"
+            exact: "0.9.6"
         ),
         .package(
-            name: "LoftTest_StandardLibraryProtocolChecks",
             url: "https://github.com/loftware/StandardLibraryProtocolChecks",
-            .exact("0.1.0")
+            exact: "0.1.0"
         ),
     ],
     targets: [
@@ -120,6 +117,7 @@ let package = Package(
                 .target(name: "SwiftCollectionsSpellBook"),
                 .target(name: "SwiftExtensionsSpellBook"),
                 .target(name: "SwiftFoundationSpellBook"),
+                .target(name: "SwiftFunctionSpellBook"),
                 .target(name: "SwiftMemoryManagementSpellBook"),
                 .target(name: "SwiftPropertyWrappersSpellBook"),
                 .target(name: "SwiftResultBuildersSpellBook"),
@@ -134,8 +132,8 @@ let package = Package(
             name: "SwiftBoxesSpellBookTests",
             dependencies: [
                 .target(name: "SwiftBoxesSpellBook"),
-                .product(name: "LoftTest_CheckXCAssertionFailure", package: "LoftTest_CheckXCAssertionFailure"),
-                .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "LoftTest_StandardLibraryProtocolChecks"),
+                .product(name: "LoftTest_CheckXCAssertionFailure", package: "CheckXCAssertionFailure"),
+                .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "StandardLibraryProtocolChecks"),
             ],
             path: "Tests/Boxes"
         ),
@@ -151,7 +149,7 @@ let package = Package(
             name: "SwiftCollectionsSpellBookTests",
             dependencies: [
                 .target(name: "SwiftCollectionsSpellBook"),
-                .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "LoftTest_StandardLibraryProtocolChecks"),
+                .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "StandardLibraryProtocolChecks"),
             ],
             path: "Tests/Collections"
         ),
@@ -195,6 +193,26 @@ let package = Package(
             path: "Tests/Foundation"
         ),
         .target(
+            name: "SwiftFunctionSpellBook",
+            dependencies: [
+            ],
+            path: "Sources/Function",
+            exclude: [
+                "GYB/"
+            ]
+//            plugins: [
+//                .plugin(name: "swift-gyb-plugin", package: "swift-gyb-plugin"),
+//            ]
+        ),
+        .testTarget(
+            name: "SwiftFunctionSpellBookTests",
+            dependencies: [
+                .target(name: "SwiftFunctionSpellBook"),
+                .target(name: "XCTestSpellBook"),
+            ],
+            path: "Tests/Function"
+        ),
+        .target(
             name: "SwiftMemoryManagementSpellBook",
             path: "Sources/MemoryManagement"
         ),
@@ -213,13 +231,13 @@ let package = Package(
                 .target(name: "SwiftBoxesSpellBook"),
             ] + {
                 var experimentalDependencies: [Target.Dependency] = []
-                if experimentalSwiftSettings.keys.contains("PROPERTYWRAPPER_ON_DEINIT_BUFFERED") {
+                if experimentalSwiftSettings.keys.contains(.propertyWrapper_OnDeinitBuffered) {
                     experimentalDependencies.append(.target(name: "SwiftMemoryManagementSpellBook"))
                 }
                 return experimentalDependencies
             }(),
             path: "Sources/PropertyWrappers",
-            swiftSettings: Array(ifNotEmpty: experimentalSwiftSettings.values)
+            swiftSettings: Array(experimentalSwiftSettings.values)
         ),
         .testTarget(
             name: "SwiftPropertyWrappersSpellBookTests",
@@ -276,11 +294,11 @@ let package = Package(
             name: "PropertyWrapperProtocolsTests",
             dependencies: [
                 .target(name: "_PropertyWrapperProtocols"),
-                .product(name: "LoftTest_CheckXCAssertionFailure", package: "LoftTest_CheckXCAssertionFailure"),
-                .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "LoftTest_StandardLibraryProtocolChecks"),
+                .product(name: "LoftTest_CheckXCAssertionFailure", package: "CheckXCAssertionFailure"),
+                .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "StandardLibraryProtocolChecks"),
             ],
             path: "Tests/_PropertyWrapperProtocols",
-            swiftSettings: Array(ifNotEmpty: experimentalSwiftSettings.values)
+            swiftSettings: Array(experimentalSwiftSettings.values)
         ),
         .target(
             name: "XCTestSpellBook",
