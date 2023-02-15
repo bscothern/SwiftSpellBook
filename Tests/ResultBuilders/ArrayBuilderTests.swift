@@ -3,7 +3,7 @@
 //  SwiftSpellBookTests
 //
 //  Created by Braden Scothern on 5/11/21.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 #if !os(watchOS) && swift(>=5.4)
@@ -12,7 +12,7 @@ import XCTest
 import XCTestSpellBook
 
 final class ArrayBuilderTests: XCTestCase {
-    func builder(@ArrayBuilder<Int> arrayBuilder: () -> [Int]) -> [Int] {
+    func builder(@ArrayBuilder arrayBuilder: () -> [Int]) -> [Int] {
         arrayBuilder()
     }
 

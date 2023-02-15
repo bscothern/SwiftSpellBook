@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 10/30/20.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 /// A property wrapper that always treats the underlying value as never equal.

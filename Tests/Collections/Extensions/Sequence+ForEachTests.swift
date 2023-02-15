@@ -3,7 +3,7 @@
 //  SwiftSpellBookTests
 //
 //  Created by Braden Scothern on 6/30/21.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 #if !os(watchOS)

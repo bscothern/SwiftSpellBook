@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 12/1/20.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 /// A property wrapper that allows you to customize the didSet property observer at runtime.

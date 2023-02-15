@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 11/19/20.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 public struct ZipMatrix<Row, Column> where Row: Collection, Column: Collection {
@@ -48,10 +48,13 @@ extension ZipMatrix: Collection {
 
         @inlinable
         public static func < (lhs: Self, rhs: Self) -> Bool {
-            guard lhs.columnIndex != rhs.columnIndex else {
-                return lhs.rowIndex < rhs.rowIndex
+            if lhs.rowIndex < rhs.rowIndex {
+                return true
+            } else if lhs.rowIndex == rhs.rowIndex {
+                return lhs.columnIndex < rhs.columnIndex
+            } else {
+                return false
             }
-            return lhs.columnIndex < rhs.columnIndex
         }
     }
 
@@ -79,10 +82,9 @@ extension ZipMatrix: Collection {
 
         let rowIndex = row.index(after: i.rowIndex)
         guard rowIndex == row.endIndex else {
-            return endIndex
+            return .init(rowIndex: rowIndex, columnIndex: column.startIndex)
         }
-
-        return .init(rowIndex: rowIndex, columnIndex: column.startIndex)
+        return endIndex
     }
 
     @inlinable
@@ -107,20 +109,24 @@ extension ZipMatrix: Collection {
                 rowOffset += 1
             }
 
-            return .init(rowIndex: row.index(i.rowIndex, offsetBy: rowOffset), columnIndex: column.index(column.startIndex, offsetBy: distanceToGo))
+            let rowIndex = row.index(i.rowIndex, offsetBy: rowOffset)
+            let columnIndex = column.index(column.startIndex, offsetBy: distanceToGo)
+            return .init(rowIndex: rowIndex, columnIndex: columnIndex)
         }
     }
 
     @inlinable
-    public func index(_ i: Index, offsetBy distance: Int, limitedBy limit: Index) -> Index? {
-        #warning("TODO")
-        fatalError("TODO")
-    }
-
-    @inlinable
     public func distance(from start: Index, to end: Index) -> Int {
-        #warning("TODO")
-        fatalError("TODO")
+        let rowIndexDistance = row.distance(from: start.rowIndex, to: end.rowIndex)
+        if rowIndexDistance == 0 {
+            return column.distance(from: start.columnIndex, to: end.columnIndex)
+        } else {
+            let startPartialDistance = column.distance(from: start.columnIndex, to: column.endIndex)
+            let endPartialDistance = column.distance(from: column.startIndex, to: end.columnIndex)
+            // Because this is not a BidirectionCollection the rowIndexDistance must always be positive in this case
+            let completedRowsDistance = column.distance(from: column.startIndex, to: column.endIndex) * (rowIndexDistance - 1)
+            return startPartialDistance + endPartialDistance + completedRowsDistance
+        }
     }
 }
 

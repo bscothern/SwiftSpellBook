@@ -3,18 +3,12 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 4/7/22.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 #if swift(>=5.5) && canImport(Foundation)
 import Foundation
 
-/// TODO: Figure out the name of free functions so you can do stuff like this instead of using all of these functions
-/// ```swift
-/// let value = waitForAsync {
-///     await foo()
-/// }
-/// ```
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Task {
     /// An object that contains the state to safely implement `waitUntilFinished()`.
@@ -126,6 +120,37 @@ extension Task {
         _waitUntilFinished()
     }
 }
+
+// TODO: Decide on naming for these functions
+/*
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public func waitForAsyncTask<Success>(
+    priority: TaskPriority? = nil,
+    _ operation: @escaping @Sendable () async -> Success
+) -> Success {
+    Task(priority: priority, operation: operation)
+        .waitUntilFinished()
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public func waitForAsyncTask<Success>(
+    priority: TaskPriority? = nil,
+    _ operation: @escaping @Sendable () async throws -> Success
+) throws -> Success {
+    try Task(priority: priority, operation: operation)
+        .waitUntilFinished()
+}
+
+@_disfavoredOverload
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public func waitForAsyncTask<Success>(
+    priority: TaskPriority? = nil,
+    _ operation: @escaping @Sendable () async throws -> Success
+) -> Result<Success, Error> {
+    Task(priority: priority, operation: operation)
+        .waitUntilFinished()
+}
+*/
 
 #endif
  

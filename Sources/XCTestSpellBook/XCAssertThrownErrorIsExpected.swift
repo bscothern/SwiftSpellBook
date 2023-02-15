@@ -3,7 +3,7 @@
 //  SwiftSpellBook
 //
 //  Created by Braden Scothern on 12/15/20.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 #if canImport(XCTest) && !os(watchOS)
@@ -45,7 +45,7 @@ func _XCAssertThrownErrorIsExpected<ExpectedError, T>(
 @inlinable
 public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
     _ expression: @autoclosure () throws -> T,
-    @SwitchExpression<Bool> errorComparator: (ExpectedError) -> Bool,
+    @SwitchExpression errorComparator: (ExpectedError) -> Bool,
     _ message: @autoclosure () -> String = "Didn't throw expected error",
     file: StaticString = #file,
     line: UInt = #line,

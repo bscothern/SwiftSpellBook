@@ -106,7 +106,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/loftware/StandardLibraryProtocolChecks",
-            exact: "0.1.0"
+            exact: "0.1.2"
         ),
     ],
     targets: [

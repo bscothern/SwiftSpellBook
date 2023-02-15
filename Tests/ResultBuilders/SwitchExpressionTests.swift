@@ -3,7 +3,7 @@
 //  SwiftSpellBookTests
 //
 //  Created by Braden Scothern on 5/11/21.
-//  Copyright © 2020-2022 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
 #if !os(watchOS) && swift(>=5.4)
@@ -13,7 +13,7 @@ import XCTestSpellBook
 
 final class SwitchExpressionTests: XCTestCase {
     func testSwitchExpression() {
-        @SwitchExpression<Int>
+        @SwitchExpression
         func value(for value: Character) -> Int {
             switch value {
             case "a":
