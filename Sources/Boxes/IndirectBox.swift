@@ -68,6 +68,42 @@ public struct IndirectBox<Value>: MutableBox {
     }
 }
 
+extension IndirectBox: Equatable where Value: Equatable {
+    @inlinable
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.boxedValue == rhs.boxedValue
+    }
+}
+
+extension IndirectBox: Hashable where Value: Hashable {
+    @inlinable
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(boxedValue)
+    }
+}
+
+extension IndirectBox: Identifiable where Value: Identifiable {
+    @inlinable
+    public var id: Value.ID {
+        boxedValue.id
+    }
+}
+
+extension IndirectBox: Encodable where Value: Encodable {
+    @inlinable
+    public func encode(to encoder: Encoder) throws {
+        try boxedValue.encode(to: encoder)
+    }
+}
+
+extension IndirectBox: Decodable where Value: Decodable {
+    @inlinable
+    public init(from decoder: Decoder) throws {
+        let value = try Value(from: decoder)
+        self.init(value)
+    }
+}
+
 #if canImport(_Concurrency)
 extension IndirectBox: Sendable where Value: Sendable {}
 extension IndirectBox.Indirect: Sendable where Value: Sendable{}

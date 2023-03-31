@@ -23,6 +23,7 @@ final class _FromKeyPathTests: XCTestCase {
     }
 
     func testReadStructFromClass() {
+        fatalError()
         let bar = Bar()
         XCTAssertEqual(bar.i, 42)
     }

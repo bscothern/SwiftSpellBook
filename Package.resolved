@@ -28,15 +28,6 @@
       }
     },
     {
-      "identity" : "shellout",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/JohnSundell/ShellOut.git",
-      "state" : {
-        "revision" : "e1577acf2b6e90086d01a6d5e2b8efdaae033568",
-        "version" : "2.3.0"
-      }
-    },
-    {
       "identity" : "signalhandler",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bscothern/SignalHandler",
@@ -70,6 +61,15 @@
       "state" : {
         "revision" : "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
         "version" : "5.0.1"
+      }
+    },
+    {
+      "identity" : "swsh",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cobbal/swsh",
+      "state" : {
+        "revision" : "2ec65a56bd3e9eb407b6b6c06d85c7d360081d23",
+        "version" : "4.0.0"
       }
     }
   ],

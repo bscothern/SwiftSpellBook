@@ -58,23 +58,29 @@ extension InputStream {
     }
 }
 
-// TODO: Verify if this can be done
+#if canImport(Darwin) || canImport(Glibc)
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#else
+// TODO: add windows streams support
+#endif
 
-// #if canImport(Darwin) || canImport(Glibc)
-//
-// #if canImport(Darwin)
-// import Darwin
-// #else
-// import Glibc
-// #endif
-//
-// extension InputStream {
-//    @inlinable
-//    public static func stdin() -> InputStream? {
-//        InputStream(fileAtPath: "/dev/fd/\(STDIN_FILENO)")
-//    }
-// }
-//
-// #endif // canImport(Darwin) || canImport(Glibc)
-
+extension InputStream {
+    /// Attempts to creates an `InputStream` that duplicates the file descriptor for standard in.
+    /// 
+    /// - Parameter shouldOpen: If the stream should have `open()` called on it right away
+    /// - Returns: An `InputStream` for standard out if it could be created otherwise `nil`.
+    @inlinable
+    public static func standardIn(shouldOpen: Bool = true) -> InputStream? {
+        let filePath = "/dev/fd/\(STDIN_FILENO)"
+        let inputStream = InputStream(fileAtPath: filePath)
+        if shouldOpen {
+            inputStream?.open()
+        }
+        return inputStream
+    }
+}
+#endif // canImport(Darwin) || canImport(Glibc)
 #endif // canImport(Foundation)

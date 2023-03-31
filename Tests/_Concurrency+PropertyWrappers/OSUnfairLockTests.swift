@@ -7,7 +7,7 @@
 //
 
 #if !os(watchOS)
-import _Concurrency_PropertyWrappersSpellBook
+import _Concurrency_PropertyWrappers
 import XCTest
 
 final class OSUnfairLockTests: XCTestCase {

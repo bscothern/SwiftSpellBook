@@ -22,8 +22,7 @@ public protocol _PassThroughDecodablePropertyWrapper: DefaultInitializableProper
 extension _PassThroughDecodablePropertyWrapper where Self: Decodable {
     @inlinable
     public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let value = try container.decode(WrappedValue.self)
-        self = .init(wrappedValue: value)
+        let value = try WrappedValue(from: decoder)
+        self.init(wrappedValue: value)
     }
 }

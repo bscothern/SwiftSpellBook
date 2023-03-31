@@ -111,28 +111,105 @@ extension OutputStream {
     }
 }
 
-// TODO: Verify if this can be done
+/// A `TextOutputStream` that tracks the most recent `Error` raised while writing.
+public protocol TextOutputStreamWithWriteError: TextOutputStream {
+    /// The last `Error`, if any, raised while perroming a write operation.
+    var writeError: (any Error)? { get }
+}
 
-// #if canImport(Darwin) || canImport(Glibc)
-//
-// #if canImport(Darwin)
-// import Darwin
-// #else
-// import Glibc
-// #endif
-//
-// extension OutputStream {
-//    @inlinable
-//    public static func stdout() -> OutputStream? {
-//        OutputStream(toFileAtPath: "/dev/fd/\(STDOUT_FILENO)", append: true)
-//    }
-//
-//    @inlinable
-//    public static func stderr() -> OutputStream? {
-//        OutputStream(toFileAtPath: "/dev/fd/\(STDERR_FILENO)", append: true)
-//    }
-// }
-//
-// #endif // canImport(Darwin) || canImport(Glibc)
+extension OutputStream {
+    @usableFromInline
+    struct _OutputStreamTextOutputStream: TextOutputStreamWithWriteError {
+        @usableFromInline
+        let outputStream: OutputStream
+        
+        @usableFromInline
+        var writeError: (any Error)?
+        
+        @usableFromInline
+        init(_ outputStream: OutputStream) {
+            self.outputStream = outputStream
+            writeError = nil
+        }
 
+        @usableFromInline
+        mutating func write(_ string: String) {
+            do {
+                try string.utf8.withContiguousStorageIfAvailable { utf8 in
+                    try outputStream.write(allOf: utf8)
+                }
+            } catch {
+                writeError = error
+            }
+        }
+    }
+
+    /// Creates a `TextOutputStream` that writes to the `OutputStream`.
+    ///
+    /// - Note: If the `OutputStream` is not in the open state (see `streamStatus`) this will attemt to open it by calling `open()`.
+    ///     If the open operation fails then `nil` is returned.
+    public func textOutputStream() -> (some TextOutputStreamWithWriteError)? {
+        if self.streamStatus != .open {
+            self.open()
+            guard self.streamStatus == .open else {
+                return _OutputStreamTextOutputStream?.none
+            }
+        }
+        return _OutputStreamTextOutputStream(self)
+    }
+}
+
+#if canImport(Darwin) || canImport(Glibc)
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#else
+// TODO: add windows streams support
+#endif
+
+extension OutputStream {
+    /// Attempts to creates an `OutputStream` that duplicates the file descriptor for standard out.
+    ///
+    /// - Parameter shouldOpen: If the stream should have `open()` called on it right away
+    /// - Returns: An `OutputStream` for standard out if it could be created otherwise `nil`.
+    @inlinable
+    public static func standardOut(shouldOpen: Bool = true) -> OutputStream? {
+        let filePath = "/dev/fd/\(STDOUT_FILENO)"
+        let outputStream = OutputStream(toFileAtPath: filePath, append: true)
+        if shouldOpen {
+            outputStream?.open()
+        }
+        return outputStream
+    }
+
+    /// Attempts to creates an `OutputStream` that duplicates the file descriptor for standard error.
+    ///
+    /// - Parameter shouldOpen: If the stream should have `open()` called on it right away
+    /// - Returns: An `OutputStream` for standard error if it could be created otherwise `nil`.
+    @inlinable
+    public static func standardError(shouldOpen: Bool = true) -> OutputStream? {
+        let filePath = "/dev/fd/\(STDERR_FILENO)"
+        let outputStream = OutputStream(toFileAtPath: filePath, append: true)
+        if shouldOpen {
+            outputStream?.open()
+        }
+        return outputStream
+    }
+    
+    /// Attempts to creates an `OutputStream` that writes to the null device.
+    ///
+    /// - Parameter shouldOpen: If the stream should have `open()` called on it right away
+    /// - Returns: An `OutputStream` for null device if it could be created otherwise `nil`.
+    @inlinable
+    public static func null(shouldOpen: Bool = true) -> OutputStream? {
+        let filePath = "/dev/null"
+        let nullStream = OutputStream(toFileAtPath: filePath, append: true)
+        if shouldOpen {
+            nullStream?.open()
+        }
+        return nullStream
+    }
+}
+#endif // canImport(Darwin) || canImport(Glibc)
 #endif // canImport(Foundation)

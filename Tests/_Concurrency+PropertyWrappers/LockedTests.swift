@@ -7,7 +7,7 @@
 //
 
 #if !os(watchOS) && canImport(Foundation)
-@testable import _Concurrency_PropertyWrappersSpellBook
+@testable import _Concurrency_PropertyWrappers
 import XCTest
 
 final class LockedTests: XCTestCase {

@@ -180,5 +180,10 @@ final class OutputStreamTests: XCTestCase {
         }
     }
     #endif
+    
+    func testIsOpen() {
+        let standardOut = OutputStream.standardOut()
+        print(standardOut)
+    }
 }
 #endif

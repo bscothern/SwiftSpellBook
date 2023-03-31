@@ -22,7 +22,6 @@ public protocol _PassThroughEncodablePropertyWrapper: PropertyWrapper where Wrap
 extension _PassThroughEncodablePropertyWrapper where Self: Encodable {
     @inlinable
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(wrappedValue)
+        try wrappedValue.encode(to: encoder)
     }
 }

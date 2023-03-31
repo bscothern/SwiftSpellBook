@@ -25,13 +25,7 @@ final class ZipMatrixTests: XCTestCase {
         (3, 2),
         (3, 3),
     ]
-    
-    func testPrint() {
-        for z in ZipMatrix(row: row, column: column) {
-            print(z)
-        }
-    }
-    
+
     func testSequenceLaws() {
         let zip = ZipMatrix(row: row, column: column)
         zip.checkSequenceLaws(expecting: expectedValues, areEquivalent: ==)
@@ -43,7 +37,7 @@ final class ZipMatrixTests: XCTestCase {
     }
 
     func testNotBidirectionCollection() {
-        XCTAssertFalse(ZipMatrix<Array<Int>, Array<Int>>.self is any BidirectionalCollection.Type)
+        XCTAssertFalse(ZipMatrix<Array<Int>, Array<Int>>.self is any BidirectionalCollection.Type, "ZipMatrix now conforms to BidirectionCollection and must be updated to match the new requirements.")
     }
 }
 #endif

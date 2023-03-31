@@ -25,3 +25,39 @@ public final class IndirectReferenceBox<Value>: MutableBox {
         self.boxedValue = boxedValue
     }
 }
+
+extension IndirectReferenceBox: Equatable where Value: Equatable {
+    @inlinable
+    public static func == (lhs: IndirectReferenceBox<Value>, rhs: IndirectReferenceBox<Value>) -> Bool {
+        lhs.boxedValue == rhs.boxedValue
+    }
+}
+
+extension IndirectReferenceBox: Hashable where Value: Hashable {
+    @inlinable
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(boxedValue)
+    }
+}
+
+extension IndirectReferenceBox: Identifiable where Value: Identifiable {
+    @inlinable
+    public var id: Value.ID {
+        boxedValue.id
+    }
+}
+
+extension IndirectReferenceBox: Encodable where Value: Encodable {
+    @inlinable
+    public func encode(to encoder: Encoder) throws {
+        try boxedValue.encode(to: encoder)
+    }
+}
+
+extension IndirectReferenceBox: Decodable where Value: Decodable {
+    @inlinable
+    public convenience init(from decoder: Decoder) throws {
+        let value = try Value(from: decoder)
+        self.init(value)
+    }
+}

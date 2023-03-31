@@ -7,7 +7,7 @@
 //
 
 #if !os(watchOS)
-import _AutoClosurePropertyWrapper
+import SwiftPropertyWrappersSpellBook
 import XCTest
 
 final class AutoClosureTests: XCTestCase {

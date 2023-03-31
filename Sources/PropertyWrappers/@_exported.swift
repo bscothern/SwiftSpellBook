@@ -6,5 +6,6 @@
 //  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
-@_exported import _Concurrency_PropertyWrappersSpellBook
+@_exported import _AutoClosurePropertyWrapper
+@_exported import _Concurrency_PropertyWrappers
 @_exported import _PropertyWrapperProtocols

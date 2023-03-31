@@ -15,7 +15,7 @@ enum ExperimentalFlags: String {
 }
 
 let experimentalFlags: [(flag: ExperimentalFlags, force: Bool)] = [
-    (flag: .propertyWrapper_OnDeinitBuffered, force: false),
+    (flag: .propertyWrapper_OnDeinitBuffered, force: true),
     (flag: .propertyWrapper_FromKeyPath, force: false),
 ]
 
@@ -42,8 +42,14 @@ let experimentalSwiftSettings: [ExperimentalFlags: SwiftSetting] = {
     )
 }()
 
+// This is needed to make type checking resolve in the Package.swift otherwise it times out...
+let experimentalSwiftSettingsValues: [SwiftSetting] = Array(experimentalSwiftSettings.values)
+
 let package = Package(
     name: "SwiftSpellBook",
+    platforms: [
+        .macOS(.v10_15),
+    ],
     products: [
         .library(
             name: "SwiftSpellBook",
@@ -156,7 +162,8 @@ let package = Package(
         .target(
             name: "SwiftConcurrencySpellBook",
             dependencies: [
-                .target(name: "_Concurrency_PropertyWrappersSpellBook"),
+                .target(name: "_Concurrency_PropertyWrappers"),
+                .target(name: "_Concurrency_ExtensionsSpellBook"),
             ],
             path: "Sources/Concurrency"
         ),
@@ -169,6 +176,9 @@ let package = Package(
         ),
         .target(
             name: "SwiftExtensionsSpellBook",
+            dependencies: [
+                .target(name: "_Concurrency_ExtensionsSpellBook"),
+            ],
             path: "Sources/Extensions"
         ),
         .testTarget(
@@ -226,7 +236,8 @@ let package = Package(
         .target(
             name: "SwiftPropertyWrappersSpellBook",
             dependencies: [
-                .target(name: "_Concurrency_PropertyWrappersSpellBook"),
+                .target(name: "_AutoClosurePropertyWrapper"),
+                .target(name: "_Concurrency_PropertyWrappers"),
                 .target(name: "_PropertyWrapperProtocols"),
                 .target(name: "SwiftBoxesSpellBook"),
             ] + {
@@ -237,14 +248,15 @@ let package = Package(
                 return experimentalDependencies
             }(),
             path: "Sources/PropertyWrappers",
-            swiftSettings: Array(experimentalSwiftSettings.values)
+            swiftSettings: experimentalSwiftSettingsValues
         ),
         .testTarget(
             name: "SwiftPropertyWrappersSpellBookTests",
             dependencies: [
                 .target(name: "SwiftPropertyWrappersSpellBook"),
             ],
-            path: "Tests/PropertyWrappers"
+            path: "Tests/PropertyWrappers",
+            swiftSettings: experimentalSwiftSettingsValues
         ),
         .target(
             name: "SwiftResultBuildersSpellBook",
@@ -259,7 +271,7 @@ let package = Package(
             path: "Tests/ResultBuilders"
         ),
         .target(
-            name: "_Concurrency_PropertyWrappersSpellBook",
+            name: "_Concurrency_PropertyWrappers",
             dependencies: [
                 .target(name: "_PropertyWrapperProtocols"),
             ],
@@ -268,9 +280,20 @@ let package = Package(
         .testTarget(
             name: "Concurrency.PropertyWrappersSpellBookTests",
             dependencies: [
-                .target(name: "_Concurrency_PropertyWrappersSpellBook"),
+                .target(name: "_Concurrency_PropertyWrappers"),
             ],
             path: "Tests/_Concurrency+PropertyWrappers"
+        ),
+        .target(
+            name: "_Concurrency_ExtensionsSpellBook",
+            path: "Sources/_Concurrency+Extensions"
+        ),
+        .testTarget(
+            name: "Concurrency.ExtensionsSpellBookTests",
+            dependencies: [
+                .target(name: "_Concurrency_ExtensionsSpellBook"),
+            ],
+            path: "Tests/_Concurrency+Extensions"
         ),
         .target(
             name: "_AutoClosurePropertyWrapper",
@@ -298,7 +321,7 @@ let package = Package(
                 .product(name: "LoftTest_StandardLibraryProtocolChecks", package: "StandardLibraryProtocolChecks"),
             ],
             path: "Tests/_PropertyWrapperProtocols",
-            swiftSettings: Array(experimentalSwiftSettings.values)
+            swiftSettings: experimentalSwiftSettingsValues
         ),
         .target(
             name: "XCTestSpellBook",
