@@ -190,3 +190,4 @@ extension Locked {
 extension Locked: PassThroughEquatablePropertyWrapper where WrappedValue: Equatable {}
 extension Locked: PassThroughHashablePropertyWrapper where WrappedValue: Hashable {}
 extension Locked: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
+extension Locked: @unchecked Sendable where WrappedValue: Sendable {}

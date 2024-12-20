@@ -30,3 +30,4 @@ public struct NeverEqual<WrappedValue>: MutablePropertyWrapper, DefaultInitializ
 
 extension NeverEqual: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
 extension NeverEqual: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}
+extension NeverEqual: Sendable where WrappedValue: Sendable {}

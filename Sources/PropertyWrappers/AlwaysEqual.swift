@@ -30,3 +30,4 @@ public struct AlwaysEqual<WrappedValue>: MutablePropertyWrapper, DefaultInitiali
 
 extension AlwaysEqual: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
 extension AlwaysEqual: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}
+extension AlwaysEqual: Sendable where WrappedValue: Sendable {}

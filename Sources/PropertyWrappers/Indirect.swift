@@ -39,3 +39,4 @@ extension Indirect: PassThroughHashablePropertyWrapper where WrappedValue: Hasha
 extension Indirect: PassThroughComparablePropertyWrapper where WrappedValue: Comparable {}
 extension Indirect: PassThroughEncodablePropertyWrapper where WrappedValue: Encodable {}
 extension Indirect: PassThroughDecodablePropertyWrapper where WrappedValue: Decodable {}
+extension Indirect: Sendable where WrappedValue: Sendable {}

@@ -13,7 +13,7 @@ import Foundation
 extension Task {
     /// An object that contains the state to safely implement `waitUntilFinished()`.
     @usableFromInline
-    struct WaitUntilFinishedContext<Success, Failure>: @unchecked Sendable where Failure: Error {
+    struct WaitUntilFinishedContext: @unchecked Sendable where Failure: Error {
         @usableFromInline
         struct Value {
             @usableFromInline
@@ -63,7 +63,7 @@ extension Task {
     /// Creates the task the context and task that will receive the value of the current Task.
     @usableFromInline
     func _waitUntilFinished() -> Result<Success, Failure> {
-        let context = WaitUntilFinishedContext<Success, Failure>()
+        let context = WaitUntilFinishedContext()
         Task<Void, Never> {
             context.recieve(result: await self.result)
         }
@@ -83,7 +83,11 @@ extension Task {
     /// - Returns: The value of the current `Task`.
     @_transparent
     public func waitUntilFinished() -> Success where Failure == Never {
+        #if swift(<6.0)
         try! _waitUntilFinished().get()
+        #else
+        _waitUntilFinished().get()
+        #endif
     }
 
     /// Waits for the task to finish execution and then returns its value.

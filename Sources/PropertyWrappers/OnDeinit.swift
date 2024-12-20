@@ -108,8 +108,10 @@ import SwiftMemoryManagementSpellBook
 
 @propertyWrapper
 public final class OnDeinitBuffered<WrappedValue>: SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>,
-    // SafeManagedBuffer<(WrappedValue) -> Void, WrappedValue>,
-    MutablePropertyWrapper, _OnDeinit {
+                                                   MutablePropertyWrapper, _OnDeinit {
+    public typealias HeaderValue = (WrappedValue) -> Void
+    public typealias Element = WrappedValue
+
     @inlinable
     public var wrappedValue: WrappedValue {
         get { withUnsafeMutablePointerToElements(\.pointee) }
