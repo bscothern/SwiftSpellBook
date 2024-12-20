@@ -21,7 +21,7 @@ import os
 ///     e.g. an unlocker can potentially immediately reacquire the lock before a woken up waiter gets an opportunity to attempt to acquire the lock.
 ///     This may be advantageous for performance reasons, but also makes starvation of waiters a possibility.
 @available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
-public final class OSUnfairLock: NSLocking, TryLocking {
+public final class OSUnfairLock: NSLocking, TryLocking, @unchecked Sendable {
     @usableFromInline
     var unfairLock: os_unfair_lock_t = .allocate(capacity: 1)
 

@@ -12,7 +12,7 @@ import XCTest
 
 final class SequenceForEachTests: XCTestCase {
     struct Foo {
-        static var count = 0
+        nonisolated(unsafe) static var count = 0
 
         func updateCount() {
             Self.count += 1

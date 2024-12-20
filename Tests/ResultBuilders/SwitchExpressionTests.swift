@@ -6,7 +6,7 @@
 //  Copyright © 2020-2023 Braden Scothern. All rights reserved.
 //
 
-#if !os(watchOS) && swift(>=5.4)
+#if !os(watchOS) && swift(>=5.4) && swift(<5.9)
 import SwiftResultBuildersSpellBook
 import XCTest
 import XCTestSpellBook

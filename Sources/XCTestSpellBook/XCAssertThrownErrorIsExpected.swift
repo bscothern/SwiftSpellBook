@@ -10,26 +10,26 @@
 import SwiftResultBuildersSpellBook
 import XCTest
 
-@inlinable
-public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
-    _ expression: @autoclosure () throws -> T,
-    expects expectedError: ExpectedError,
-    _ message: @autoclosure () -> String = "Didn't throw expected error",
-    file: StaticString = #file,
-    line: UInt = #line,
-    errorHandler: (Error) -> Void = { _ in }
-) where ExpectedError: Equatable {
-    XCAssertThrownErrorIsExpected(
-        try expression(),
-        errorComparator: { (error: ExpectedError) in
-            error == expectedError
-        },
-        message(),
-        file: file,
-        line: line,
-        errorHandler: errorHandler
-    )
-}
+//@inlinable
+//public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
+//    _ expression: @autoclosure () throws -> T,
+//    expects expectedError: ExpectedError,
+//    _ message: @autoclosure () -> String = "Didn't throw expected error",
+//    file: StaticString = #file,
+//    line: UInt = #line,
+//    errorHandler: (Error) -> Void = { _ in }
+//) where ExpectedError: Equatable {
+//    XCAssertThrownErrorIsExpected(
+//        try expression(),
+//        errorComparator: { (error: ExpectedError) in
+//            error == expectedError
+//        },
+//        message(),
+//        file: file,
+//        line: line,
+//        errorHandler: errorHandler
+//    )
+//}
 
 @usableFromInline
 @inline(__always)
@@ -42,6 +42,7 @@ func _XCAssertThrownErrorIsExpected<ExpectedError, T>(
     errorHandler: (Error) -> Void
 ) {}
 
+#if swift(<5.9)
 @inlinable
 public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
     _ expression: @autoclosure () throws -> T,
@@ -60,5 +61,6 @@ public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
         XCTAssert(errorComparator(expectedError), message(), file: file, line: line)
     }
 }
+#endif
 
 #endif

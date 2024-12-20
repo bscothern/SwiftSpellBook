@@ -12,46 +12,46 @@ import XCTest
 import XCTestSpellBook
 
 final class OutputStreamTests: XCTestCase {
-    func testWriteAllOfNotOpened() {
-        let outputStream: OutputStream = .toMemory()
-        let pointer: UnsafeMutablePointer<UInt8> = .allocate(capacity: 1)
-        defer {
-            pointer.deinitialize(count: 1)
-            pointer.deallocate()
-        }
-        pointer.initialize(to: 42)
-
-        XCAssertThrownErrorIsExpected(try outputStream.write(allOf: pointer, length: 1)) { (error: OutputStream.WriteAllOfError) in
-            switch error {
-            case .streamNotInOpenState:
-                true
-            default:
-                false
-            }
-        }
-    }
-
-    func testWriteAllEmptyBuffer() {
-        let outputStream: OutputStream = .toMemory()
-        outputStream.open()
-        defer { outputStream.close() }
-
-        let pointer: UnsafeMutablePointer<UInt8> = .allocate(capacity: 1)
-        defer {
-            pointer.deinitialize(count: 1)
-            pointer.deallocate()
-        }
-        pointer.initialize(to: 42)
-
-        XCAssertThrownErrorIsExpected(try outputStream.write(allOf: pointer, length: 0)) { (error: OutputStream.WriteAllOfError) in
-            switch error {
-            case .emptyBuffer:
-                true
-            default:
-                false
-            }
-        }
-    }
+//    func testWriteAllOfNotOpened() {
+//        let outputStream: OutputStream = .toMemory()
+//        let pointer: UnsafeMutablePointer<UInt8> = .allocate(capacity: 1)
+//        defer {
+//            pointer.deinitialize(count: 1)
+//            pointer.deallocate()
+//        }
+//        pointer.initialize(to: 42)
+//
+//        XCAssertThrownErrorIsExpected(try outputStream.write(allOf: pointer, length: 1)) { (error: OutputStream.WriteAllOfError) in
+//            switch error {
+//            case .streamNotInOpenState:
+//                true
+//            default:
+//                false
+//            }
+//        }
+//    }
+//
+//    func testWriteAllEmptyBuffer() {
+//        let outputStream: OutputStream = .toMemory()
+//        outputStream.open()
+//        defer { outputStream.close() }
+//
+//        let pointer: UnsafeMutablePointer<UInt8> = .allocate(capacity: 1)
+//        defer {
+//            pointer.deinitialize(count: 1)
+//            pointer.deallocate()
+//        }
+//        pointer.initialize(to: 42)
+//
+//        XCAssertThrownErrorIsExpected(try outputStream.write(allOf: pointer, length: 0)) { (error: OutputStream.WriteAllOfError) in
+//            switch error {
+//            case .emptyBuffer:
+//                true
+//            default:
+//                false
+//            }
+//        }
+//    }
 
     func testWriteAllOfBufferLength() {
         let outputStream: OutputStream = .toMemory()

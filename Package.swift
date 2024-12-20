@@ -15,7 +15,7 @@ enum ExperimentalFlags: String {
 }
 
 let experimentalFlags: [(flag: ExperimentalFlags, force: Bool)] = [
-    (flag: .propertyWrapper_OnDeinitBuffered, force: true),
+    (flag: .propertyWrapper_OnDeinitBuffered, force: false),
     (flag: .propertyWrapper_FromKeyPath, force: false),
 ]
 

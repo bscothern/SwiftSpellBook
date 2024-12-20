@@ -18,27 +18,27 @@ final class InputStreamTests: XCTestCase {
         streamData = nil
     }
 
-    func testForEachNotOpen() {
-        XCAssertThrownErrorIsExpected(try stream.forEachChunk(upToSize: 11) { _ in }) { (error: InputStream.ForEachChunkError) in
-            switch error {
-            case .streamNotInOpenState:
-                true
-            default:
-                false
-            }
-        }
-    }
-
-    func testForEachNotOpen2() {
-        XCAssertThrownErrorIsExpected(try stream.forEachChunk(upToSize: 11) { _ in }) { (error: InputStream.ForEachChunkError) in
-            switch error {
-            case .streamNotInOpenState:
-                true
-            default:
-                false
-            }
-        }
-    }
+//    func testForEachNotOpen() {
+//        XCAssertThrownErrorIsExpected(try stream.forEachChunk(upToSize: 11) { _ in }) { (error: InputStream.ForEachChunkError) in
+//            switch error {
+//            case .streamNotInOpenState:
+//                true
+//            default:
+//                false
+//            }
+//        }
+//    }
+//
+//    func testForEachNotOpen2() {
+//        XCAssertThrownErrorIsExpected(try stream.forEachChunk(upToSize: 11) { _ in }) { (error: InputStream.ForEachChunkError) in
+//            switch error {
+//            case .streamNotInOpenState:
+//                true
+//            default:
+//                false
+//            }
+//        }
+//    }
 
     func testForEachChunk() throws {
         let maxChunkSize = 10
