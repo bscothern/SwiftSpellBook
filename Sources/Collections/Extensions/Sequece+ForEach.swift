@@ -24,7 +24,7 @@ extension Sequence {
     ///
     /// - Parameter function: A function that takes an `Element` and creates another function that should be executed.
     @inlinable
-    public func forEach(execute function: (Element) -> () -> Void) {
+    public func forEachExecute(_ function: (Element) -> () -> Void) {
         forEach { element in
             function(element)()
         }

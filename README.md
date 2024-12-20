@@ -9,7 +9,7 @@ A collection of common types and extensions to the Swift Standard Library and it
 ## Adding `SwiftSpellBook` as a dependency
 Add the following line to your package dependencies in your `Package.swift` file:
 ```swift
-.package(url: "https://github.com/bscothern/SwiftSpellBook", .upToNextMinor(from: "0.1.0")),
+.package(url: "https://github.com/bscothern/SwiftSpellBook", .upToNextMinor(from: "0.2.0")),
 ```
 
 Then in the targets section add this line as a dependency in your `Package.swift` file:
