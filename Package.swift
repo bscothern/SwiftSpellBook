@@ -49,6 +49,7 @@ let package = Package(
     name: "SwiftSpellBook",
     platforms: [
         .macOS(.v10_15),
+        .iOS(.v13),
     ],
     products: [
         .library(
