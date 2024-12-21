@@ -27,7 +27,7 @@ final class SequenceForEachTests: XCTestCase {
         let count = 100
         let sequence = Array(repeating: Foo(), count: count)
         XCTAssertEqual(Foo.count, 0)
-        sequence.forEach(execute: Foo.updateCount)
+        sequence.forEachExecute(Foo.updateCount)
         XCTAssertEqual(Foo.count, count)
     }
 }

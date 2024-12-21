@@ -102,7 +102,7 @@ let package = Package(
 //        ),
     ],
     dependencies: [
-        .package(path: "../swift-package-coverage"),
+//        .package(path: "../swift-package-coverage"),
 //        .package(
 //            url: "https://github.com/apple/swift-collections-benchmark",
 //            .upToNextMinor(from: "0.0.1")

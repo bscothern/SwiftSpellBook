@@ -10,26 +10,26 @@
 import SwiftResultBuildersSpellBook
 import XCTest
 
-//@inlinable
-//public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
-//    _ expression: @autoclosure () throws -> T,
-//    expects expectedError: ExpectedError,
-//    _ message: @autoclosure () -> String = "Didn't throw expected error",
-//    file: StaticString = #file,
-//    line: UInt = #line,
-//    errorHandler: (Error) -> Void = { _ in }
-//) where ExpectedError: Equatable {
-//    XCAssertThrownErrorIsExpected(
-//        try expression(),
-//        errorComparator: { (error: ExpectedError) in
-//            error == expectedError
-//        },
-//        message(),
-//        file: file,
-//        line: line,
-//        errorHandler: errorHandler
-//    )
-//}
+@inlinable
+public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
+    _ expression: @autoclosure () throws -> T,
+    expects expectedError: ExpectedError,
+    _ message: @autoclosure () -> String = "Didn't throw expected error",
+    file: StaticString = #filePath,
+    line: UInt = #line,
+    errorHandler: (Error) -> Void = { _ in }
+) where ExpectedError: Equatable {
+    XCAssertThrownErrorIsExpected(
+        try expression(),
+        errorComparator: { (error: ExpectedError) in
+            error == expectedError
+        },
+        message(),
+        file: file,
+        line: line,
+        errorHandler: errorHandler
+    )
+}
 
 @usableFromInline
 @inline(__always)
@@ -48,7 +48,26 @@ public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
     _ expression: @autoclosure () throws -> T,
     @SwitchExpression errorComparator: (ExpectedError) -> Bool,
     _ message: @autoclosure () -> String = "Didn't throw expected error",
-    file: StaticString = #file,
+    file: StaticString = #filePath,
+    line: UInt = #line,
+    errorHandler: (Error) -> Void = { _ in }
+) {
+    XCTAssertThrowsError(try expression(), message(), file: file, line: line) { error in
+        errorHandler(error)
+        guard let expectedError = error as? ExpectedError else {
+            XCTFail(message(), file: file, line: line)
+            return
+        }
+        XCTAssert(errorComparator(expectedError), message(), file: file, line: line)
+    }
+}
+#else
+@inlinable
+public func XCAssertThrownErrorIsExpected<ExpectedError, T>(
+    _ expression: @autoclosure () throws -> T,
+    errorComparator: (ExpectedError) -> Bool,
+    _ message: @autoclosure () -> String = "Didn't throw expected error",
+    file: StaticString = #filePath,
     line: UInt = #line,
     errorHandler: (Error) -> Void = { _ in }
 ) {

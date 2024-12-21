@@ -1,4 +1,5 @@
 {
+  "originHash" : "85da650071d9b4f7e3903b9b3a7e146a13d13c4817ca3672542430f77efb9fec",
   "pins" : [
     {
       "identity" : "checkxcassertionfailure",
@@ -10,33 +11,6 @@
       }
     },
     {
-      "identity" : "clispinner",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/bscothern/CLISpinner",
-      "state" : {
-        "revision" : "7489097494e7cecd8a3c9e420b0fef9ea37c15e5",
-        "version" : "0.5.2"
-      }
-    },
-    {
-      "identity" : "rainbow",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/onevcat/Rainbow",
-      "state" : {
-        "revision" : "e0dada9cd44e3fa7ec3b867e49a8ddbf543e3df3",
-        "version" : "4.0.1"
-      }
-    },
-    {
-      "identity" : "signalhandler",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/bscothern/SignalHandler",
-      "state" : {
-        "branch" : "main",
-        "revision" : "4f41684a4b27c8e2629e32091d9baaaaf8e16c8e"
-      }
-    },
-    {
       "identity" : "standardlibraryprotocolchecks",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/loftware/StandardLibraryProtocolChecks",
@@ -44,34 +18,7 @@
         "revision" : "2de7cf5a9bf0411a01b79db6a668848c25d58686",
         "version" : "0.1.2"
       }
-    },
-    {
-      "identity" : "swift-argument-parser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser",
-      "state" : {
-        "revision" : "82905286cc3f0fa8adc4674bf49437cab65a8373",
-        "version" : "1.1.1"
-      }
-    },
-    {
-      "identity" : "swiftyjson",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SwiftyJSON/SwiftyJSON.git",
-      "state" : {
-        "revision" : "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
-        "version" : "5.0.1"
-      }
-    },
-    {
-      "identity" : "swsh",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/cobbal/swsh",
-      "state" : {
-        "revision" : "2ec65a56bd3e9eb407b6b6c06d85c7d360081d23",
-        "version" : "4.0.0"
-      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
